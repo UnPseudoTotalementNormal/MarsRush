@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8rdmkwm2nnnn"]
+
+[ext_resource type="Script" path="res://Script/SoundSystem.gd" id="1_wcnfp"]
+
+[node name="SoundSystem" type="Node2D"]
+script = ExtResource("1_wcnfp")

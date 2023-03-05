@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c5s6uswfpdget"
+path="res://.godot/imported/shotgun shoot.mp3-4866bf1fff728501bb77b36d50ed06f2.mp3str"
+
+[deps]
+
+source_file="res://sound/playeronly/shotgun shoot.mp3"
+dest_files=["res://.godot/imported/shotgun shoot.mp3-4866bf1fff728501bb77b36d50ed06f2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,367 @@
+[gd_scene load_steps=29 format=3 uid="uid://cgio6fe71m6xx"]
+
+[ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
+[ext_resource type="Script" path="res://test.gd" id="2_10bbk"]
+[ext_resource type="Texture2D" uid="uid://c2v2afrhpm4mb" path="res://Sprites/Fire-Extinguisher-Transparent.png" id="3_f00sb"]
+[ext_resource type="Texture2D" uid="uid://dw5guo5np7r80" path="res://Sprites/shotgun_gauge.png" id="3_p2yy7"]
+[ext_resource type="Texture2D" uid="uid://qf514p11c2ow" path="res://Sprites/reload_circle.png" id="4_y80qc"]
+[ext_resource type="Texture2D" uid="uid://bdoq58p4o0siv" path="res://Sprites/oxygen_bar.png" id="5_ynef4"]
+[ext_resource type="Texture2D" uid="uid://dl75ko5bk7jav" path="res://Sprites/oxygen_bar_over.png" id="6_3e7vd"]
+[ext_resource type="Texture2D" uid="uid://2skfm8fpymmt" path="res://Sprites/oxygen_bar_progress.png" id="7_3slbf"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6etpi"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_ohyr2"]
+radius = 2.5
+height = 5.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v8mag"]
+radius = 7.5
+height = 25.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dqm3s"]
+radius = 7.5
+height = 25.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_663kx"]
+radius = 3.0
+height = 11.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rdf2j"]
+polygon = PackedVector2Array(-7.408, -5, -7.426, 5.14, -7.175, 7, -6.238, 9, -4.336, 11, -2, 12.062, -0.005, 12.491, 2, 12.17, 4, 11.282, 6, 9.345, 7.111, 7, 7.437, 5, 7.409, -5, 7, -7.239, 6, -9.317, 4, -11.275, 2, -12.205, 0, -12.507, -2, -12.197, -4, -11.301, -6, -9.377, -7, -7.557)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lvdqe"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ymmod"]
+size = Vector3(2.5, 10, 1)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8mu2s"]
+polygon = PackedVector2Array(-1, 9, 1, 9, 1, -1, -1, -1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kuhfi"]
+size = Vector3(2, 13, 1)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_h83ut"]
+polygon = PackedVector2Array(-1, 11.5, 1, 11.5, 1, -1, -1, -1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5jawl"]
+size = Vector3(10, 1.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m5qi6"]
+size = Vector3(2, 10, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nleax"]
+radius = 20.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_qd5do"]
+radius = 20.0
+height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ymjv7"]
+radius = 20.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_v5k0f"]
+radius = 20.0
+height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tohp4"]
+radius = 20.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_x56nf"]
+radius = 20.0
+height = 40.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tbqg3"]
+size = Vector2(16, 26)
+
+[node name="Player" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 5
+mass = 90.0
+gravity_scale = 0.0
+can_sleep = false
+script = ExtResource("1_3r82c")
+
+[node name="MousePivot" type="Node2D" parent="."]
+top_level = true
+
+[node name="MouseMarker" type="Marker2D" parent="MousePivot"]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="MousePivot/MouseMarker"]
+modulate = Color(1, 0, 0, 1)
+z_index = 4096
+mesh = SubResource("SphereMesh_6etpi")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
+
+[node name="Pivot" type="Node2D" parent="."]
+
+[node name="Gun_pos" type="MeshInstance2D" parent="Pivot"]
+visible = false
+modulate = Color(0.686275, 0, 0, 1)
+z_index = 4096
+position = Vector2(14, 0)
+mesh = SubResource("SphereMesh_ohyr2")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_v8mag")
+
+[node name="Mesh" type="MeshInstance2D" parent="."]
+self_modulate = Color(0.494118, 0.184314, 0, 1)
+mesh = SubResource("CapsuleMesh_dqm3s")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Mesh"]
+self_modulate = Color(0, 0.0156863, 0.101961, 1)
+position = Vector2(0, -6)
+rotation = 1.57079
+mesh = SubResource("CapsuleMesh_663kx")
+
+[node name="bodylight" type="LightOccluder2D" parent="Mesh"]
+self_modulate = Color(1, 1, 1, 0)
+occluder = SubResource("OccluderPolygon2D_rdf2j")
+sdf_collision = false
+
+[node name="Shoot" type="RayCast2D" parent="."]
+visible = false
+enabled = false
+collision_mask = 517
+
+[node name="Cube" type="MeshInstance2D" parent="."]
+visible = false
+position = Vector2(147, -3)
+scale = Vector2(144.5, 144.5)
+mesh = SubResource("BoxMesh_lvdqe")
+script = ExtResource("2_10bbk")
+
+[node name="RightLeg" type="Node2D" parent="."]
+modulate = Color(0.819608, 0.333333, 0.0196078, 1)
+top_level = true
+z_index = -1
+position = Vector2(4, 10)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RightLeg"]
+position = Vector2(0, 4)
+mesh = SubResource("BoxMesh_ymmod")
+
+[node name="leglight" type="LightOccluder2D" parent="RightLeg"]
+occluder = SubResource("OccluderPolygon2D_8mu2s")
+
+[node name="LeftLeg" type="Node2D" parent="."]
+modulate = Color(0.819608, 0.333333, 0.0196078, 1)
+top_level = true
+z_index = -1
+position = Vector2(-4, 10)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="LeftLeg"]
+position = Vector2(0, 4)
+mesh = SubResource("BoxMesh_ymmod")
+
+[node name="leglight" type="LightOccluder2D" parent="LeftLeg"]
+occluder = SubResource("OccluderPolygon2D_8mu2s")
+
+[node name="LeftArm" type="Node2D" parent="."]
+self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)
+position = Vector2(-7, -1)
+rotation = 0.383972
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="LeftArm"]
+self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)
+position = Vector2(0.0186768, 5.38513)
+mesh = SubResource("BoxMesh_kuhfi")
+
+[node name="armlight" type="LightOccluder2D" parent="LeftArm"]
+occluder = SubResource("OccluderPolygon2D_h83ut")
+
+[node name="extinguisher" type="Sprite2D" parent="LeftArm"]
+position = Vector2(-0.33728, 9.84308)
+scale = Vector2(0.0131752, 0.0131752)
+texture = ExtResource("3_f00sb")
+
+[node name="extinguisher_line" type="MeshInstance2D" parent="LeftArm"]
+modulate = Color(0.105882, 0.105882, 0.105882, 1)
+z_index = 1
+position = Vector2(32.1328, 2.117)
+rotation = -0.383972
+mesh = SubResource("BoxMesh_5jawl")
+
+[node name="ext_line_pos" type="Marker2D" parent="LeftArm"]
+position = Vector2(0.0186768, 5.38513)
+scale = Vector2(0.0131752, 0.0131752)
+
+[node name="RightArm" type="Node2D" parent="."]
+modulate = Color(0.819608, 0.333333, 0.0196078, 1)
+position = Vector2(7, -1)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RightArm"]
+position = Vector2(4, 0)
+rotation = -1.57079
+mesh = SubResource("BoxMesh_m5qi6")
+
+[node name="Legspos" type="Marker2D" parent="."]
+position = Vector2(0, 11)
+
+[node name="Armpos" type="Marker2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Ammo" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -1.99997
+offset_right = 42.0
+offset_bottom = 38.0
+grow_vertical = 0
+scale = Vector2(0.034, 0.034)
+
+[node name="GaugeTexture" type="TextureRect" parent="HUD/Ammo"]
+visible = false
+layout_mode = 2
+offset_left = 29.4117
+offset_top = 647.061
+offset_right = 246.412
+offset_bottom = 1139.06
+texture = ExtResource("3_p2yy7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Ammo"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -670.0
+offset_right = 438.0
+grow_vertical = 0
+
+[node name="ReloadBar" type="TextureProgressBar" parent="HUD/Ammo/VBoxContainer"]
+layout_mode = 2
+step = 0.001
+value = 35.0
+fill_mode = 4
+texture_progress = ExtResource("4_y80qc")
+tint_progress = Color(0, 0.490196, 0, 1)
+
+[node name="Gauge" type="HBoxContainer" parent="HUD/Ammo/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/Ammo/VBoxContainer/Gauge"]
+layout_mode = 2
+texture = ExtResource("3_p2yy7")
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/Ammo/VBoxContainer/Gauge"]
+layout_mode = 2
+texture = ExtResource("3_p2yy7")
+
+[node name="Oxygen" type="TextureProgressBar" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -85.0
+offset_top = 8.0
+offset_right = 86.0
+offset_bottom = 25.0
+grow_horizontal = 2
+step = 0.001
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("5_ynef4")
+texture_over = ExtResource("6_3e7vd")
+texture_progress = ExtResource("7_3slbf")
+tint_under = Color(0.32549, 0.32549, 0.32549, 1)
+tint_over = Color(0, 0, 1, 0.886275)
+tint_progress = Color(0, 0.341176, 1, 0.717647)
+
+[node name="Health" type="TextureProgressBar" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -65.0
+offset_top = 164.0
+offset_right = 66.0
+offset_bottom = 177.0
+grow_horizontal = 2
+step = 0.001
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("5_ynef4")
+texture_progress = ExtResource("7_3slbf")
+tint_under = Color(0.32549, 0.32549, 0.32549, 1)
+tint_over = Color(0, 1, 0, 0.886275)
+tint_progress = Color(0, 1, 0.360784, 0.717647)
+
+[node name="Text" type="Label" parent="HUD"]
+texture_filter = 6
+offset_left = 4.0
+offset_top = 25.0
+offset_right = 317.0
+offset_bottom = 92.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/line_spacing = -4
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TouchScreensButtons" type="Node2D" parent="HUD"]
+
+[node name="shoot" type="TouchScreenButton" parent="HUD/TouchScreensButtons"]
+position = Vector2(24, 127)
+shape = SubResource("CircleShape2D_nleax")
+visibility_mode = 1
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="HUD/TouchScreensButtons/shoot"]
+modulate = Color(1, 0.231373, 0, 0.156863)
+mesh = SubResource("SphereMesh_qd5do")
+
+[node name="reload" type="TouchScreenButton" parent="HUD/TouchScreensButtons"]
+position = Vector2(24, 79)
+shape = SubResource("CircleShape2D_ymjv7")
+visibility_mode = 1
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="HUD/TouchScreensButtons/reload"]
+modulate = Color(1, 0.231373, 0, 0.156863)
+mesh = SubResource("SphereMesh_v5k0f")
+
+[node name="nextweapon" type="TouchScreenButton" parent="HUD/TouchScreensButtons"]
+position = Vector2(24, 31)
+shape = SubResource("CircleShape2D_tohp4")
+visibility_mode = 1
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="HUD/TouchScreensButtons/nextweapon"]
+modulate = Color(1, 0.231373, 0, 0.156863)
+mesh = SubResource("SphereMesh_x56nf")
+
+[node name="Gun_reload" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Health_regen" type="Timer" parent="."]
+one_shot = true
+
+[node name="Oxygen_regen" type="Timer" parent="."]
+one_shot = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+position = Vector2(0.5, -0.500007)
+scale = Vector2(1.25, 1.35)
+
+[node name="PlayerAreaDetector" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAreaDetector"]
+shape = SubResource("RectangleShape2D_tbqg3")
+
+[connection signal="pressed" from="HUD/TouchScreensButtons/shoot" to="." method="_on_shoot_pressed"]
+[connection signal="released" from="HUD/TouchScreensButtons/shoot" to="." method="_on_shoot_released"]
+[connection signal="pressed" from="HUD/TouchScreensButtons/reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="HUD/TouchScreensButtons/nextweapon" to="." method="_on_nextweapon_pressed"]
+[connection signal="timeout" from="Gun_reload" to="." method="_on_gun_reload_timeout"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="PlayerAreaDetector" to="." method="_on_player_area_detector_area_entered"]
+[connection signal="area_exited" from="PlayerAreaDetector" to="." method="_on_player_area_detector_area_exited"]

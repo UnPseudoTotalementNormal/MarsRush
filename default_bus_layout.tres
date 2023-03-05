@@ -1,0 +1,22 @@
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://16qmstictkjg"]
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_ip5yg"]
+resource_name = "LowPassFilter"
+resonance = 0.19
+db = 1
+
+[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_fvpcm"]
+resource_name = "Amplify"
+volume_db = 12.37
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_b05f8"]
+resource_name = "Compressor"
+threshold = -7.8
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectLowPassFilter_ip5yg")
+bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectAmplify_fvpcm")
+bus/0/effect/1/enabled = false
+bus/0/effect/2/effect = SubResource("AudioEffectCompressor_b05f8")
+bus/0/effect/2/enabled = true

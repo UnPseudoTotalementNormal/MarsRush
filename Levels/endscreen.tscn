@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddfso1cgwyihx"]
+
+[ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_1k3e5"]
+[ext_resource type="Script" path="res://Script/endscreen.gd" id="1_oqogf"]
+
+[node name="theend" type="Node2D"]
+texture_filter = 3
+script = ExtResource("1_oqogf")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(-7866, -3975)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+texture_filter = 3
+offset_right = 18719.0
+offset_bottom = 8137.0
+texture = ExtResource("1_1k3e5")
+stretch_mode = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 6
+offset_left = -160.0
+offset_top = 86.0
+offset_right = 160.0
+offset_bottom = 446.0
+theme_override_colors/font_outline_color = Color(0.52549, 0.117647, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/line_spacing = 17
+text = "Maintenant que le moteur a été détruit
+les rebelles se sont écrasés et sont tous mort dans d'atroce souffrance.
+Bien fait pour eux.
+(on est les gentils)
+Mike le martien est devenu un héro et tout le monde au village fêta son retour.
+Fin.
+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

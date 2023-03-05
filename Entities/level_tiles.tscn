@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtoaebyrht41r"]
+
+[ext_resource type="TileSet" uid="uid://dem7tnwxkq5ye" path="res://Tilemap/Leveltiles.tres" id="1_4wrcs"]
+
+[node name="LevelTiles" type="TileMap"]
+scale = Vector2(0.5, 0.5)
+tile_set = ExtResource("1_4wrcs")
+format = 2
+layer_0/tile_data = PackedInt32Array(-2228300, 327681, 5)

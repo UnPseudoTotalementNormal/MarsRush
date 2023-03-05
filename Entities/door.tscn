@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8673rfq8hju4"]
+
+[ext_resource type="Script" path="res://Script/door.gd" id="1_fdc2i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0bww"]
+size = Vector2(5, 48)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pn2qe"]
+size = Vector3(5, 48, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ac5ni"]
+size = Vector2(24, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_em346"]
+size = Vector2(24, 48)
+
+[node name="door" type="StaticBody2D"]
+collision_layer = 2048
+script = ExtResource("1_fdc2i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l0bww")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+modulate = Color(0.301961, 0.0313726, 0, 1)
+mesh = SubResource("BoxMesh_pn2qe")
+
+[node name="indoor" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="indoor"]
+position = Vector2(-12, 0)
+shape = SubResource("RectangleShape2D_ac5ni")
+debug_color = Color(0, 0.6, 0.701961, 0.0509804)
+
+[node name="outdoor" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="outdoor"]
+position = Vector2(12, 0)
+shape = SubResource("RectangleShape2D_em346")
+debug_color = Color(1, 0, 0, 0.0509804)
+
+[connection signal="area_entered" from="indoor" to="." method="_on_indoor_area_entered"]
+[connection signal="area_exited" from="indoor" to="." method="_on_indoor_area_exited"]
+[connection signal="area_entered" from="outdoor" to="." method="_on_outdoor_area_entered"]
+[connection signal="area_exited" from="outdoor" to="." method="_on_outdoor_area_exited"]

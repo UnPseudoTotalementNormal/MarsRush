@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://duwmxofj2yq3b"]
+
+[ext_resource type="Shader" path="res://Shaders/BlackAndWhite.gdshader" id="1_stuu8"]
+[ext_resource type="Script" path="res://Script/Breakablestuff.gd" id="1_uuvuj"]
+[ext_resource type="Texture2D" uid="uid://cjph4y3xrxrtp" path="res://Sprites/Fragile_block.png" id="2_6wp77"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7irq7"]
+shader = ExtResource("1_stuu8")
+shader_parameter/intensity = 0.956
+shader_parameter/activated = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ludy"]
+size = Vector2(32, 32)
+
+[node name="Breakablewall" type="StaticBody2D"]
+material = SubResource("ShaderMaterial_7irq7")
+script = ExtResource("1_uuvuj")
+
+[node name="FragileBlock" type="Sprite2D" parent="."]
+texture = ExtResource("2_6wp77")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5ludy")

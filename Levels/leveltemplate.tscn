@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://vttnm17sv23c"]
+
+[ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_7frov"]
+[ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="2_47asa"]
+[ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_vqkdr"]
+
+[node name="Level1" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.252, 0.252)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+texture_filter = 3
+offset_left = -7866.0
+offset_top = -3975.0
+offset_right = 10853.0
+offset_bottom = 4162.0
+texture = ExtResource("1_7frov")
+stretch_mode = 1
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+
+[node name="LevelTiles" parent="NavigationRegion2D" instance=ExtResource("2_47asa")]
+layer_0/tile_data = PackedInt32Array(-2228300, 327681, 5, -655370, 131072, 5, -655369, 131072, 5, -720892, 131072, 5, -720891, 131072, 5, -786426, 327680, 2, -851962, 327680, 2, -917498, 327680, 2, -983034, 720896, 4, -720890, 1114112, 5, -1048570, 196608, 2, -1114106, 196608, 2, -1179642, 196608, 2, -1245180, 131072, 1, -1245181, 131072, 1, -1245182, 524288, 4, -1245183, 131072, 5, -1245184, 131072, 5, -1179649, 131072, 5, -1179650, 131072, 5, -1179651, 131072, 5, -1179652, 131072, 5, -1179653, 458752, 4, -1179654, 524288, 4, -1179655, 131072, 5, -1179656, 131072, 5, -1179657, 131072, 5, -1179658, 131072, 5, -1245179, 131072, 1, -1245178, 196608, 1, -1179659, 1048576, 4, -1114123, 917504, 4, -1048587, 327680, 3, -786443, 327680, 1, -720907, 917504, 4, -655371, 1048576, 5, -1114124, 131072, 5, -1114125, 131072, 5, -1114126, 851968, 4, -1114127, 131072, 5, -1114128, 131072, 5, -1114129, 131072, 5, -1114130, 131072, 5, -1114131, 1048576, 4, -720908, 131072, 5, -720909, 131072, 5, -720910, 131072, 5, -720911, 131072, 5, -720912, 131072, 5, -720913, 458752, 5, -720914, 131072, 3, -720915, 65536, 3, -786451, 65536, 1, -1048595, 327680, 3, -1179646, 65536, 2, -1114110, 65536, 2, -1114109, 131072, 2, -1114108, 0, 0, -1114107, 0, 0, -1179643, 0, 0, -1179644, 0, 0, -1179645, 131072, 2, -1048574, 65536, 2, -1048573, 131072, 2, -1048572, 0, 0, -1048571, 131072, 2, -720893, 65536, 5, -655368, 196608, 5, -983036, 131072, 3, -983037, 131072, 3, -983038, 65536, 3, -983035, 131072, 3, -786449, 720896, 5, -851985, 327680, 1, -1048590, 327680, 2, -983054, 327680, 3, -786450, 131072, 1, -1114118, 65536, 2, -1048582, 65536, 2, -983046, 65536, 3, -983045, 196608, 3, -1048581, 196608, 2, -1114117, 196608, 2)
+
+[node name="Player" parent="NavigationRegion2D" instance=ExtResource("3_vqkdr")]
+position = Vector2(5, -255)
+
+[node name="Walls" type="Node2D" parent="NavigationRegion2D"]
+
+[node name="Doors" type="Node2D" parent="NavigationRegion2D"]

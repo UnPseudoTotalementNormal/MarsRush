@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfhlp2y6mvy0i"]
+
+[ext_resource type="Script" path="res://Particles/bomb_particles.gd" id="1_mp84n"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mjvej"]
+emission_shape = 1
+emission_sphere_radius = 6.0
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 8.88
+initial_velocity_max = 11.92
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+
+[node name="Bomb_particles" type="GPUParticles2D"]
+modulate = Color(5, 0, 0, 1)
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_mjvej")
+script = ExtResource("1_mp84n")

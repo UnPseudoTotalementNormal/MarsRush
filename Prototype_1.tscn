@@ -1,0 +1,169 @@
+[gd_scene load_steps=12 format=3 uid="uid://batpq00fls2ae"]
+
+[ext_resource type="Texture2D" uid="uid://bxg4a7srh8mym" path="res://Sprites/Background/space6_4-frames.png" id="1_ctvqe"]
+[ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_gqf64"]
+[ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_8nvle"]
+[ext_resource type="PackedScene" uid="uid://c1bi6s3o3tnxf" path="res://Entities/ennemi.tscn" id="3_d8ta5"]
+[ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="5_6haal"]
+[ext_resource type="TileSet" uid="uid://cqqyodt3yj8s6" path="res://Tilemap/Tiles.tres" id="8_xrbrd"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_01pss"]
+vertices = PackedVector2Array(-204, -90, -88, -93, -87, 28, -203, 95, 191, 93, -31, 30, 193, -92, -32, -91)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5), PackedInt32Array(6, 4, 5, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-204, -90, -203, 95, 191, 93, 193, -92, -32, -91, -31, 30, -87, 28, -88, -93)])
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gfptm"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_1btnn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_htnt7"]
+size = Vector2(1, 1)
+
+[sub_resource type="Environment" id="Environment_l1amj"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/4 = 1.0
+glow_levels/6 = 1.0
+glow_levels/7 = 1.0
+glow_bloom = 0.03
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -3000
+texture_filter = 2
+offset_left = -1201.0
+offset_top = -962.0
+offset_right = 3058.0
+offset_bottom = 1336.0
+scale = Vector2(0.832, 0.832)
+texture = ExtResource("1_gqf64")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(-172, 149)
+texture = ExtResource("1_ctvqe")
+hframes = 4
+region_rect = Rect2(64, 64, 64, 64)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.0901961)
+position = Vector2(138, -234)
+navigation_polygon = SubResource("NavigationPolygon_01pss")
+
+[node name="MARKER" type="MeshInstance2D" parent="NavigationRegion2D"]
+visible = false
+modulate = Color(0.513726, 0, 0, 1)
+position = Vector2(-163, -44)
+mesh = SubResource("CapsuleMesh_gfptm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="NavigationRegion2D/StaticBody2D"]
+modulate = Color(0, 0.0941176, 0, 1)
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+mesh = SubResource("BoxMesh_1btnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D"]
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+shape = SubResource("RectangleShape2D_htnt7")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="NavigationRegion2D"]
+position = Vector2(-110, -21)
+rotation = 1.5708
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="NavigationRegion2D/StaticBody2D2"]
+modulate = Color(0, 0.0941176, 0, 1)
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+mesh = SubResource("BoxMesh_1btnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D2"]
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+shape = SubResource("RectangleShape2D_htnt7")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="NavigationRegion2D"]
+position = Vector2(348, -15)
+rotation = 1.5708
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="NavigationRegion2D/StaticBody2D3"]
+modulate = Color(0, 0.0941176, 0, 1)
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+mesh = SubResource("BoxMesh_1btnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D3"]
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+shape = SubResource("RectangleShape2D_htnt7")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="NavigationRegion2D"]
+position = Vector2(-116, -1)
+rotation = 3.14159
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="NavigationRegion2D/StaticBody2D4"]
+modulate = Color(0, 0.0941176, 0, 1)
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+mesh = SubResource("BoxMesh_1btnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D4"]
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+shape = SubResource("RectangleShape2D_htnt7")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="NavigationRegion2D"]
+position = Vector2(-180, -230)
+rotation = -1.57079
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="NavigationRegion2D/StaticBody2D5"]
+modulate = Color(0, 0.0941176, 0, 1)
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+mesh = SubResource("BoxMesh_1btnn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D5"]
+position = Vector2(-2, 120.25)
+scale = Vector2(488, 31.5)
+shape = SubResource("RectangleShape2D_htnt7")
+
+[node name="CAMERA1" type="Camera2D" parent="NavigationRegion2D"]
+ignore_rotation = false
+zoom = Vector2(0.686, 0.686)
+position_smoothing_enabled = true
+
+[node name="Ennemi_test" parent="NavigationRegion2D" instance=ExtResource("3_d8ta5")]
+
+[node name="TileMap" type="TileMap" parent="NavigationRegion2D"]
+z_index = 134
+position = Vector2(1, 0)
+tile_set = ExtResource("8_xrbrd")
+cell_quadrant_size = 128
+format = 2
+layer_1/name = "background"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = -391
+layer_1/tile_data = PackedInt32Array()
+
+[node name="LevelTiles" parent="NavigationRegion2D" instance=ExtResource("5_6haal")]
+layer_0/tile_data = PackedInt32Array(-2228300, 327681, 5, 262136, 196608, 5, 262135, 131072, 5, 262134, 458752, 5, 262133, 524288, 5, 262132, 131072, 5, 262131, 65536, 5, 196597, 65536, 1, 196598, 196608, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l1amj")
+
+[node name="Player" parent="." instance=ExtResource("3_8nvle")]
+position = Vector2(-20, -236)

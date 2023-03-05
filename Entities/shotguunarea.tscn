@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnnlacdvnbid6"]
+
+[ext_resource type="Script" path="res://Script/shotgunarea.gd" id="1_hwisi"]
+[ext_resource type="Texture2D" uid="uid://by1ibugk541o7" path="res://Sprites/Shotgun.png" id="2_bpkf3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ua6uf"]
+size = Vector2(30, 30)
+
+[node name="shotguunarea" type="Area2D"]
+script = ExtResource("1_hwisi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ua6uf")
+
+[node name="guunsprite" type="Sprite2D" parent="."]
+position = Vector2(0.00012207, 0)
+scale = Vector2(0.008, 0.008)
+texture = ExtResource("2_bpkf3")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+texture_filter = 6
+offset_top = 116.0
+offset_right = 90.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 10
+text = "Shoot: left click
+Reload: right click"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -1,0 +1,89 @@
+[gd_scene load_steps=8 format=3 uid="uid://cq37fit3o11ud"]
+
+[ext_resource type="Script" path="res://Script/PlayerProto2.gd" id="1_dunph"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hmsht"]
+size = Vector3(20, 600, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wy13k"]
+size = Vector2(20, 600)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nfuv5"]
+radius = 7.5
+height = 25.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_774t1"]
+radius = 7.5
+height = 25.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_pyf7d"]
+radius = 3.5
+height = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7bxn1"]
+radius = 3.5
+
+[node name="Prototype2" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+modulate = Color(0, 0.509804, 0, 1)
+position = Vector2(5, 128)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D"]
+mesh = SubResource("BoxMesh_hmsht")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_wy13k")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+modulate = Color(0, 0.509804, 0, 1)
+position = Vector2(233, 267)
+rotation = 1.57079
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D2"]
+mesh = SubResource("BoxMesh_hmsht")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_wy13k")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+modulate = Color(0, 0.509804, 0, 1)
+position = Vector2(476, 123)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D3"]
+mesh = SubResource("BoxMesh_hmsht")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+shape = SubResource("RectangleShape2D_wy13k")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+modulate = Color(0, 0.509804, 0, 1)
+position = Vector2(88, 6)
+rotation = 1.57079
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="StaticBody2D4"]
+mesh = SubResource("BoxMesh_hmsht")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+shape = SubResource("RectangleShape2D_wy13k")
+
+[node name="Player" type="RigidBody2D" parent="."]
+position = Vector2(199, 115)
+gravity_scale = 0.0
+script = ExtResource("1_dunph")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Player"]
+mesh = SubResource("CapsuleMesh_nfuv5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_774t1")
+
+[node name="Gun" type="RigidBody2D" parent="."]
+position = Vector2(178, 110)
+gravity_scale = 0.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Gun"]
+mesh = SubResource("SphereMesh_pyf7d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gun"]
+shape = SubResource("CircleShape2D_7bxn1")

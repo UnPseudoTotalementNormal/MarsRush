@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpn4hlble05i7"]
+
+[ext_resource type="Script" path="res://Script/menu.gd" id="1_mgc3j"]
+[ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="2_d36oq"]
+
+[node name="Menu" type="Node2D"]
+script = ExtResource("1_mgc3j")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 3
+offset_left = -7866.0
+offset_top = -3975.0
+offset_right = 10853.0
+offset_bottom = 4162.0
+texture = ExtResource("2_d36oq")
+stretch_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 98.0
+offset_top = 60.0
+offset_right = 226.0
+offset_bottom = 230.0
+
+[node name="Play" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="skipintro" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play (skip intro)"
+
+[node name="quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Quit
+"
+
+[node name="Label" type="Label" parent="."]
+texture_filter = 6
+offset_right = 320.0
+offset_bottom = 49.0
+theme_override_colors/font_color = Color(1, 0.407843, 0, 1)
+theme_override_colors/font_outline_color = Color(0.294118, 0, 0, 1)
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 39
+text = "Mars Rush"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/skipintro" to="." method="_on_skipintro_pressed"]
+[connection signal="pressed" from="VBoxContainer/quit" to="." method="_on_quit_pressed"]
