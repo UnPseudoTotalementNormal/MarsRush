@@ -2,8 +2,10 @@ extends ColorRect
 
 @onready var animator: AnimationPlayer = $AnimationPlayer
 
-@onready var continue_button: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Continue
-@onready var menu_button: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Menu
+@onready var continue_button: Button = find_child("Continue")
+@onready var settings_button: Button = find_child("Settings")
+@onready var menu_button: Button = find_child("Menu")
+
 
 func _ready():
 	visible = false

@@ -53,7 +53,7 @@ func _process(delta):
 func _physics_process(delta):
 	if not chronoawaiting:
 		chronoawaiting = true
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(1, false).timeout
 		chronoawaiting = false
 		time += 1
 		var minute = 0

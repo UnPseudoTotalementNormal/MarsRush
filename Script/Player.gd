@@ -608,7 +608,7 @@ func _draw_text(text):
 	$HUD/Text.text = text
 	for i in len(text) + 1:
 		$HUD/Text.visible_characters += 1
-		await get_tree().create_timer(0.025).timeout
+		await get_tree().create_timer(0.025, false).timeout
 	
 
 func _erase_text():
@@ -616,7 +616,7 @@ func _erase_text():
 		$HUD/Text.text = ""
 		$HUD/Text.visible_characters = 0
 	else:
-		await get_tree().create_timer(2.5).timeout
+		await get_tree().create_timer(2.5, false).timeout
 		_erase_text()
 
 
