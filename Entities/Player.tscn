@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cgio6fe71m6xx"]
+[gd_scene load_steps=32 format=3 uid="uid://cgio6fe71m6xx"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
 [ext_resource type="Script" path="res://test.gd" id="2_10bbk"]
@@ -67,12 +67,18 @@ radius = 20.0
 radius = 20.0
 height = 40.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_tohp4"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_u4hqs"]
 radius = 20.0
 
-[sub_resource type="SphereMesh" id="SphereMesh_x56nf"]
+[sub_resource type="SphereMesh" id="SphereMesh_gr05c"]
 radius = 20.0
 height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tohp4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_x56nf"]
+radius = 10.0
+height = 20.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tbqg3"]
 size = Vector2(16, 26)
@@ -333,10 +339,19 @@ mesh = SubResource("SphereMesh_v5k0f")
 
 [node name="nextweapon" type="TouchScreenButton" parent="HUD/TouchScreensButtons"]
 position = Vector2(24, 31)
-shape = SubResource("CircleShape2D_tohp4")
+shape = SubResource("CircleShape2D_u4hqs")
 visibility_mode = 1
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="HUD/TouchScreensButtons/nextweapon"]
+modulate = Color(1, 0.231373, 0, 0.156863)
+mesh = SubResource("SphereMesh_gr05c")
+
+[node name="pause" type="TouchScreenButton" parent="HUD/TouchScreensButtons"]
+position = Vector2(304, 15)
+shape = SubResource("CircleShape2D_tohp4")
+visibility_mode = 1
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="HUD/TouchScreensButtons/pause"]
 modulate = Color(1, 0.231373, 0, 0.156863)
 mesh = SubResource("SphereMesh_x56nf")
 
@@ -364,6 +379,7 @@ shape = SubResource("RectangleShape2D_tbqg3")
 [connection signal="released" from="HUD/TouchScreensButtons/shoot" to="." method="_on_shoot_released"]
 [connection signal="pressed" from="HUD/TouchScreensButtons/reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="HUD/TouchScreensButtons/nextweapon" to="." method="_on_nextweapon_pressed"]
+[connection signal="pressed" from="HUD/TouchScreensButtons/pause" to="." method="_on_pause_pressed"]
 [connection signal="timeout" from="Gun_reload" to="." method="_on_gun_reload_timeout"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="area_entered" from="PlayerAreaDetector" to="." method="_on_player_area_detector_area_entered"]

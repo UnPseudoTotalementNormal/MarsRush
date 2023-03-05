@@ -70,6 +70,8 @@ var shoot_button_pressed: bool = false
 var mobile_sensitivity: float = 1.0
 var old_mouse_pos: Vector2 = Vector2.ZERO
 var ignore_next_mouse_pos: bool = true
+
+var mobile_control_mode = "cursor" #available mode: finger, cursor, (NOT YET) joystick
 ########################
 
 func _ready():
@@ -125,13 +127,14 @@ func _input(event):
 				_shoot_with_equipped_once()
 
 func _custom_mouse_velocity():
+	$MousePivot.global_position = global_position
 	var cam = get_viewport().get_camera_2d()
 	if cam == null:
 		return
 	var CustomMouseVel: Vector2 = cam.get_local_mouse_position() - old_mouse_pos
 	
 	if not ignore_next_mouse_pos:
-		$MousePivot/MouseMarker.position += CustomMouseVel * mobile_sensitivity
+		mousemarker.position += CustomMouseVel * mobile_sensitivity
 		mousemarker.position = clamp(mousemarker.position, -get_viewport_rect().size, get_viewport_rect().size)
 	
 	if not old_mouse_pos.is_equal_approx(cam.get_local_mouse_position()): 
@@ -159,9 +162,9 @@ func _equip_specific(number: int = -1):
 		equipped = inventory[number]
 
 func _mouse_system():
-	if not mobile:
+	if not mobile or mobile_control_mode == "finger":
 		_custom_mouse_position() #normal mouse/finger system
-	else:
+	elif mobile_control_mode == "cursor":
 		_custom_mouse_velocity() #move the cursor with finger
 
 func _physics_process(delta):
@@ -174,7 +177,6 @@ func _physics_process(delta):
 	
 	if mobile:
 		_mobile()
-		_custom_mouse_velocity()
 	
 	if Gun != null:
 		_gun_position()
@@ -655,3 +657,6 @@ func _on_shoot_released():
 	shoot_button_pressed = false
 	if equipped == "hand" and grabbing:
 		_ungrab_with_hand()
+
+func _on_pause_pressed():
+	$HUD/PauseMenu.pause()

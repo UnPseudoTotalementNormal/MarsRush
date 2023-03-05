@@ -1,13 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpn4hlble05i7"]
+[gd_scene load_steps=5 format=3 uid="uid://bpn4hlble05i7"]
 
 [ext_resource type="Script" path="res://Script/menu.gd" id="1_mgc3j"]
+[ext_resource type="Shader" path="res://Shaders/Heat.gdshader" id="2_4m87t"]
 [ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="2_d36oq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bc8fv"]
+shader = ExtResource("2_4m87t")
+shader_parameter/speed = 0.351
+shader_parameter/strength = 0.09
 
 [node name="Menu" type="Node2D"]
 script = ExtResource("1_mgc3j")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 3
+material = SubResource("ShaderMaterial_bc8fv")
 offset_left = -7866.0
 offset_top = -3975.0
 offset_right = 10853.0
