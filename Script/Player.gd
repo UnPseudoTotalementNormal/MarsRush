@@ -108,6 +108,8 @@ func _input(event):
 			mousemarker.global_position = clamp(mousemarker, -get_viewport_rect().size, get_viewport_rect().size)
 		return
 	
+	if event.is_action_pressed("pause"):
+		$HUD/PauseMenu.pause()
 	
 	if event is InputEventKey:
 		if not event.echo and event.is_pressed():
