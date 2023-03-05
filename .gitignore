@@ -9,3 +9,7 @@ Builds/
 # Mono-specific ignores
 .mono/
 data_*/
+.godot/editor/editor_layout.cfg
+.godot/editor/filesystem_update4
+.godot/editor/script_editor_cache.cfg
+.godot/editor/script_editor_cache.cfg
