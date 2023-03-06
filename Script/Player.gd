@@ -160,8 +160,10 @@ func _equip_specific(number: int = -1):
 func _mouse_system():
 	if not mobile or mobile_control_mode == "Finger":
 		_custom_mouse_position() #normal mouse/finger system
+		mousemarker.visible = false
 	elif mobile_control_mode == "Cursor":
 		_custom_mouse_velocity() #move the cursor with finger
+		mousemarker.visible = true
 
 func _physics_process(delta):
 	dtime = delta
