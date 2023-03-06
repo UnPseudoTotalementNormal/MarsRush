@@ -1,10 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://djvp1yjnf613t"]
+[gd_scene load_steps=30 format=3 uid="uid://djvp1yjnf613t"]
 
 [ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_21f15"]
 [ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_dd573"]
 [ext_resource type="Script" path="res://Script/levelscript.gd" id="1_yvktr"]
 [ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="2_8ojrl"]
 [ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/lightsource.png" id="2_ajqaf"]
+[ext_resource type="Script" path="res://Script/SpiderEnnemy.gd" id="3_0chac"]
 [ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_ymim4"]
 [ext_resource type="PackedScene" uid="uid://c1bi6s3o3tnxf" path="res://Entities/ennemi.tscn" id="4_ajsjd"]
 [ext_resource type="PackedScene" uid="uid://b8673rfq8hju4" path="res://Entities/door.tscn" id="5_o7t3j"]
@@ -15,6 +16,20 @@
 [ext_resource type="PackedScene" uid="uid://cnnlacdvnbid6" path="res://Entities/shotguunarea.tscn" id="10_rly3a"]
 [ext_resource type="Texture2D" uid="uid://bop6agenc8yhw" path="res://Sprites/settings_icon.png" id="12_8xmwj"]
 [ext_resource type="Script" path="res://Script/Engine.gd" id="12_wlkuq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6g8s0"]
+radius = 7.5
+height = 19.431
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqus4"]
+size = Vector3(15, 2, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_vvybw"]
+radius = 15.0
+height = 30.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_iwskt"]
+size = Vector3(15, 2, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5bxi3"]
 shader = ExtResource("6_dmwof")
@@ -52,6 +67,51 @@ script = ExtResource("1_yvktr")
 
 [node name="Player" parent="." instance=ExtResource("3_ymim4")]
 position = Vector2(9, -263)
+
+[node name="Newennemy" type="RigidBody2D" parent="."]
+position = Vector2(-120, -202)
+gravity_scale = 0.0
+script = ExtResource("3_0chac")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Newennemy"]
+self_modulate = Color(0.509804, 0, 0, 1)
+mesh = SubResource("CapsuleMesh_6g8s0")
+
+[node name="Legs" type="Node2D" parent="Newennemy"]
+
+[node name="leg1" type="Marker2D" parent="Newennemy/Legs"]
+position = Vector2(0, -9)
+gizmo_extents = 3.8
+
+[node name="LegPivot1" type="Node2D" parent="Newennemy/Legs/leg1"]
+rotation = -0.785398
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Newennemy/Legs/leg1/LegPivot1"]
+position = Vector2(7, 0)
+mesh = SubResource("BoxMesh_kqus4")
+
+[node name="testcircle" type="MeshInstance2D" parent="Newennemy/Legs/leg1/LegPivot1"]
+visible = false
+self_modulate = Color(0.0588235, 0, 0.431373, 0.137255)
+mesh = SubResource("SphereMesh_vvybw")
+
+[node name="LegPivot2" type="Node2D" parent="Newennemy/Legs/leg1"]
+position = Vector2(0, -20)
+rotation = 0.785398
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="Newennemy/Legs/leg1/LegPivot2"]
+position = Vector2(7, 0)
+mesh = SubResource("BoxMesh_iwskt")
+
+[node name="testcircle2" type="MeshInstance2D" parent="Newennemy/Legs/leg1/LegPivot2"]
+visible = false
+self_modulate = Color(0.552941, 0, 0.431373, 0.137255)
+mesh = SubResource("SphereMesh_vvybw")
+
+[node name="anglehaver" type="Node2D" parent="Newennemy/Legs/leg1"]
+
+[node name="legraycast" type="RayCast2D" parent="Newennemy/Legs/leg1"]
+target_position = Vector2(0, -60)
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -406,6 +466,7 @@ position = Vector2(-3624, -157)
 position = Vector2(-3663, -525)
 
 [node name="Text" type="Node2D" parent="NavigationRegion2D"]
+visible = false
 
 [node name="TextArea" type="Area2D" parent="NavigationRegion2D/Text"]
 position = Vector2(-19, -245)
