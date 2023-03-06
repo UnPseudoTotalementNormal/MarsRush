@@ -38,12 +38,16 @@ func _ready():
 	
 	for i in all_part:
 		var newpart: GPUParticles2D = i.instantiate()
-		newpart.global_position = Vector2(10000, 10000)
+		newpart.global_position = Vector2.ZERO
 		newpart.emitting = true
 		get_tree().current_scene.add_child(newpart)
+		await get_tree().physics_frame
+		newpart.queue_free()
 	var newtrail: Line2D = shottrail.instantiate()
-	newtrail.global_position = Vector2(10000, 10000)
+	newtrail.global_position = Vector2.ZERO
 	get_tree().current_scene.add_child(newtrail)
+	await get_tree().physics_frame
+	newtrail.queue_free()
 	
 
 func _process(delta):

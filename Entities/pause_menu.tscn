@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ueskkkqk5qvb"]
+[gd_scene load_steps=9 format=3 uid="uid://ueskkkqk5qvb"]
 
 [ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="1_f8v88"]
 [ext_resource type="Script" path="res://Script/PauseMenu.gd" id="2_mtivb"]
@@ -7,6 +7,9 @@
 shader = ExtResource("1_f8v88")
 shader_parameter/blur = 1.0
 shader_parameter/brightness = 0.5
+
+[sub_resource type="Theme" id="Theme_evhjj"]
+default_font_size = 13
 
 [sub_resource type="Animation" id="Animation_8b71h"]
 resource_name = "Pause"
@@ -159,23 +162,24 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
 [node name="Pause" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="pause_label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/Pause"]
+[node name="MainPause" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause"]
+visible = false
+layout_mode = 2
+
+[node name="pause_label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/Pause/MainPause"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Pause"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause"]
-layout_mode = 2
-
-[node name="MainPause" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause"]
-visible = false
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/MainPause"]
 layout_mode = 2
 
 [node name="Continue" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/Pause/MainPause"]
@@ -183,7 +187,7 @@ layout_mode = 2
 text = "Continue
 "
 
-[node name="Settings" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/Pause/MainPause"]
+[node name="gotoSettings" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/Pause/MainPause"]
 layout_mode = 2
 text = "Settings"
 
@@ -194,40 +198,63 @@ text = "Go back to menu"
 [node name="Settings" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause"]
 layout_mode = 2
 
-[node name="Settings" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+[node name="SettingsCategorySelector" type="OptionButton" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+layout_mode = 2
+alignment = 1
+item_count = 3
+selected = 0
+popup/item_0/text = "Graphics"
+popup/item_0/id = 0
+popup/item_1/text = "Sounds"
+popup/item_1/id = 1
+popup/item_2/text = "Controls"
+popup/item_2/id = 2
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
 layout_mode = 2
 
-[node name="Fps" type="SpinBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings"]
+[node name="cat_Graphics" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+layout_mode = 2
+
+[node name="Fps" type="SpinBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
 layout_mode = 2
 min_value = 30.0
 max_value = 300.0
 value = 30.0
 suffix = "FPS"
 
-[node name="VSeparator" type="VSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings"]
+[node name="VSeparator" type="VSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
 layout_mode = 2
 
-[node name="MobileControl" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings"]
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
 layout_mode = 2
-theme_override_constants/separation = -8
+text = "Fullscreen"
 
-[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings/MobileControl"]
+[node name="cat_Controls" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+layout_mode = 2
+theme = SubResource("Theme_evhjj")
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Controls"]
 layout_mode = 2
 text = "Mobile Controls"
 
-[node name="MobileFinger" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings/MobileControl"]
+[node name="MobileControls" type="OptionButton" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Controls"]
 layout_mode = 2
-text = "Finger"
-
-[node name="MobileCursor" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Settings/MobileControl"]
-layout_mode = 2
-text = "Cursor"
+item_count = 3
+selected = 1
+popup/item_0/text = "Finger"
+popup/item_0/id = 0
+popup/item_1/text = "Cursor"
+popup/item_1/id = 1
+popup/item_2/text = "Joystick"
+popup/item_2/id = 2
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
 layout_mode = 2
 
 [node name="Exit" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
 layout_mode = 2
+alignment = 1
 
 [node name="ExitAndSaveSettings" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/Exit"]
 layout_mode = 2

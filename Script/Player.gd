@@ -71,7 +71,7 @@ var mobile_sensitivity: float = 1.0
 var old_mouse_pos: Vector2 = Vector2.ZERO
 var ignore_next_mouse_pos: bool = true
 
-var mobile_control_mode = "cursor" #available mode: finger, cursor, (NOT YET) joystick
+var mobile_control_mode = "Cursor" #available mode: Finger, Cursor, (NOT YET) Joystick
 ########################
 
 func _ready():
@@ -104,10 +104,6 @@ func _spawn_gun():
 
 func _input(event):
 	if mobile:
-		return
-		if event is InputEventMouseMotion:
-			mousemarker.global_position += event.velocity * mobile_sensitivity
-			mousemarker.global_position = clamp(mousemarker, -get_viewport_rect().size, get_viewport_rect().size)
 		return
 	
 	if event.is_action_pressed("pause"):
@@ -162,9 +158,9 @@ func _equip_specific(number: int = -1):
 		equipped = inventory[number]
 
 func _mouse_system():
-	if not mobile or mobile_control_mode == "finger":
+	if not mobile or mobile_control_mode == "Finger":
 		_custom_mouse_position() #normal mouse/finger system
-	elif mobile_control_mode == "cursor":
+	elif mobile_control_mode == "Cursor":
 		_custom_mouse_velocity() #move the cursor with finger
 
 func _physics_process(delta):

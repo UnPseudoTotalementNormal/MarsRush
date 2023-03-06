@@ -216,6 +216,7 @@ position = Vector2(0, -1)
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="HUD" instance=ExtResource("4_htwqj")]
+z_index = 4096
 
 [node name="Ammo" type="Control" parent="HUD"]
 layout_mode = 3
