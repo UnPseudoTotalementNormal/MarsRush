@@ -226,11 +226,12 @@ suffix = "FPS"
 [node name="VSeparator" type="VSeparator" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
 layout_mode = 2
 
-[node name="CheckBox" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
+[node name="FullscreenEnabler" type="CheckBox" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
 layout_mode = 2
 text = "Fullscreen"
 
 [node name="cat_Controls" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+visible = false
 layout_mode = 2
 theme = SubResource("Theme_evhjj")
 

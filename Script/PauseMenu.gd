@@ -14,10 +14,9 @@ extends ColorRect
 @onready var save_settings_button: Button = find_child("ExitAndSaveSettings")
 
 @onready var fps_button: SpinBox = find_child("Fps")
+@onready var fullscreen_button: CheckBox = find_child("FullscreenEnabler")
+
 @onready var mobilecontrols: OptionButton = find_child("MobileControls")
-@onready var fingercontrol: CheckBox = find_child("MobileFinger")
-@onready var cursorcontrol: CheckBox = find_child("MobileCursor")
-@onready var joystickcontrol: CheckBox = find_child("MobileJoystick")
 
 
 
@@ -33,6 +32,7 @@ func _ready():
 	exit_settings_button.pressed.connect(_main_pause)
 	fps_button.value_changed.connect(_change_fps)
 	mobilecontrols.item_selected.connect(_mobile_control_to)
+	fullscreen_button.pressed.connect(_fullscreen)
 	
 	await get_tree().physics_frame
 	_refresh_shown_values()
@@ -84,7 +84,11 @@ func _refresh_shown_values():
 
 
 
-
+func _fullscreen():
+	if fullscreen_button.button_pressed:
+		get_window().set_mode(Window.MODE_EXCLUSIVE_FULLSCREEN)
+	else:
+		get_window().set_mode(Window.MODE_WINDOWED)
 func _change_fps(value):
 	Engine.physics_ticks_per_second = value
 	_refresh_shown_values()
