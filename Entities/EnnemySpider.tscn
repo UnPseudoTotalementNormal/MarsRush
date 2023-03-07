@@ -19,7 +19,7 @@ size = Vector3(20, 2, 1)
 [node name="Newennemy" type="CharacterBody2D"]
 script = ExtResource("1_debhl")
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+[node name="Body" type="MeshInstance2D" parent="."]
 self_modulate = Color(0.509804, 0, 0, 1)
 mesh = SubResource("CapsuleMesh_6g8s0")
 
