@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://djvp1yjnf613t"]
+[gd_scene load_steps=26 format=3 uid="uid://djvp1yjnf613t"]
 
 [ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_21f15"]
 [ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_dd573"]
@@ -46,6 +46,13 @@ size = Vector2(76, 102)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2otsc"]
 radius = 12.86
+
+[sub_resource type="Environment" id="Environment_impwu"]
+background_mode = 3
+tonemap_mode = 2
+glow_enabled = true
+glow_bloom = 0.08
+glow_blend_mode = 0
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_yvktr")
@@ -513,6 +520,9 @@ texture = ExtResource("2_ajqaf")
 offset = Vector2(0, 650)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_impwu")
 
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_entered" flags=18]
 [connection signal="area_exited" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_exited" flags=18]

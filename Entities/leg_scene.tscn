@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://cyv7damgfuw3b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqus4"]
+size = Vector3(20, 2, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_vvybw"]
+radius = 15.0
+height = 30.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_iwskt"]
+size = Vector3(20, 2, 1)
+
+[node name="LegScene" type="Node2D"]
+
+[node name="LegPivot1" type="Node2D" parent="."]
+visible = false
+rotation = -0.785398
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="LegPivot1"]
+position = Vector2(7, 0)
+mesh = SubResource("BoxMesh_kqus4")
+
+[node name="testcircle" type="MeshInstance2D" parent="LegPivot1"]
+visible = false
+self_modulate = Color(0.0588235, 0, 0.431373, 0.137255)
+mesh = SubResource("SphereMesh_vvybw")
+
+[node name="LegPivot2" type="Node2D" parent="."]
+visible = false
+position = Vector2(0, -20)
+rotation = 0.785398
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="LegPivot2"]
+position = Vector2(7, 0)
+mesh = SubResource("BoxMesh_iwskt")
+
+[node name="testcircle2" type="MeshInstance2D" parent="LegPivot2"]
+visible = false
+self_modulate = Color(0.552941, 0, 0.431373, 0.137255)
+mesh = SubResource("SphereMesh_vvybw")
+
+[node name="anglehaver" type="Node2D" parent="."]
+
+[node name="legraycast" type="RayCast2D" parent="."]
+target_position = Vector2(0, -60)

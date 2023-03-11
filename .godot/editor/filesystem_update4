@@ -1,8 +1,7 @@
 res://default_bus_layout.tres
 res://Entities/ennemi.tscn
 res://Tilemap/Leveltiles.tres
-res://Shaders/testshader2.gdshader
-res://Tilemap/Tiles.tres
+res://Script/SpiderEnnemy.gd
 res://Entities/level_tiles.tscn
 res://Levels/level1.tscn
 res://Entities/Player.tscn
@@ -13,6 +12,8 @@ res://Entities/explosion.tscn
 res://Entities/sound_system.tscn
 res://Entities/breakablewall.tscn
 res://Entities/door.tscn
-res://Particles/shot_trails.tscn
-res://Prototype_1.tscn
-res://Script/Player.gd
+res://Entities/pause_menu.tscn
+res://Levels/menu.tscn
+res://Levels/testspiderlevel.tscn
+res://Entities/EnnemySpider.tscn
+res://Entities/leg_scene.tscn
