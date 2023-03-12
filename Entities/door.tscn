@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://Script/door.gd" id="1_fdc2i"]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lrbo4"]
+polygon = PackedVector2Array(-2.49988, -23.9798, 2.47315, -23.9922, 2.5, 23.9844, -2.50781, 24)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0bww"]
 size = Vector2(5, 48)
 
@@ -14,12 +17,12 @@ size = Vector2(24, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_em346"]
 size = Vector2(24, 48)
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lrbo4"]
-polygon = PackedVector2Array(-2.49988, -23.9798, 2.47315, -23.9922, 2.5, 23.9844, -2.50781, 24)
-
 [node name="door" type="StaticBody2D"]
-collision_layer = 2048
+collision_layer = 2064
 script = ExtResource("1_fdc2i")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_lrbo4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_l0bww")
@@ -41,9 +44,6 @@ debug_color = Color(0, 0.6, 0.701961, 0.0509804)
 position = Vector2(12, 0)
 shape = SubResource("RectangleShape2D_em346")
 debug_color = Color(1, 0, 0, 0.0509804)
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_lrbo4")
 
 [connection signal="area_entered" from="indoor" to="." method="_on_indoor_area_entered"]
 [connection signal="area_exited" from="indoor" to="." method="_on_indoor_area_exited"]
