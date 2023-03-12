@@ -13,6 +13,8 @@ func _process(delta):
 		var legscene = $"../../.."
 		if spider.get("health_points") != null:
 			spider.set("health_points", spider.get("health_points") - spider.get("max_health") * 0.15)
+			if spider.has_method("lost_a_leg"):
+				spider.lost_a_leg()
 			var LegSpawner: RigidBody2D = RigidLeg.instantiate()
 			LegSpawner.global_position = global_position
 			LegSpawner.find_child("leg1").modulate = legscene.find_child("MeshInstance2D").modulate

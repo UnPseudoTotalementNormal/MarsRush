@@ -20,6 +20,8 @@ var time: int = 0
 
 var mobile: bool = false
 
+var sun: DirectionalLight2D = null
+
 func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "IOS":
 		var leftclickshootevent = InputMap.action_get_events("shoot")
@@ -28,6 +30,8 @@ func _ready():
 		Engine.physics_ticks_per_second = 30
 	
 	enneminode = get_tree().current_scene.find_child("EnnemiNode")
+	sun = get_tree().current_scene.find_child("Sun")
+	
 	if enneminode != null:
 		for i in enneminode.get_children():
 			store_ennemi_pos.append(i.global_position)
@@ -53,6 +57,9 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("fullscreen"):
 		pass
+	
+	if sun != null:
+		sun.rotate(0.01*delta)
 
 func _physics_process(delta):
 	if not chronoawaiting:

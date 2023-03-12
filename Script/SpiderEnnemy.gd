@@ -2,7 +2,7 @@ extends RigidBody2D
 var dtime
 
 @export var enable_ia: bool = true ##false = follow mouse
-@export var move_speed: float = 10000
+@export var max_move_speed: float = 20000
 @export var legs_length: float = 20
 @export var legs_width: float = 2
 @export var damage: float = 20
@@ -19,7 +19,8 @@ var dtime
 @onready var Grabbedcolmask: CharacterBody2D = $NodesForCollisionMask/GrabbedCol
 
 var health_points: float = 300
-
+var move_speed: float = 10000
+var max_legs: int = 8
 
 var headlegs = []
 var middlefrontlegs = []
@@ -34,17 +35,21 @@ var was_reached_before: bool = false
 
 var reached: bool = false
 
+
 func _ready():
+	move_speed = max_move_speed
 	health_points = max_health
 	
 	var half_legs = Legs.get_child_count() / 2
 	var leg_count = 1
+	max_legs = 0
 	for i in Legs.get_children():
 		if leg_count <= half_legs:
 			_setup_leg(i, false, leg_count)
 		else:
 			_setup_leg(i, true, leg_count)
 		leg_count += 1
+		max_legs += 1
 
 func _setup_leg(kinematicleg: Marker2D, scnd_half: bool = false, leg_count: int = 1):
 	var legpivot1: Node2D = kinematicleg.find_child("LegPivot1")
@@ -80,8 +85,6 @@ func _physics_process(delta):
 				reached = false
 			else:
 				$NavigationAgent2D.set_target_position(Player.global_position)
-				linear_velocity = Vector2.ZERO
-				angular_velocity = 0
 				reached = true
 		else:
 			linear_velocity = Vector2.ZERO
@@ -123,7 +126,8 @@ func _damage(entitie):
 func _body_movement():
 	if not is_zero_approx(linear_velocity.length()):
 		var spider_front = global_position + Vector2(10, 10) * linear_velocity.normalized()
-		$Look_at_destination.look_at(spider_front)
+		$Look_at_destination.look_at($NavigationAgent2D.get_next_path_position())
+#		$Look_at_destination.look_at(spider_front)
 		var look_at_rotation = $Look_at_destination.rotation_degrees + 90
 		Body.rotation_degrees = lerp(Body.rotation_degrees, look_at_rotation, 3 * dtime)
 		Legs.rotation = Body.rotation + deg_to_rad(90)
@@ -237,5 +241,7 @@ func _set_mesh_length_and_width(mesh: Array):
 	for i in mesh:
 		i.mesh.size.x = legs_length
 		i.mesh.size.y = legs_width
-		
 
+
+func lost_a_leg():
+	move_speed -= max_move_speed / max_legs

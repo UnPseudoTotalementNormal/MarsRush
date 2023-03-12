@@ -21,3 +21,4 @@ res://Script/legcollider.gd
 res://Script/Player.gd
 res://Entities/leg_rigid_body.tscn
 res://Script/leg_rigid_body.gd
+res://Script/levelscript.gd
