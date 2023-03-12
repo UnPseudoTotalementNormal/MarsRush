@@ -31,7 +31,10 @@ height = 4.0
 
 [node name="Newennemy" type="CharacterBody2D"]
 rotation = 3.14159
+collision_layer = 4
+collision_mask = 3
 motion_mode = 1
+platform_on_leave = 2
 script = ExtResource("1_debhl")
 
 [node name="Look_at_destination" type="Node2D" parent="."]
@@ -188,8 +191,16 @@ z_index = 3143
 mesh = SubResource("SphereMesh_0w52b")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 30.0
+target_desired_distance = 28.0
 avoidance_enabled = true
 radius = 30.0
 
-[connection signal="target_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_target_reached"]
+[node name="NodesForCollisionMask" type="Node2D" parent="."]
+
+[node name="NormalCol" type="CharacterBody2D" parent="NodesForCollisionMask"]
+collision_layer = 4
+collision_mask = 7
+
+[node name="GrabbedCol" type="CharacterBody2D" parent="NodesForCollisionMask"]
+collision_layer = 16
+collision_mask = 3

@@ -134,7 +134,7 @@ sdf_collision = false
 [node name="Shoot" type="RayCast2D" parent="."]
 visible = false
 enabled = false
-collision_mask = 517
+collision_mask = 533
 
 [node name="Cube" type="MeshInstance2D" parent="."]
 visible = false

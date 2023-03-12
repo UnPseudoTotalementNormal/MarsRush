@@ -1,3 +1,4 @@
+CharacterBody2D
 CollisionShape2D
 Node2D
 NavigationAgent2D
@@ -6,7 +7,6 @@ WorldEnvironment
 MeshInstance2D
 Marker2D
 Camera2D
-CharacterBody2D
 ShapeCast2D
 RayCast2D
 RigidBody2D

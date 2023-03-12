@@ -5,6 +5,7 @@ var dtime
 @export var move_speed: float = 10000
 @export var legs_length: float = 20
 @export var legs_width: float = 2
+@export var damage: float = 20
 
 @onready var Body: MeshInstance2D = $Body
 
@@ -12,16 +13,23 @@ var dtime
 
 @onready var legraycast: RayCast2D = $Legs/leg1/legraycast
 
+@onready var Collisionshape: CollisionShape2D = $CollisionShape2D
+@onready var Normalcolmask: CharacterBody2D = $NodesForCollisionMask/NormalCol
+@onready var Grabbedcolmask: CharacterBody2D = $NodesForCollisionMask/GrabbedCol
+
 var health_points: float = 300
 
 
 var headlegs = []
+var middlefrontlegs = []
 var legsnormalpos = {}
 var legsblocked = {}
 var legsgoingtoblockedpos = []
 var legblockedto = Vector2.ZERO
 
 var Player: RigidBody2D = null
+
+var was_reached_before: bool = false
 
 func _ready():
 	var half_legs = Legs.get_child_count() / 2
@@ -45,6 +53,8 @@ func _setup_leg(kinematicleg: Marker2D, scnd_half: bool = false, leg_count: int 
 	legpivot2.visible = true
 	if kinematicleg.name == "leg" + str(Legs.get_child_count()/2 + 1) or kinematicleg.name == "leg1":
 		headlegs.append(kinematicleg)
+	if kinematicleg.name == "leg" + str(Legs.get_child_count()/2 + 2) or kinematicleg.name == "leg2":
+		middlefrontlegs.append(kinematicleg)
 
 func _physics_process(delta):
 	dtime = delta
@@ -54,30 +64,39 @@ func _physics_process(delta):
 	
 #	for i in legsnormalpos:
 #		printt(i, legsnormalpos[i].global_position)
-	var half_legs = Legs.get_child_count() / 2
-	var leg_count = 1
-	for i in Legs.get_children():
-		if leg_count <= half_legs:
-			_kinematic_leg(i, false)
-		else:
-			_kinematic_leg(i, true)
-		leg_count += 1
 	
 	
-	
+	var reached = false
 	if enable_ia:
 		if Player != null:
 			if not $NavigationAgent2D.is_target_reached():
 				$NavigationAgent2D.set_target_position(Player.global_position)
 				_follow_player()
+				reached = false
 			else:
 				$NavigationAgent2D.set_target_position(Player.global_position)
 				velocity = Vector2.ZERO
+				reached = true
 		else:
 			velocity = Vector2.ZERO
 			Player = get_tree().current_scene.find_child("Player", true, false)
 	else:
 		_follow_mouse()
+	
+	if reached:
+		velocity = Player.linear_velocity
+		_prepare_kinematic_leg(true)
+		collision_layer = Grabbedcolmask.collision_layer
+		collision_mask = Grabbedcolmask.collision_mask
+		_damage(Player)
+		was_reached_before = true
+	else:
+		_prepare_kinematic_leg(false)
+		collision_layer = Normalcolmask.collision_layer
+		collision_mask = Normalcolmask.collision_mask
+		if was_reached_before:
+			was_reached_before = false
+			legsblocked = {}
 	
 	move_and_slide()
 
@@ -93,8 +112,9 @@ func _follow_player():
 		velocity = (move_speed * -dist_norm) * dtime
 		_body_movement()
 
-func _on_navigation_agent_2d_target_reached():
-	pass # Replace with function body.
+func _damage(entitie):
+	if entitie.get("health_points") != null:
+		entitie.set("health_points", entitie.get("health_points") - damage * dtime)
 
 func _body_movement():
 	if not is_zero_approx(velocity.length()):
@@ -105,7 +125,17 @@ func _body_movement():
 		Legs.rotation = Body.rotation + deg_to_rad(90)
 		$CollisionShape2D.rotation = Body.rotation
 
-func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false):
+func _prepare_kinematic_leg(attached_to_player: bool = false):
+	var half_legs = Legs.get_child_count() / 2
+	var leg_count = 1
+	for i in Legs.get_children():
+		if leg_count <= half_legs:
+			_kinematic_leg(i, false, attached_to_player)
+		else:
+			_kinematic_leg(i, true, attached_to_player)
+		leg_count += 1
+
+func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_to_player: bool = false):
 	var legpivot1: Node2D = kinematicleg.find_child("LegPivot1")
 	var legpivot2: Node2D = kinematicleg.find_child("LegPivot2")
 	var leg1: MeshInstance2D = legpivot1.find_child("MeshInstance2D")
@@ -135,19 +165,23 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false):
 	legraycast.force_raycast_update()
 	
 	var legdistance_before_calc = (legpivot1.global_position - legpivot2.global_position).length()
+	var og_legsize = leg1.mesh.size.x
 	
-	if not kinematicleg in legsblocked and legraycast.is_colliding():
+	if attached_to_player and legdistance_before_calc < og_legsize*2:   #if attached to the player
+		legsblocked[kinematicleg] = Player.global_position
+		_leg_going_to_blocked_position(kinematicleg, 10)
+	elif not kinematicleg in legsblocked and legraycast.is_colliding():    #if legs not attached to anything but raycast is colliding
 #		legpivot2.global_position = global_position
 		legblockedto = legraycast.get_collision_point()
 		legsblocked[kinematicleg] = legraycast.get_collision_point()
 		leg1.mesh.size.x = legs_length
 		leg2.mesh.size.x = legs_length
-	elif kinematicleg in legsblocked and not kinematicleg in legsgoingtoblockedpos:
+	elif kinematicleg in legsblocked and not kinematicleg in legsgoingtoblockedpos:    #if legs are completely attached
 #		legpivot2.global_position = legsblocked[kinematicleg]
 		_leg_going_to_blocked_position(kinematicleg, 20)
-	elif kinematicleg in legsblocked and kinematicleg in legsgoingtoblockedpos:
+	elif kinematicleg in legsblocked and kinematicleg in legsgoingtoblockedpos:    #if legs are attached but not in place rn
 		_leg_going_to_blocked_position(kinematicleg, 10)
-	else:
+	else:   #if legs not attached at all
 		legpivot2.global_position = lerp(legpivot2.global_position, idle_pos.global_position, 5 * dtime)
 		pass
 #		legpivot2.global_position = legpivot1.global_position - Vector2(10, 10) * velocity.normalized()
@@ -163,10 +197,10 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false):
 	var legdistance = (legpivot1.global_position - legpivot2.global_position).length() 
 	var legsize = leg1.mesh.size.x
 	
-	if first_half:
+	if first_half and not attached_to_player or not first_half and attached_to_player:
 		legpivot2.rotation = asin((legdistance/2)/legsize) + anglediff
 		legpivot1.rotation = -asin((legdistance/2)/legsize) + anglediff
-	elif not first_half:
+	elif not first_half and not attached_to_player or first_half and attached_to_player:
 		legpivot2.rotation = -asin((legdistance/2)/legsize) + anglediff + deg_to_rad(180)
 		legpivot1.rotation = asin((legdistance/2)/legsize) + anglediff + deg_to_rad(180)
 	
