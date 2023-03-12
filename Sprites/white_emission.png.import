@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qf514p11c2ow"
-path.s3tc="res://.godot/imported/reload_circle.png-4d3a6e5d875d262d18221a1795b0dd59.s3tc.ctex"
-path.etc2="res://.godot/imported/reload_circle.png-4d3a6e5d875d262d18221a1795b0dd59.etc2.ctex"
+uid="uid://bnmhe7kqcjp2b"
+path.s3tc="res://.godot/imported/white_emission.png-7d1edefdd06a2860a00c09507c0032df.s3tc.ctex"
+path.etc2="res://.godot/imported/white_emission.png-7d1edefdd06a2860a00c09507c0032df.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://Sprites/reload_circle.png"
-dest_files=["res://.godot/imported/reload_circle.png-4d3a6e5d875d262d18221a1795b0dd59.s3tc.ctex", "res://.godot/imported/reload_circle.png-4d3a6e5d875d262d18221a1795b0dd59.etc2.ctex"]
+source_file="res://Sprites/white_emission.png"
+dest_files=["res://.godot/imported/white_emission.png-7d1edefdd06a2860a00c09507c0032df.s3tc.ctex", "res://.godot/imported/white_emission.png-7d1edefdd06a2860a00c09507c0032df.etc2.ctex"]
 
 [params]
 

@@ -13,7 +13,7 @@ height = 2.5
 
 [sub_resource type="SphereMesh" id="SphereMesh_4nyo6"]
 radius = 1.0
-height = 1.5
+height = 1.8
 
 [sub_resource type="BoxMesh" id="BoxMesh_xtdji"]
 size = Vector3(1, 3.5, 1)
@@ -38,22 +38,22 @@ mesh = SubResource("CapsuleMesh_6g8s0")
 rotation = 3.14159
 
 [node name="BigEye1" type="MeshInstance2D" parent="Body/Eyes"]
-modulate = Color(1, 0, 0, 1)
+modulate = Color(3, 0, 0, 1)
 position = Vector2(1.99998, 9)
 mesh = SubResource("SphereMesh_ou7vs")
 
 [node name="BigEye2" type="MeshInstance2D" parent="Body/Eyes"]
-modulate = Color(1, 0, 0, 1)
+modulate = Color(3, 0, 0, 1)
 position = Vector2(-2.00002, 9)
 mesh = SubResource("SphereMesh_ou7vs")
 
 [node name="LittleEye1" type="MeshInstance2D" parent="Body/Eyes"]
-modulate = Color(1, 0, 0, 1)
+modulate = Color(3, 0, 0, 1)
 position = Vector2(-4, 5.99999)
 mesh = SubResource("SphereMesh_4nyo6")
 
 [node name="LittleEye2" type="MeshInstance2D" parent="Body/Eyes"]
-modulate = Color(1, 0, 0, 1)
+modulate = Color(3, 0, 0, 1)
 position = Vector2(4, 6.00001)
 mesh = SubResource("SphereMesh_4nyo6")
 
@@ -69,7 +69,6 @@ mesh = SubResource("BoxMesh_xtdji")
 [node name="MeshInstance2D2" type="MeshInstance2D" parent="Body/Mouth/MeshInstance2D"]
 position = Vector2(0.705, 2.627)
 rotation = -0.523598
-scale = Vector2(1, 1)
 mesh = SubResource("BoxMesh_4icu2")
 
 [node name="MeshInstance2D2" type="MeshInstance2D" parent="Body/Mouth"]
@@ -80,7 +79,6 @@ mesh = SubResource("BoxMesh_xtdji")
 [node name="MeshInstance2D2" type="MeshInstance2D" parent="Body/Mouth/MeshInstance2D2"]
 position = Vector2(0.705, 2.627)
 rotation = -0.523598
-scale = Vector2(1, 1)
 mesh = SubResource("BoxMesh_4icu2")
 
 [node name="Legs" type="Node2D" parent="."]

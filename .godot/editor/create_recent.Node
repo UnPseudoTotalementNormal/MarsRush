@@ -1,3 +1,4 @@
+ColorRect
 WorldEnvironment
 MeshInstance2D
 Node2D
@@ -21,7 +22,6 @@ HSeparator
 MarginContainer
 PanelContainer
 CenterContainer
-ColorRect
 TouchScreenButton
 Shaker
 Area2D
@@ -30,4 +30,3 @@ PointLight2D
 AudioStreamPlayer2D
 AudioListener2D
 PinJoint2D
-Timer

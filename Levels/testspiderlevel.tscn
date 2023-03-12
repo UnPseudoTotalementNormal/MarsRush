@@ -12,7 +12,6 @@ layer_0/tile_data = PackedInt32Array(-2228300, 327681, 5, 196614, 327680, 2, 131
 position = Vector2(-233, 120)
 motion_mode = 1
 legs_length = 25.0
-legs_width = 2.5
 
 [node name="Camera2D" type="Camera2D" parent="Newennemy"]
-zoom = Vector2(0.8, 0.8)
+zoom = Vector2(0.686, 0.686)
