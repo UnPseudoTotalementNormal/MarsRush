@@ -6,6 +6,7 @@ var dtime
 @export var legs_length: float = 20
 @export var legs_width: float = 2
 @export var damage: float = 20
+@export var max_health: float = 300
 
 @onready var Body: MeshInstance2D = $Body
 
@@ -32,6 +33,8 @@ var Player: RigidBody2D = null
 var was_reached_before: bool = false
 
 func _ready():
+	health_points = max_health
+	
 	var half_legs = Legs.get_child_count() / 2
 	var leg_count = 1
 	for i in Legs.get_children():

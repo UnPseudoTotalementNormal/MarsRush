@@ -441,6 +441,7 @@ func _shooting_with_gun(number: int):
 					if raycast.get_collider().get("health_points") != null:
 						raycast.get_collider().set("health_points", raycast.get_collider().get("health_points") - gun_shoot_damage)
 			raycast.queue_free()
+			await get_tree().physics_frame
 		var lightex: PointLight2D = Gun.find_child("Shotlight_template")
 		if lightex != null:
 			var shotlight = PointLight2D.new()
@@ -454,7 +455,6 @@ func _shooting_with_gun(number: int):
 				await get_tree().physics_frame
 			shotlight.queue_free()
 		
-	
 
 
 func _gun_sprite():
