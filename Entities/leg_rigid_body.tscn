@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj27ief1qmwlh"]
+
+[ext_resource type="Script" path="res://Script/leg_rigid_body.gd" id="1_fc0qc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ju6km"]
+size = Vector3(20, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xhuqp"]
+size = Vector3(20, 2, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kkrfl"]
+size = Vector2(20, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_57m1m"]
+size = Vector2(20, 2)
+
+[node name="LegRigidBody" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 7
+mass = 10.0
+inertia = 3.0
+gravity_scale = 0.0
+script = ExtResource("1_fc0qc")
+
+[node name="leg1" type="MeshInstance2D" parent="."]
+position = Vector2(9, 0)
+mesh = SubResource("BoxMesh_ju6km")
+
+[node name="leg2" type="MeshInstance2D" parent="."]
+position = Vector2(23.5, -8.79422)
+rotation = -1.0472
+mesh = SubResource("BoxMesh_xhuqp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(9, 0)
+shape = SubResource("RectangleShape2D_kkrfl")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(23.5, -8.811)
+rotation = -1.0472
+shape = SubResource("RectangleShape2D_57m1m")

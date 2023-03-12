@@ -18,7 +18,7 @@ size = Vector3(20, 2, 1)
 [node name="LegScene" type="Node2D"]
 
 [node name="LegPivot1" type="Node2D" parent="."]
-rotation = -0.785398
+rotation = -0.785397
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="LegPivot1"]
 position = Vector2(7, 0)

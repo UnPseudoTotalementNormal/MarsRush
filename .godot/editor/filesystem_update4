@@ -19,3 +19,5 @@ res://Entities/leg_scene.tscn
 res://Script/SpiderEnnemy.gd
 res://Script/legcollider.gd
 res://Script/Player.gd
+res://Entities/leg_rigid_body.tscn
+res://Script/leg_rigid_body.gd
