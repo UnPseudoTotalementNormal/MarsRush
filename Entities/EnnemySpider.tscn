@@ -1,7 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://c40kbcjfgitww"]
+[gd_scene load_steps=10 format=3 uid="uid://c40kbcjfgitww"]
 
 [ext_resource type="Script" path="res://Script/SpiderEnnemy.gd" id="1_debhl"]
 [ext_resource type="PackedScene" uid="uid://cyv7damgfuw3b" path="res://Entities/leg_scene.tscn" id="2_guob6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2y2fh"]
+radius = 7.5
+height = 25.0
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6g8s0"]
 radius = 7.5
@@ -27,10 +31,17 @@ height = 4.0
 
 [node name="Newennemy" type="CharacterBody2D"]
 rotation = 3.14159
+motion_mode = 1
 script = ExtResource("1_debhl")
 
+[node name="Look_at_destination" type="Node2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.57079
+shape = SubResource("CapsuleShape2D_2y2fh")
+
 [node name="Body" type="MeshInstance2D" parent="."]
-self_modulate = Color(0, 0.054902, 0, 1)
+self_modulate = Color(0, 0.505882, 0, 1)
 rotation = 4.71238
 mesh = SubResource("CapsuleMesh_6g8s0")
 
@@ -175,3 +186,10 @@ visible = false
 modulate = Color(1, 0, 0, 1)
 z_index = 3143
 mesh = SubResource("SphereMesh_0w52b")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_desired_distance = 30.0
+avoidance_enabled = true
+radius = 30.0
+
+[connection signal="target_reached" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_target_reached"]

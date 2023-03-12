@@ -1,7 +1,9 @@
+CollisionShape2D
+Node2D
+NavigationAgent2D
 ColorRect
 WorldEnvironment
 MeshInstance2D
-Node2D
 Marker2D
 Camera2D
 CharacterBody2D
@@ -25,8 +27,6 @@ CenterContainer
 TouchScreenButton
 Shaker
 Area2D
-CollisionShape2D
 PointLight2D
 AudioStreamPlayer2D
 AudioListener2D
-PinJoint2D

@@ -1,5 +1,5 @@
 bdbec74c6e5bd72edee867077d70896c
-::res://::1678563509
+::res://::1678630429
 Capture.PNG::CompressedTexture2D::1040263123379517372::1678479521::1678479521::1::::<><>::
 default_bus_layout.tres::AudioBusLayout::1889899521514318424::1678563509::0::1::::<><>::
 export_presets.cfg::TextFile::-1::1677946949::0::1::::<><>::
@@ -17,35 +17,35 @@ THIRDPARTY.md::TextFile::-1::1678031801::0::1::::<><>::
 ::res://addons/godot-git-plugin/win64/::1678031801
 ::res://android/::1677696663
 ::res://android/plugins/::1677696663
-::res://Entities/::1678565457
-breakablewall.tscn::PackedScene::8609225655099162825::1678565456::0::1::::<><>::res://Shaders/BlackAndWhite.gdshader<>res://Script/Breakablestuff.gd<>uid://cjph4y3xrxrtp
+::res://Entities/::1678581502
+breakablewall.tscn::PackedScene::8609225655099162825::1678581502::0::1::::<><>::res://Shaders/BlackAndWhite.gdshader<>res://Script/Breakablestuff.gd<>uid://cjph4y3xrxrtp
 death_part.tscn::PackedScene::4818993180146424740::1677611106::0::1::::<><>::
-door.tscn::PackedScene::4768642081514213361::1678565456::0::1::::<><>::res://Script/door.gd
-ennemi.tscn::PackedScene::6600357764631389535::1678565456::0::1::::<><>::res://Script/Ennemi_test.gd
+door.tscn::PackedScene::4768642081514213361::1678581502::0::1::::<><>::res://Script/door.gd
+ennemi.tscn::PackedScene::6600357764631389535::1678581501::0::1::::<><>::res://Script/Ennemi_test.gd
 ennemi_bomb.tscn::PackedScene::30688536183551719::1677611105::0::1::::<><>::res://Script/ennemi_bomb.gd
-EnnemySpider.tscn::PackedScene::6860536351647677518::1678565456::0::1::::<><>::res://Script/SpiderEnnemy.gd<>uid://cyv7damgfuw3b
-explosion.tscn::PackedScene::83548399965879232::1678565456::0::1::::<><>::res://Script/Explosion.gd
-leg_scene.tscn::PackedScene::6502673867502235841::1678565457::0::1::::<><>::
-level_tiles.tscn::PackedScene::8521758602315568801::1678565456::0::1::::<><>::uid://dem7tnwxkq5ye
-pause_menu.tscn::PackedScene::1413145689008806171::1678565456::0::1::::<><>::res://Shaders/blur.gdshader<>res://Script/PauseMenu.gd
-Player.tscn::PackedScene::5211395119041811873::1678565456::0::1::::<><>::res://Script/Player.gd<>res://test.gd<>uid://c2v2afrhpm4mb<>uid://dw5guo5np7r80<>uid://ueskkkqk5qvb<>uid://qf514p11c2ow<>uid://bdoq58p4o0siv<>uid://dl75ko5bk7jav<>uid://2skfm8fpymmt
-player_gun.tscn::PackedScene::8605200779107777320::1678565456::0::1::::<><>::uid://by1ibugk541o7<>uid://bhs67afckqsy1<>uid://6cehb4jhupnj<>uid://c7ah5w0dnip71<>uid://dtggaynfdfd0c<>uid://vxo5xs8dw86q
+EnnemySpider.tscn::PackedScene::6860536351647677518::1678581502::0::1::::<><>::res://Script/SpiderEnnemy.gd<>uid://cyv7damgfuw3b
+explosion.tscn::PackedScene::83548399965879232::1678581502::0::1::::<><>::res://Script/Explosion.gd
+leg_scene.tscn::PackedScene::6502673867502235841::1678581502::0::1::::<><>::
+level_tiles.tscn::PackedScene::8521758602315568801::1678581501::0::1::::<><>::uid://dem7tnwxkq5ye
+pause_menu.tscn::PackedScene::1413145689008806171::1678581502::0::1::::<><>::res://Shaders/blur.gdshader<>res://Script/PauseMenu.gd
+Player.tscn::PackedScene::5211395119041811873::1678581502::0::1::::<><>::res://Script/Player.gd<>res://test.gd<>uid://c2v2afrhpm4mb<>uid://dw5guo5np7r80<>uid://ueskkkqk5qvb<>uid://qf514p11c2ow<>uid://bdoq58p4o0siv<>uid://dl75ko5bk7jav<>uid://2skfm8fpymmt
+player_gun.tscn::PackedScene::8605200779107777320::1678581502::0::1::::<><>::uid://by1ibugk541o7<>uid://bhs67afckqsy1<>uid://6cehb4jhupnj<>uid://c7ah5w0dnip71<>uid://dtggaynfdfd0c<>uid://vxo5xs8dw86q
 shoot_limit.tscn::PackedScene::1352193775287840738::1676243393::0::1::::<><>::
 shotguunarea.tscn::PackedScene::5712801243056509789::1677611106::0::1::::<><>::res://Script/shotgunarea.gd<>uid://by1ibugk541o7
-sound_system.tscn::PackedScene::7124371769566476307::1678565456::0::1::::<><>::res://Script/SoundSystem.gd
-text_area.tscn::PackedScene::4993952069248995029::1678565456::0::1::::<><>::res://Script/TextArea.gd
-::res://Levels/::1678566516
+sound_system.tscn::PackedScene::7124371769566476307::1678581502::0::1::::<><>::res://Script/SoundSystem.gd
+text_area.tscn::PackedScene::4993952069248995029::1678581502::0::1::::<><>::res://Script/TextArea.gd
+::res://Levels/::1678581502
 endscreen.tscn::PackedScene::7381269746747841413::1677611106::0::1::::<><>::uid://cja45k2m2q4l<>res://Script/endscreen.gd
 intro.tscn::PackedScene::7882345834384940154::1677611105::0::1::::<><>::uid://cr057scdhay7j<>res://Script/Playerintro.gd<>res://Script/Levelintro.gd<>uid://cja45k2m2q4l<>uid://yxefk45qcau8<>uid://cqqyodt3yj8s6<>uid://c57vhnlxfsidt<>uid://blyp5eibxwh7s
-level1.tscn::PackedScene::7835272037252109019::1678566516::0::1::::<><>::uid://cja45k2m2q4l<>uid://btlbmscsohrtq<>res://Script/levelscript.gd<>uid://dtoaebyrht41r<>uid://c7ah5w0dnip71<>uid://cgio6fe71m6xx<>uid://c1bi6s3o3tnxf<>uid://b8673rfq8hju4<>res://Shaders/Heat.gdshader<>uid://duwmxofj2yq3b<>res://Script/TextArea.gd<>res://Shaders/BlackAndWhite.gdshader<>uid://cnnlacdvnbid6<>uid://bop6agenc8yhw<>res://Script/Engine.gd<>res://Script/SpiderEnnemy.gd<>uid://cyv7damgfuw3b
+level1.tscn::PackedScene::7835272037252109019::1678581502::0::1::::<><>::uid://cja45k2m2q4l<>uid://btlbmscsohrtq<>res://Script/levelscript.gd<>uid://dtoaebyrht41r<>uid://c7ah5w0dnip71<>uid://cgio6fe71m6xx<>uid://c1bi6s3o3tnxf<>uid://b8673rfq8hju4<>res://Shaders/Heat.gdshader<>uid://duwmxofj2yq3b<>res://Script/TextArea.gd<>res://Shaders/BlackAndWhite.gdshader<>uid://cnnlacdvnbid6<>uid://bop6agenc8yhw<>res://Script/Engine.gd<>res://Script/SpiderEnnemy.gd<>uid://cyv7damgfuw3b
 leveltemplate.tscn::PackedScene::1514366403833103982::1676312251::0::1::::<><>::uid://cja45k2m2q4l<>uid://dtoaebyrht41r<>uid://cgio6fe71m6xx
-menu.tscn::PackedScene::3467864122221734224::1678565456::0::1::::<><>::res://Script/menu.gd<>res://Shaders/Heat.gdshader<>uid://cja45k2m2q4l
-testspiderlevel.tscn::PackedScene::8946250462997127677::1678565456::0::1::::<><>::uid://dtoaebyrht41r<>uid://c40kbcjfgitww
-::res://Particles/::1678565456
+menu.tscn::PackedScene::3467864122221734224::1678581502::0::1::::<><>::res://Script/menu.gd<>res://Shaders/Heat.gdshader<>uid://cja45k2m2q4l
+testspiderlevel.tscn::PackedScene::8946250462997127677::1678581502::0::1::::<><>::uid://dtoaebyrht41r<>uid://c40kbcjfgitww
+::res://Particles/::1678581502
 bomb_particles.gd::GDScript::-1::1676164875::0::1::::<>GPUParticles2D<>::
 bomb_particles.tscn::PackedScene::2752511676621833986::1677611105::0::1::::<><>::res://Particles/bomb_particles.gd
 Bullet_trails.gd::GDScript::-1::1677938503::0::1::::<>Line2D<>::
-cloudparticles.tscn::PackedScene::9107112345794355018::1678565456::0::1::::<><>::uid://dxbyvwku7xjid
+cloudparticles.tscn::PackedScene::9107112345794355018::1678581502::0::1::::<><>::uid://dxbyvwku7xjid
 shot_particles.gd::GDScript::-1::1676236595::0::1::::<>GPUParticles2D<>::
 shot_particles.tscn::PackedScene::7424967674545661034::1677611105::0::1::::<><>::res://Particles/shot_particles.gd
 shot_trails.tscn::PackedScene::2467392719693933411::1678040921::0::1::::<><>::res://Particles/Bullet_trails.gd
@@ -68,12 +68,12 @@ shotgunarea.gd::GDScript::-1::1677602653::0::1::::<>Area2D<>::
 SoundSystem.gd::GDScript::-1::1677937044::0::1::::<>Node2D<>::
 SpiderEnnemy.gd::GDScript::-1::1678550279::0::1::::<>CharacterBody2D<>::
 TextArea.gd::GDScript::-1::1677624941::0::1::::<>Area2D<>::
-::res://Shaders/::1678566516
+::res://Shaders/::1678581531
 BlackAndWhite.gdshader::Shader::-1::1677890403::0::1::::<><>::
 blur.gdshader::Shader::-1::1678058230::0::1::::<><>::
+Glow.gdshader::Shader::-1::1678581531::0::1::::<><>::
 Heat.gdshader::Shader::-1::1677890403::0::1::::<><>::
 Recolor.gdshader::Shader::-1::1677890403::0::1::::<><>::
-Glow.gdshader::Shader::-1::1678566516::0::1::::<><>::
 testshader2.gdshader::Shader::-1::1678051228::0::1::::<><>::
 testshader3.gdshader::Shader::-1::1677879239::0::1::::<><>::
 Waves.gdshader::Shader::-1::1677890403::0::1::::<><>::
@@ -89,7 +89,7 @@ extinguisher.mp3::AudioStreamMP3::4347184759125141001::1677867906::1677867906::1
 shotgun reload finished.mp3::AudioStreamMP3::7589374146429324258::1677866841::1677866841::1::::<><>::
 shotgun reload.mp3::AudioStreamMP3::8009171410784884599::1677859229::1677859241::1::::<><>::
 shotgun shoot.mp3::AudioStreamMP3::6917584398407454811::1677860298::1677860298::1::::<><>::
-::res://Sprites/::1678564054
+::res://Sprites/::1678566929
 airhorn.png::CompressedTexture2D::2180238374557278831::1677899725::1677899725::1::::<><>::
 Fire-Extinguisher-Transparent.png::CompressedTexture2D::6712931726470050685::1677606459::1677606459::1::::<><>::
 foam part.png::CompressedTexture2D::8777165713920638959::1677611784::1677611784::1::::<><>::

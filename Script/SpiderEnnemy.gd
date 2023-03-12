@@ -1,6 +1,8 @@
 extends CharacterBody2D
 var dtime
 
+@export var enable_ia: bool = true ##false = follow mouse
+@export var move_speed: float = 10000
 @export var legs_length: float = 20
 @export var legs_width: float = 2
 
@@ -10,12 +12,16 @@ var dtime
 
 @onready var legraycast: RayCast2D = $Legs/leg1/legraycast
 
+var health_points: float = 300
+
 
 var headlegs = []
 var legsnormalpos = {}
 var legsblocked = {}
 var legsgoingtoblockedpos = []
 var legblockedto = Vector2.ZERO
+
+var Player: RigidBody2D = null
 
 func _ready():
 	var half_legs = Legs.get_child_count() / 2
@@ -42,6 +48,10 @@ func _setup_leg(kinematicleg: Marker2D, scnd_half: bool = false, leg_count: int 
 
 func _physics_process(delta):
 	dtime = delta
+	
+	if health_points <= 0:
+		queue_free()
+	
 #	for i in legsnormalpos:
 #		printt(i, legsnormalpos[i].global_position)
 	var half_legs = Legs.get_child_count() / 2
@@ -53,15 +63,47 @@ func _physics_process(delta):
 			_kinematic_leg(i, true)
 		leg_count += 1
 	
-	Body.look_at(global_position + Vector2(10, 10) * velocity.normalized())
-	Legs.rotation = Body.rotation
-	Body.rotation_degrees += 90
-	Legs.rotation_degrees += 180
 	
-	velocity =  get_global_mouse_position() - global_position
+	
+	if enable_ia:
+		if Player != null:
+			if not $NavigationAgent2D.is_target_reached():
+				$NavigationAgent2D.set_target_position(Player.global_position)
+				_follow_player()
+			else:
+				$NavigationAgent2D.set_target_position(Player.global_position)
+				velocity = Vector2.ZERO
+		else:
+			velocity = Vector2.ZERO
+			Player = get_tree().current_scene.find_child("Player", true, false)
+	else:
+		_follow_mouse()
+	
 	move_and_slide()
 
+func _follow_mouse():
+	velocity =  get_global_mouse_position() - global_position
+	_body_movement()
 
+func _follow_player():
+	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
+		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
+		var dist_norm: Vector2 = dist.normalized()
+		$NavigationAgent2D.set_velocity(velocity)
+		velocity = (move_speed * -dist_norm) * dtime
+		_body_movement()
+
+func _on_navigation_agent_2d_target_reached():
+	pass # Replace with function body.
+
+func _body_movement():
+	if not is_zero_approx(velocity.length()):
+		var spider_front = global_position + Vector2(10, 10) * velocity.normalized()
+		$Look_at_destination.look_at(spider_front)
+		var look_at_rotation = $Look_at_destination.rotation_degrees + 90
+		Body.rotation_degrees = lerp(Body.rotation_degrees, look_at_rotation, 3 * dtime)
+		Legs.rotation = Body.rotation + deg_to_rad(90)
+		$CollisionShape2D.rotation = Body.rotation
 
 func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false):
 	var legpivot1: Node2D = kinematicleg.find_child("LegPivot1")
@@ -84,8 +126,9 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false):
 	
 	leg1.position.x = leg1.mesh.size.x/2
 	leg2.position.x = leg2.mesh.size.x/2
-	leg1.modulate = Color.BLACK
-	leg2.modulate = Color.BLACK
+	var bod = Body.self_modulate
+	leg1.modulate = Color(bod.r/3, bod.g/3, bod.b/3, bod.a)
+	leg2.modulate = Color(bod.r/2, bod.g/2, bod.b/2, bod.a)
 	
 	legraycast.target_position.y = -leg1.mesh.size.x * 2
 #	legraycast.look_at(global_position + Vector2(10, 10) * velocity.normalized())
@@ -156,3 +199,5 @@ func _set_mesh_length_and_width(mesh: Array):
 	for i in mesh:
 		i.mesh.size.x = legs_length
 		i.mesh.size.y = legs_width
+		
+

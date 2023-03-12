@@ -16,4 +16,4 @@ res://Levels/menu.tscn
 res://Levels/testspiderlevel.tscn
 res://Entities/EnnemySpider.tscn
 res://Entities/leg_scene.tscn
-res://Shaders/Glow.gdshader
+res://Script/SpiderEnnemy.gd
