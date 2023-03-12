@@ -529,6 +529,16 @@ environment = SubResource("Environment_impwu")
 
 [node name="Newennemy" parent="." instance=ExtResource("16_skna8")]
 position = Vector2(-236, -218)
+legs_length = 23.0
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-1215, 331)
+rotation = -0.261799
+color = Color(1, 1, 0, 1)
+range_layer_min = -129
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.4
 
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_entered" flags=18]
 [connection signal="area_exited" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_exited" flags=18]

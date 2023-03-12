@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends RigidBody2D
 var dtime
 
 @export var enable_ia: bool = true ##false = follow mouse
@@ -31,6 +31,8 @@ var legblockedto = Vector2.ZERO
 var Player: RigidBody2D = null
 
 var was_reached_before: bool = false
+
+var reached: bool = false
 
 func _ready():
 	health_points = max_health
@@ -69,7 +71,7 @@ func _physics_process(delta):
 #		printt(i, legsnormalpos[i].global_position)
 	
 	
-	var reached = false
+	reached = false
 	if enable_ia:
 		if Player != null:
 			if not $NavigationAgent2D.is_target_reached():
@@ -78,16 +80,17 @@ func _physics_process(delta):
 				reached = false
 			else:
 				$NavigationAgent2D.set_target_position(Player.global_position)
-				velocity = Vector2.ZERO
+				linear_velocity = Vector2.ZERO
+				angular_velocity = 0
 				reached = true
 		else:
-			velocity = Vector2.ZERO
+			linear_velocity = Vector2.ZERO
 			Player = get_tree().current_scene.find_child("Player", true, false)
 	else:
 		_follow_mouse()
 	
 	if reached:
-		velocity = Player.linear_velocity
+		linear_velocity = Player.linear_velocity
 		_prepare_kinematic_leg(true)
 		collision_layer = Grabbedcolmask.collision_layer
 		collision_mask = Grabbedcolmask.collision_mask
@@ -100,19 +103,17 @@ func _physics_process(delta):
 		if was_reached_before:
 			was_reached_before = false
 			legsblocked = {}
-	
-	move_and_slide()
 
 func _follow_mouse():
-	velocity =  get_global_mouse_position() - global_position
+	linear_velocity =  get_global_mouse_position() - global_position
 	_body_movement()
 
 func _follow_player():
 	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
 		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
 		var dist_norm: Vector2 = dist.normalized()
-		$NavigationAgent2D.set_velocity(velocity)
-		velocity = (move_speed * -dist_norm) * dtime
+		$NavigationAgent2D.set_velocity(linear_velocity)
+		linear_velocity = (move_speed * -dist_norm) * dtime
 		_body_movement()
 
 func _damage(entitie):
@@ -120,8 +121,8 @@ func _damage(entitie):
 		entitie.set("health_points", entitie.get("health_points") - damage * dtime)
 
 func _body_movement():
-	if not is_zero_approx(velocity.length()):
-		var spider_front = global_position + Vector2(10, 10) * velocity.normalized()
+	if not is_zero_approx(linear_velocity.length()):
+		var spider_front = global_position + Vector2(10, 10) * linear_velocity.normalized()
 		$Look_at_destination.look_at(spider_front)
 		var look_at_rotation = $Look_at_destination.rotation_degrees + 90
 		Body.rotation_degrees = lerp(Body.rotation_degrees, look_at_rotation, 3 * dtime)
@@ -164,7 +165,7 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 	leg2.modulate = Color(bod.r/2, bod.g/2, bod.b/2, bod.a)
 	
 	legraycast.target_position.y = -leg1.mesh.size.x * 2
-#	legraycast.look_at(global_position + Vector2(10, 10) * velocity.normalized())
+#	legraycast.look_at(global_position + Vector2(10, 10) * linear_velocity.normalized())
 	legraycast.force_raycast_update()
 	
 	var legdistance_before_calc = (legpivot1.global_position - legpivot2.global_position).length()
@@ -187,8 +188,8 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 	else:   #if legs not attached at all
 		legpivot2.global_position = lerp(legpivot2.global_position, idle_pos.global_position, 5 * dtime)
 		pass
-#		legpivot2.global_position = legpivot1.global_position - Vector2(10, 10) * velocity.normalized()
-#		legpivot2.global_position = legpivot1.global_position + (legs_length * Vector2(0.25, 0.75) + (-legs_length * Vector2(0.40, -0.60))) * velocity.normalized()
+#		legpivot2.global_position = legpivot1.global_position - Vector2(10, 10) * linear_velocity.normalized()
+#		legpivot2.global_position = legpivot1.global_position + (legs_length * Vector2(0.25, 0.75) + (-legs_length * Vector2(0.40, -0.60))) * linear_velocity.normalized()
 #		legpivot2.global_position = idle_pos.global_position
 	
 	$MARKER.global_position = legpivot2.global_position

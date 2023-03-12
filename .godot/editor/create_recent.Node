@@ -1,7 +1,9 @@
+LightOccluder2D
+DirectionalLight2D
+RigidBody2D
 CollisionShape2D
 MeshInstance2D
 Node2D
-RigidBody2D
 CharacterBody2D
 NavigationAgent2D
 ColorRect
@@ -29,4 +31,3 @@ Shaker
 Area2D
 PointLight2D
 AudioStreamPlayer2D
-AudioListener2D

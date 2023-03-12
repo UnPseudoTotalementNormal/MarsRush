@@ -29,12 +29,11 @@ size = Vector3(1, 3.5, 1)
 radius = 2.0
 height = 4.0
 
-[node name="Newennemy" type="CharacterBody2D"]
+[node name="Spider" type="RigidBody2D"]
 rotation = 3.14159
 collision_layer = 4
 collision_mask = 3
-motion_mode = 1
-platform_on_leave = 2
+mass = 50.0
 script = ExtResource("1_debhl")
 
 [node name="Look_at_destination" type="Node2D" parent="."]
@@ -45,7 +44,7 @@ shape = SubResource("CapsuleShape2D_2y2fh")
 
 [node name="Body" type="MeshInstance2D" parent="."]
 self_modulate = Color(0, 0.505882, 0, 1)
-rotation = 4.71238
+rotation = -1.57081
 mesh = SubResource("CapsuleMesh_6g8s0")
 
 [node name="Eyes" type="Node2D" parent="Body"]
@@ -191,7 +190,7 @@ z_index = 3143
 mesh = SubResource("SphereMesh_0w52b")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 28.0
+target_desired_distance = 30.0
 avoidance_enabled = true
 radius = 30.0
 

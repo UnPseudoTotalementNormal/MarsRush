@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8673rfq8hju4"]
+[gd_scene load_steps=7 format=3 uid="uid://b8673rfq8hju4"]
 
 [ext_resource type="Script" path="res://Script/door.gd" id="1_fdc2i"]
 
@@ -13,6 +13,9 @@ size = Vector2(24, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_em346"]
 size = Vector2(24, 48)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lrbo4"]
+polygon = PackedVector2Array(-2.49988, -23.9798, 2.47315, -23.9922, 2.5, 23.9844, -2.50781, 24)
 
 [node name="door" type="StaticBody2D"]
 collision_layer = 2048
@@ -38,6 +41,9 @@ debug_color = Color(0, 0.6, 0.701961, 0.0509804)
 position = Vector2(12, 0)
 shape = SubResource("RectangleShape2D_em346")
 debug_color = Color(1, 0, 0, 0.0509804)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_lrbo4")
 
 [connection signal="area_entered" from="indoor" to="." method="_on_indoor_area_entered"]
 [connection signal="area_exited" from="indoor" to="." method="_on_indoor_area_exited"]

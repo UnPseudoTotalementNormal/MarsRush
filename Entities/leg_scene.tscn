@@ -18,6 +18,7 @@ size = Vector3(20, 2, 1)
 [node name="LegScene" type="Node2D"]
 
 [node name="LegPivot1" type="Node2D" parent="."]
+visible = false
 rotation = -0.785397
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="LegPivot1"]
@@ -38,6 +39,7 @@ self_modulate = Color(0.0588235, 0, 0.431373, 0.137255)
 mesh = SubResource("SphereMesh_vvybw")
 
 [node name="LegPivot2" type="Node2D" parent="."]
+visible = false
 position = Vector2(0, -20)
 rotation = 0.785398
 
