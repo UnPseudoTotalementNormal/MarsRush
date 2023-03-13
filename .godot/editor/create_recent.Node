@@ -1,3 +1,4 @@
+RayCast2D
 ShapeCast2D
 NavigationRegion3D
 PhysicalBone2D
@@ -14,7 +15,6 @@ ColorRect
 WorldEnvironment
 Marker2D
 Camera2D
-RayCast2D
 CheckBox
 OptionButton
 Button
