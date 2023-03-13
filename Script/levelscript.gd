@@ -85,7 +85,6 @@ func _respawn(wait_time):
 			mob = ennemi.instantiate()
 		elif "Spider" in k:
 			mob = spider.instantiate()
-		print(store_ennemi.get(k))
 		mob.global_position = store_ennemi.get(k)
 		enneminode.add_child(mob)
 	var splayer = player_inst.instantiate()

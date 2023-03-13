@@ -2,7 +2,7 @@ extends CharacterBody2D
 var RigidLeg = preload("res://Entities/leg_rigid_body.tscn")
 @onready var collision = $CollisionShape2D
 
-var health_points: float = 15
+var health_points: float = 35
 
 func _ready():
 	collision.shape.size = Vector2(get_parent().mesh.size.x, get_parent().mesh.size.y)

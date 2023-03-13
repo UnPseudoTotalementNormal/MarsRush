@@ -3,19 +3,19 @@
 [ext_resource type="Script" path="res://Script/door.gd" id="1_fdc2i"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lrbo4"]
-polygon = PackedVector2Array(-2.49988, -23.9798, 2.47315, -23.9922, 2.5, 23.9844, -2.50781, 24)
+polygon = PackedVector2Array(-3.00008, -33, 1.99992, -33, 2.00006, 31, -2.99994, 31)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0bww"]
-size = Vector2(5, 48)
+size = Vector2(5, 64)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pn2qe"]
 size = Vector3(5, 48, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ac5ni"]
-size = Vector2(24, 48)
+size = Vector2(24, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_em346"]
-size = Vector2(24, 48)
+size = Vector2(24, 64)
 
 [node name="door" type="StaticBody2D"]
 collision_layer = 2064

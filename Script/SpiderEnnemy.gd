@@ -3,8 +3,8 @@ var dtime
 
 @export var enable_ia: bool = true ##false = follow mouse
 @export var max_move_speed_lerp: float = 10000
-@export var max_move_speed: float = 200
-@export var legs_length: float = 23
+@export var max_move_speed: float = 400
+@export var legs_length: float = 25
 @export var legs_width: float = 2
 @export var damage: float = 35
 @export var max_health: float = 400
@@ -81,7 +81,7 @@ func _physics_process(delta):
 		if Player != null and found_player:
 			if not $NavigationAgent2D.is_target_reached():
 				$NavigationAgent2D.set_target_position(Player.global_position)
-				_follow_player()
+				_get_to_next_path_pos()
 				reached = false
 			else:
 				$NavigationAgent2D.set_target_position(Player.global_position)
@@ -118,7 +118,6 @@ func _physics_process(delta):
 	
 	_body_movement()
 	$NavigationAgent2D.set_velocity(linear_velocity)
-#	linear_velocity = clamp(linear_velocity, Vector2(-move_speed*dtime, -move_speed*dtime), Vector2(move_speed*dtime, move_speed*dtime))
 
 func _set_velocity(velocity: Vector2 = Vector2.ZERO):
 	linear_velocity = velocity
@@ -130,7 +129,7 @@ func _follow_mouse():
 	_set_velocity(get_global_mouse_position() - global_position)
 	_body_movement()
 
-func _follow_player():
+func _get_to_next_path_pos():
 	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
 		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
 		var dist_norm: Vector2 = dist.normalized()
@@ -166,8 +165,8 @@ func _damage(entitie):
 func _body_movement():
 	if not is_zero_approx(linear_velocity.length()):
 		var spider_front = global_position + Vector2(10, 10) * linear_velocity.normalized()
-		$Look_at_destination.look_at($NavigationAgent2D.get_next_path_position())
-#		$Look_at_destination.look_at(spider_front)
+#		$Look_at_destination.look_at($NavigationAgent2D.get_next_path_position())
+		$Look_at_destination.look_at(spider_front)
 		var look_at_rotation = $Look_at_destination.rotation_degrees + 90
 		Body.rotation_degrees = lerp(Body.rotation_degrees, look_at_rotation, 3 * dtime)
 		Legs.rotation = Body.rotation + deg_to_rad(90)

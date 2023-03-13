@@ -209,6 +209,7 @@ collision_layer = 20
 collision_mask = 3
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+modulate = Color(1, 1, 1, 0.0705882)
 shape = SubResource("CircleShape2D_3wm1y")
 target_position = Vector2(0, 0)
 collision_mask = 2
