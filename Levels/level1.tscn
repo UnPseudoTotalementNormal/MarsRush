@@ -68,7 +68,7 @@ shadow_filter = 2
 shadow_filter_smooth = 1.4
 
 [node name="Player" parent="." instance=ExtResource("3_ymim4")]
-position = Vector2(-113, -213)
+position = Vector2(-366, 120)
 continuous_cd = 1
 sleeping = true
 

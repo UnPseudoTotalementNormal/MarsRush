@@ -136,9 +136,16 @@ func _get_to_next_path_pos():
 		var lerp_next_velocity = lerp(linear_velocity, move_speed * -dist_norm, 0.75)
 #		_set_velocity((move_speed * -dist_norm) * dtime)
 #		apply_central_impulse((move_speed * -dist_norm) * 30 * dtime)
-		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity * 60 * dtime)
+		lerp_next_velocity = _acceleration_boost(lerp_next_velocity * 60 * dtime, dist_norm)
+		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity)
 		apply_central_impulse(lerp_next_velocity * 60 * dtime)
 		_check_and_brake()
+
+func _acceleration_boost(next_vel, next_path_norm):
+	var boost_speed = 100
+	if next_vel.length() < 100:
+		next_vel += boost_speed * next_path_norm * dtime
+	return next_vel
 
 func _check_next_velocity_clamp(next_vel):
 	if abs(linear_velocity.x + next_vel.x) > max_move_speed:
