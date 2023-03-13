@@ -1,3 +1,7 @@
+ShapeCast2D
+NavigationRegion3D
+PhysicalBone2D
+Skeleton2D
 LightOccluder2D
 DirectionalLight2D
 RigidBody2D
@@ -10,7 +14,6 @@ ColorRect
 WorldEnvironment
 Marker2D
 Camera2D
-ShapeCast2D
 RayCast2D
 CheckBox
 OptionButton
@@ -27,7 +30,3 @@ MarginContainer
 PanelContainer
 CenterContainer
 TouchScreenButton
-Shaker
-Area2D
-PointLight2D
-AudioStreamPlayer2D

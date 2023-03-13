@@ -8,8 +8,9 @@ var shottrail = preload("res://Particles/shot_trails.tscn")
 ###############
 
 var ennemi = preload("res://Entities/ennemi.tscn")
+var spider = preload("res://Entities/EnnemySpider.tscn")
 var player_inst = preload("res://Entities/Player.tscn")
-var store_ennemi_pos = []
+var store_ennemi = {}
 var playerspawn = Vector2.ZERO
 var enneminode = null
 
@@ -34,7 +35,8 @@ func _ready():
 	
 	if enneminode != null:
 		for i in enneminode.get_children():
-			store_ennemi_pos.append(i.global_position)
+			store_ennemi[i.name] = i.global_position
+	
 	var Player = get_tree().current_scene.find_child("Player")
 	if Player != null:
 		playerspawn = Player.global_position
@@ -77,10 +79,15 @@ func _respawn(wait_time):
 	await get_tree().create_timer(wait_time).timeout
 	for i in enneminode.get_children():
 		i.queue_free()
-	for k in store_ennemi_pos:
-		var en = ennemi.instantiate()
-		en.global_position = k
-		enneminode.add_child(en)
+	for k in store_ennemi:
+		var mob = null
+		if "Ennemi" in k:
+			mob = ennemi.instantiate()
+		elif "Spider" in k:
+			mob = spider.instantiate()
+		print(store_ennemi.get(k))
+		mob.global_position = store_ennemi.get(k)
+		enneminode.add_child(mob)
 	var splayer = player_inst.instantiate()
 	splayer.global_position = playerspawn
 	splayer.set("inventory", playerinventory)

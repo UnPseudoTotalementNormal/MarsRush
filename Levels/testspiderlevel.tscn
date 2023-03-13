@@ -10,6 +10,7 @@ layer_0/tile_data = PackedInt32Array(-2228300, 327681, 5, 196614, 327680, 2, 131
 
 [node name="Newennemy" parent="." instance=ExtResource("2_to0ij")]
 position = Vector2(-233, 120)
+enable_ia = false
 legs_length = 25.0
 
 [node name="Camera2D" type="Camera2D" parent="Newennemy"]

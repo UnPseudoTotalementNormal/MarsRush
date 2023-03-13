@@ -2,11 +2,12 @@ extends RigidBody2D
 var dtime
 
 @export var enable_ia: bool = true ##false = follow mouse
-@export var max_move_speed: float = 20000
-@export var legs_length: float = 20
+@export var max_move_speed_lerp: float = 10000
+@export var max_move_speed: float = 200
+@export var legs_length: float = 23
 @export var legs_width: float = 2
-@export var damage: float = 20
-@export var max_health: float = 300
+@export var damage: float = 35
+@export var max_health: float = 400
 
 @onready var Body: MeshInstance2D = $Body
 
@@ -19,7 +20,9 @@ var dtime
 @onready var Grabbedcolmask: CharacterBody2D = $NodesForCollisionMask/GrabbedCol
 
 var health_points: float = 300
-var move_speed: float = 10000
+
+var move_speed_lerp: float = 10000
+var move_speed: float = 200
 var max_legs: int = 8
 
 var headlegs = []
@@ -33,12 +36,14 @@ var Player: RigidBody2D = null
 
 var was_reached_before: bool = false
 
+var found_player: bool = false
 var reached: bool = false
 
-
 func _ready():
+	move_speed_lerp = max_move_speed_lerp
 	move_speed = max_move_speed
 	health_points = max_health
+	gravity_scale = 0
 	
 	var half_legs = Legs.get_child_count() / 2
 	var leg_count = 1
@@ -68,17 +73,12 @@ func _setup_leg(kinematicleg: Marker2D, scnd_half: bool = false, leg_count: int 
 
 func _physics_process(delta):
 	dtime = delta
-	
 	if health_points <= 0:
 		queue_free()
 	
-#	for i in legsnormalpos:
-#		printt(i, legsnormalpos[i].global_position)
-	
-	
 	reached = false
 	if enable_ia:
-		if Player != null:
+		if Player != null and found_player:
 			if not $NavigationAgent2D.is_target_reached():
 				$NavigationAgent2D.set_target_position(Player.global_position)
 				_follow_player()
@@ -87,37 +87,77 @@ func _physics_process(delta):
 				$NavigationAgent2D.set_target_position(Player.global_position)
 				reached = true
 		else:
-			linear_velocity = Vector2.ZERO
 			Player = get_tree().current_scene.find_child("Player", true, false)
 	else:
 		_follow_mouse()
 	
 	if reached:
-		linear_velocity = Player.linear_velocity
+#		_set_velocity(Player.linear_velocity)
+		apply_central_impulse((Player.linear_velocity - linear_velocity) * 150 * dtime)
 		_prepare_kinematic_leg(true)
-		collision_layer = Grabbedcolmask.collision_layer
-		collision_mask = Grabbedcolmask.collision_mask
 		_damage(Player)
-		was_reached_before = true
+		if not was_reached_before:
+			was_reached_before = true
+			$NavigationAgent2D.target_desired_distance *= 1.5
+			collision_layer = Grabbedcolmask.collision_layer
+			collision_mask = Grabbedcolmask.collision_mask
 	else:
 		_prepare_kinematic_leg(false)
-		collision_layer = Normalcolmask.collision_layer
-		collision_mask = Normalcolmask.collision_mask
 		if was_reached_before:
 			was_reached_before = false
+			$NavigationAgent2D.target_desired_distance /= 1.5
+			collision_layer = Normalcolmask.collision_layer
+			collision_mask = Normalcolmask.collision_mask
 			legsblocked = {}
+	
+	
+	if not found_player:
+		for i in $ShapeCast2D.get_collision_count():
+			if "Player" in $ShapeCast2D.get_collider(i).name:
+				found_player = true
+	
+	_body_movement()
+	$NavigationAgent2D.set_velocity(linear_velocity)
+#	linear_velocity = clamp(linear_velocity, Vector2(-move_speed*dtime, -move_speed*dtime), Vector2(move_speed*dtime, move_speed*dtime))
+
+func _set_velocity(velocity: Vector2 = Vector2.ZERO):
+	linear_velocity = velocity
+
+func _lerp_velocity(velocity: Vector2 = Vector2.ZERO, force: float = 1):
+	linear_velocity = lerp(linear_velocity, velocity, force * dtime)
 
 func _follow_mouse():
-	linear_velocity =  get_global_mouse_position() - global_position
+	_set_velocity(get_global_mouse_position() - global_position)
 	_body_movement()
 
 func _follow_player():
 	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
 		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
 		var dist_norm: Vector2 = dist.normalized()
-		$NavigationAgent2D.set_velocity(linear_velocity)
-		linear_velocity = (move_speed * -dist_norm) * dtime
-		_body_movement()
+		var lerp_next_velocity = lerp(linear_velocity, move_speed * -dist_norm, 0.75)
+#		_set_velocity((move_speed * -dist_norm) * dtime)
+#		apply_central_impulse((move_speed * -dist_norm) * 30 * dtime)
+		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity * 60 * dtime)
+		apply_central_impulse(lerp_next_velocity * 60 * dtime)
+		_check_and_brake()
+
+func _check_next_velocity_clamp(next_vel):
+	if abs(linear_velocity.x + next_vel.x) > max_move_speed:
+		next_vel.x = (linear_velocity.x + next_vel.x) - move_speed * sign(next_vel.x)
+	if abs(linear_velocity.y + next_vel.x) > max_move_speed:
+		next_vel.y = (linear_velocity.y + next_vel.y) - move_speed * sign(next_vel.x)
+	return next_vel
+
+func _check_and_brake():
+	var old_vel: Vector2 = linear_velocity
+	var abs_old_vel: Vector2 = abs(old_vel)
+	await get_tree().physics_frame
+	var abs_vel: Vector2 = abs(linear_velocity)
+	var sign_vel: Vector2 = sign(linear_velocity)
+	if abs_old_vel.x > abs_vel.x:
+		linear_velocity.x -= 200 * sign_vel.x * dtime * (max_legs / Legs.get_child_count())
+	if abs_old_vel.y > abs_vel.y:
+		linear_velocity.y -= 200 * sign_vel.y * dtime * (max_legs / Legs.get_child_count())
 
 func _damage(entitie):
 	if entitie.get("health_points") != null:
@@ -169,7 +209,6 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 	leg2.modulate = Color(bod.r/2, bod.g/2, bod.b/2, bod.a)
 	
 	legraycast.target_position.y = -leg1.mesh.size.x * 2
-#	legraycast.look_at(global_position + Vector2(10, 10) * linear_velocity.normalized())
 	legraycast.force_raycast_update()
 	
 	var legdistance_before_calc = (legpivot1.global_position - legpivot2.global_position).length()
@@ -179,22 +218,17 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 		legsblocked[kinematicleg] = Player.global_position
 		_leg_going_to_blocked_position(kinematicleg, 10)
 	elif not kinematicleg in legsblocked and legraycast.is_colliding():    #if legs not attached to anything but raycast is colliding
-#		legpivot2.global_position = global_position
 		legblockedto = legraycast.get_collision_point()
 		legsblocked[kinematicleg] = legraycast.get_collision_point()
 		leg1.mesh.size.x = legs_length
 		leg2.mesh.size.x = legs_length
 	elif kinematicleg in legsblocked and not kinematicleg in legsgoingtoblockedpos:    #if legs are completely attached
-#		legpivot2.global_position = legsblocked[kinematicleg]
 		_leg_going_to_blocked_position(kinematicleg, 20)
 	elif kinematicleg in legsblocked and kinematicleg in legsgoingtoblockedpos:    #if legs are attached but not in place rn
 		_leg_going_to_blocked_position(kinematicleg, 10)
 	else:   #if legs not attached at all
 		legpivot2.global_position = lerp(legpivot2.global_position, idle_pos.global_position, 5 * dtime)
 		pass
-#		legpivot2.global_position = legpivot1.global_position - Vector2(10, 10) * linear_velocity.normalized()
-#		legpivot2.global_position = legpivot1.global_position + (legs_length * Vector2(0.25, 0.75) + (-legs_length * Vector2(0.40, -0.60))) * linear_velocity.normalized()
-#		legpivot2.global_position = idle_pos.global_position
 	
 	$MARKER.global_position = legpivot2.global_position
 	anglediffgeter.global_position = legpivot2.global_position
@@ -236,12 +270,11 @@ func _leg_going_to_blocked_position(kinematicleg: Marker2D, lerp: float):
 	if (legpivot2.global_position - legsblocked[kinematicleg]).length() < 10:
 		legsgoingtoblockedpos.erase(kinematicleg)
 
-
 func _set_mesh_length_and_width(mesh: Array):
 	for i in mesh:
 		i.mesh.size.x = legs_length
 		i.mesh.size.y = legs_width
 
-
 func lost_a_leg():
+	move_speed_lerp -= max_move_speed_lerp / max_legs 
 	move_speed -= max_move_speed / max_legs

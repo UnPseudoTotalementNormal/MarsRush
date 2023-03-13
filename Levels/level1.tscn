@@ -68,7 +68,9 @@ shadow_filter = 2
 shadow_filter_smooth = 1.4
 
 [node name="Player" parent="." instance=ExtResource("3_ymim4")]
-position = Vector2(9, -263)
+position = Vector2(-113, -213)
+continuous_cd = 1
+sleeping = true
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -193,6 +195,8 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(173, 86)
+zoom = Vector2(0.686, 0.686)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -421,6 +425,9 @@ position = Vector2(-3624, -157)
 [node name="Ennemi30" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3663, -525)
 
+[node name="Spider" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("16_skna8")]
+position = Vector2(50, -122)
+
 [node name="Text" type="Node2D" parent="NavigationRegion2D"]
 visible = false
 
@@ -532,11 +539,6 @@ offset = Vector2(0, 650)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_impwu")
-
-[node name="Newennemy" parent="." instance=ExtResource("16_skna8")]
-position = Vector2(-452, 50)
-angular_damp = 40.82
-legs_length = 23.0
 
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_entered" flags=18]
 [connection signal="area_exited" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_exited" flags=18]
