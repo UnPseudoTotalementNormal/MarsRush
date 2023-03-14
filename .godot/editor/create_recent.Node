@@ -1,3 +1,9 @@
+Timer
+Label
+Node2D
+Button
+CanvasLayer
+Marker2D
 RayCast2D
 ShapeCast2D
 NavigationRegion3D
@@ -8,20 +14,16 @@ DirectionalLight2D
 RigidBody2D
 CollisionShape2D
 MeshInstance2D
-Node2D
 CharacterBody2D
 NavigationAgent2D
 ColorRect
 WorldEnvironment
-Marker2D
 Camera2D
 CheckBox
 OptionButton
-Button
 HBoxContainer
 VSeparator
 Node
-Label
 VBoxContainer
 SpinBox
 AnimationPlayer
@@ -29,4 +31,3 @@ HSeparator
 MarginContainer
 PanelContainer
 CenterContainer
-TouchScreenButton

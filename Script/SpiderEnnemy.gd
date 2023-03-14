@@ -2,6 +2,7 @@ extends RigidBody2D
 var dtime
 
 @export var enable_ia: bool = true ##false = follow mouse
+@export var disable_ia_and_debug: bool = false
 @export var max_move_speed_lerp: float = 10000
 @export var max_chase_move_speed: float = 400
 @export var max_roam_move_speed: float = 100
@@ -11,9 +12,9 @@ var dtime
 @export var max_health: float = 400
 
 @export var target_desired_dist: float = 30
-@export var path_desired_dist: float = 5
+@export var path_desired_dist: float = 20
 
-@onready var Body: MeshInstance2D = $Body
+@onready var Body: MeshInstance2D = $BodyPivot/Body
 
 @onready var Legs: Node2D = $Legs
 
@@ -91,8 +92,13 @@ func _custom_target_reached():
 
 func _physics_process(delta):
 	dtime = delta
+	
+	if disable_ia_and_debug:
+		_debug()
+		return
 	if health_points <= 0:
 		queue_free()
+		
 	
 	custom_reached = _custom_target_reached()
 	reached = false
@@ -139,7 +145,7 @@ func _ia_system():
 			if not $NavigationAgent2D.is_target_reached():
 				$NavigationAgent2D.path_desired_distance = path_desired_dist
 				$NavigationAgent2D.set_target_position(Player.global_position)
-				_get_to_next_path_pos(chase_move_speed, max_chase_move_speed)
+				_go_to_next_point(chase_move_speed, max_chase_move_speed)
 				reached = false
 				chasing = true
 			else:
@@ -162,7 +168,7 @@ func _random_roaming():
 		else:
 			$NavigationAgent2D.target_desired_distance = target_desired_dist * 2.5
 			$NavigationAgent2D.path_desired_distance = path_desired_dist * 3
-			_get_to_next_path_pos(roam_move_speed, max_roam_move_speed)
+			_go_to_next_point(roam_move_speed, max_roam_move_speed)
 			if custom_reached:
 				_get_next_random_roam_point()
 
@@ -185,15 +191,38 @@ func _follow_mouse():
 	_set_velocity(get_global_mouse_position() - global_position)
 	_body_movement()
 
-func _get_to_next_path_pos(speed: float, max_speed: float):
-	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
-		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
-		var dist_norm: Vector2 = dist.normalized()
-		var lerp_next_velocity = lerp(linear_velocity, speed * -dist_norm, 0.75)
-		lerp_next_velocity = _acceleration_boost(lerp_next_velocity * 60 * dtime, dist_norm)
-		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity, speed, max_speed)
-		apply_central_impulse(lerp_next_velocity * 60 * dtime)
-		_check_and_brake()
+func _go_to_next_point(speed: float, max_speed: float):
+	var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
+	var dist_norm: Vector2 = dist.normalized()
+	var impulse_velocity: Vector2 = speed * -dist_norm * 60
+#	impulse_velocity = _acceleration_boost(impulse_velocity, dist_norm)
+	impulse_velocity = _check_next_impulse_clamp(impulse_velocity, speed, 60)
+	apply_central_impulse(impulse_velocity * dtime)
+	_check_and_brake(1000)
+
+func _check_next_impulse_clamp(impulse_velocity: Vector2, speed: float, decomposer: float):
+	var abs_vel = abs(linear_velocity)
+	var decomposed_impulse = impulse_velocity / decomposer * dtime
+	
+	if abs(linear_velocity.x + decomposed_impulse.x) > speed:
+		if abs(linear_velocity.x) < abs(linear_velocity.x + decomposed_impulse.x):
+			impulse_velocity.x = 0
+	
+	if abs(linear_velocity.y + decomposed_impulse.y) > speed:
+		if abs(linear_velocity.y) < abs(linear_velocity.y + decomposed_impulse.y):
+			impulse_velocity.y = 0
+	
+	return impulse_velocity
+
+#func _get_to_next_path_pos(speed: float, max_speed: float):
+#	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
+#		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
+#		var dist_norm: Vector2 = dist.normalized()
+#		var lerp_next_velocity = lerp(linear_velocity, speed * -dist_norm, 0.75)
+#		lerp_next_velocity = _acceleration_boost(lerp_next_velocity * 60 * dtime, dist_norm)
+#		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity, speed, max_speed)
+#		apply_central_impulse(lerp_next_velocity * 60 * dtime)
+#		_check_and_brake()
 
 func _acceleration_boost(next_vel, next_path_norm):
 	var boost_speed = 100
@@ -208,16 +237,16 @@ func _check_next_velocity_clamp(next_vel: Vector2, speed: float, max_speed: floa
 		next_vel.y = (linear_velocity.y + next_vel.y) - speed * sign(next_vel.x)
 	return next_vel
 
-func _check_and_brake():
+func _check_and_brake(BrakeForce: float = 1000):
 	var old_vel: Vector2 = linear_velocity
 	var abs_old_vel: Vector2 = abs(old_vel)
 	await get_tree().physics_frame
 	var abs_vel: Vector2 = abs(linear_velocity)
 	var sign_vel: Vector2 = sign(linear_velocity)
 	if abs_old_vel.x > abs_vel.x:
-		linear_velocity.x -= 200 * sign_vel.x * dtime * (max_legs / Legs.get_child_count())
+		linear_velocity.x -= BrakeForce * sign_vel.x * dtime * (max_legs / Legs.get_child_count())
 	if abs_old_vel.y > abs_vel.y:
-		linear_velocity.y -= 200 * sign_vel.y * dtime * (max_legs / Legs.get_child_count())
+		linear_velocity.y -= BrakeForce * sign_vel.y * dtime * (max_legs / Legs.get_child_count())
 
 func _damage(entitie):
 	if entitie.get("health_points") != null:
@@ -228,10 +257,13 @@ func _body_movement():
 		var spider_front = global_position + Vector2(10, 10) * linear_velocity.normalized()
 #		$Look_at_destination.look_at($NavigationAgent2D.get_next_path_position())
 		$Look_at_destination.look_at(spider_front)
-		var look_at_rotation = $Look_at_destination.rotation_degrees + 90
-		Body.rotation_degrees = lerp(Body.rotation_degrees, look_at_rotation, 3 * dtime)
-		Legs.rotation = Body.rotation + deg_to_rad(90)
-		$CollisionShape2D.rotation = Body.rotation
+		var look_at_rotation = $Look_at_destination.rotation + deg_to_rad(180)
+		Body.rotation = lerp_angle(Body.rotation, look_at_rotation, 7 * dtime)
+		
+		var angle_to = rad_to_deg(Body.get_angle_to(spider_front)) + 90
+		
+		Legs.rotation = Body.rotation
+		$CollisionShape2D.rotation = Body.rotation + deg_to_rad(90)
 
 func _prepare_kinematic_leg(attached_to_player: bool = false):
 	var half_legs = Legs.get_child_count() / 2
@@ -335,3 +367,14 @@ func _set_mesh_length_and_width(mesh: Array):
 func lost_a_leg():
 	move_speed_lerp -= max_move_speed_lerp / max_legs 
 	chase_move_speed -= max_chase_move_speed / max_legs
+
+func _debug():
+	_prepare_kinematic_leg(false)
+	_body_movement()
+	if $NavigationAgent2D.target_position == Vector2.ZERO or ($NavigationAgent2D.get_next_path_position() - global_position).length() > $NavigationAgent2D.path_desired_distance * 2:
+		$NavigationAgent2D.path_desired_distance = path_desired_dist
+		$NavigationAgent2D.target_desired_distance = target_desired_dist
+		$NavigationAgent2D.target_position = get_tree().current_scene.find_child("spider_debug").global_position
+	if not $NavigationAgent2D.is_target_reached():
+#		_go_to_next_point(roam_move_speed, max_roam_move_speed)
+		_go_to_next_point(chase_move_speed, max_chase_move_speed)
