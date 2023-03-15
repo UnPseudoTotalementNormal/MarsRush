@@ -4,15 +4,18 @@ var dtime
 @export var enable_ia: bool = true ##false = follow mouse
 @export var disable_ia_and_debug: bool = false
 @export var max_move_speed_lerp: float = 10000
-@export var max_chase_move_speed: float = 400
+@export var max_chase_move_speed: float = 200
 @export var max_roam_move_speed: float = 100
 @export var legs_length: float = 25
 @export var legs_width: float = 2
-@export var damage: float = 35
+@export var damage: float = 15
+
 @export var max_health: float = 400
+@export var legs_max_health: float = 10
+@export var percentage_damage_per_leg_destroyed: float = 0.15 #1 = 100%
 
 @export var target_desired_dist: float = 30
-@export var path_desired_dist: float = 20
+@export var path_desired_dist: float = 15
 
 @onready var Body: MeshInstance2D = $BodyPivot/Body
 
@@ -166,8 +169,8 @@ func _random_roaming():
 			_get_next_random_roam_point()
 			return
 		else:
-			$NavigationAgent2D.target_desired_distance = target_desired_dist * 2.5
-			$NavigationAgent2D.path_desired_distance = path_desired_dist * 3
+#			$NavigationAgent2D.target_desired_distance = target_desired_dist * 2.5
+#			$NavigationAgent2D.path_desired_distance = path_desired_dist * 3
 			_go_to_next_point(roam_move_speed, max_roam_move_speed)
 			if custom_reached:
 				_get_next_random_roam_point()
@@ -214,15 +217,15 @@ func _check_next_impulse_clamp(impulse_velocity: Vector2, speed: float, decompos
 	
 	return impulse_velocity
 
-#func _get_to_next_path_pos(speed: float, max_speed: float):
-#	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
-#		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
-#		var dist_norm: Vector2 = dist.normalized()
-#		var lerp_next_velocity = lerp(linear_velocity, speed * -dist_norm, 0.75)
-#		lerp_next_velocity = _acceleration_boost(lerp_next_velocity * 60 * dtime, dist_norm)
-#		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity, speed, max_speed)
-#		apply_central_impulse(lerp_next_velocity * 60 * dtime)
-#		_check_and_brake()
+func _get_to_next_path_pos(speed: float, max_speed: float):
+	if $NavigationAgent2D.get_next_path_position() != Vector2.ZERO:
+		var dist: Vector2 = global_position - $NavigationAgent2D.get_next_path_position()
+		var dist_norm: Vector2 = dist.normalized()
+		var lerp_next_velocity = lerp(linear_velocity, speed * -dist_norm, 0.75)
+		lerp_next_velocity = _acceleration_boost(lerp_next_velocity * 60 * dtime, dist_norm)
+		lerp_next_velocity = _check_next_velocity_clamp(lerp_next_velocity, speed, max_speed)
+		apply_central_impulse(lerp_next_velocity * 60 * dtime)
+		_check_and_brake()
 
 func _acceleration_boost(next_vel, next_path_norm):
 	var boost_speed = 100
@@ -371,7 +374,7 @@ func lost_a_leg():
 func _debug():
 	_prepare_kinematic_leg(false)
 	_body_movement()
-	if $NavigationAgent2D.target_position == Vector2.ZERO or ($NavigationAgent2D.get_next_path_position() - global_position).length() > $NavigationAgent2D.path_desired_distance * 2:
+	if $NavigationAgent2D.target_position == Vector2.ZERO or ($NavigationAgent2D.get_next_path_position() - global_position).length() > 20 + $NavigationAgent2D.path_desired_distance:
 		$NavigationAgent2D.path_desired_distance = path_desired_dist
 		$NavigationAgent2D.target_desired_distance = target_desired_dist
 		$NavigationAgent2D.target_position = get_tree().current_scene.find_child("spider_debug").global_position

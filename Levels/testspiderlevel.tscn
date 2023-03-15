@@ -23,17 +23,6 @@ position = Vector2(289, -949)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("3_kt5kb")
 
-[node name="165" type="Button" parent="CanvasLayer"]
-offset_right = 8.0
-offset_bottom = 8.0
-text = "165fps"
-
-[node name="30" type="Button" parent="CanvasLayer"]
-offset_top = 32.0
-offset_right = 50.0
-offset_bottom = 63.0
-text = "30fps"
-
 [node name="timer" type="Label" parent="CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
@@ -43,5 +32,12 @@ offset_bottom = 23.0
 grow_horizontal = 0
 text = "00:00"
 
-[connection signal="pressed" from="CanvasLayer/165" to="CanvasLayer" method="_on_165_pressed"]
-[connection signal="pressed" from="CanvasLayer/30" to="CanvasLayer" method="_on_30_pressed"]
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer"]
+offset_right = 83.0625
+offset_bottom = 31.0
+min_value = 5.0
+max_value = 300.0
+value = 165.0
+suffix = "FPS"
+
+[connection signal="value_changed" from="CanvasLayer/SpinBox" to="CanvasLayer" method="_on_spin_box_value_changed"]

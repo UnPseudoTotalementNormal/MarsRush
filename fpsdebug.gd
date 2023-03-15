@@ -1,14 +1,6 @@
 extends CanvasLayer
 var timer = 0
 
-func _on_165_pressed():
-	Engine.physics_ticks_per_second = 165
-
-
-func _on_30_pressed():
-	Engine.physics_ticks_per_second = 30
-
-
 func _physics_process(delta):
 	timer += 1 * delta
 	var format_timer = timer
@@ -26,3 +18,7 @@ func _physics_process(delta):
 	
 	
 	$timer.text = str(minutes) + ":" + str(seconds)
+
+
+func _on_spin_box_value_changed(value):
+	Engine.physics_ticks_per_second = value

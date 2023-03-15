@@ -31,7 +31,9 @@ collision_mask = 0
 script = ExtResource("1_0wvrb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegPivot1/MeshInstance2D/spiderlegcollider"]
+z_index = 1102
 shape = SubResource("RectangleShape2D_80clr")
+debug_color = Color(0.992157, 0, 0.262745, 1)
 
 [node name="testcircle" type="MeshInstance2D" parent="LegPivot1"]
 visible = false
@@ -53,7 +55,9 @@ collision_mask = 0
 script = ExtResource("1_0wvrb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LegPivot2/MeshInstance2D2/spiderlegcollider"]
+z_index = 1307
 shape = SubResource("RectangleShape2D_80clr")
+debug_color = Color(1, 0.164706, 0.592157, 1)
 
 [node name="testcircle2" type="MeshInstance2D" parent="LegPivot2"]
 visible = false

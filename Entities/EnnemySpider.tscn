@@ -193,8 +193,8 @@ mesh = SubResource("SphereMesh_0w52b")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 30.0
+avoidance_enabled = true
 radius = 64.28
-debug_enabled = true
 
 [node name="NodesForCollisionMask" type="Node2D" parent="."]
 

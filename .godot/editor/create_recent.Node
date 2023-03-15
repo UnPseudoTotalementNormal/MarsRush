@@ -1,3 +1,4 @@
+SpinBox
 Timer
 Label
 Node2D
@@ -25,9 +26,7 @@ HBoxContainer
 VSeparator
 Node
 VBoxContainer
-SpinBox
 AnimationPlayer
 HSeparator
 MarginContainer
 PanelContainer
-CenterContainer
