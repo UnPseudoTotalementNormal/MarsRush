@@ -459,13 +459,23 @@ func _shooting_with_gun(number: int):
 		var lightex: PointLight2D = Gun.find_child("Shotlight_template")
 		if lightex != null:
 			var shotlight = PointLight2D.new()
+			var arealight = PointLight2D.new()
 			shotlight.texture = lightex.texture; shotlight.offset = lightex.offset; shotlight.scale = lightex.scale; shotlight.global_position = lightex.global_position
 			shotlight.rotation = Gun.rotation - deg_to_rad(90); shotlight.energy = lightex.energy; shotlight.range_z_min = lightex.range_z_min
 			shotlight.color = lightex.color; shotlight.shadow_enabled = true; shotlight.shadow_filter_smooth = lightex.shadow_filter_smooth
 			shotlight.shadow_filter = Light2D.SHADOW_FILTER_PCF13; 
 			get_tree().current_scene.add_child(shotlight)
-			while shotlight.energy > 0:
-				shotlight.energy -= 20 * dtime
+			arealight.texture = load("res://Sprites/light/light_round.png")
+			arealight.range_z_min = lightex.range_z_min; arealight.global_position = Gun.global_position; arealight.color = lightex.color
+			arealight.shadow_enabled = true; arealight.shadow_filter_smooth = lightex.shadow_filter_smooth; arealight.energy = 0.75
+			arealight.scale = Vector2(4, 4)
+			get_tree().current_scene.add_child(arealight)
+			var timer_await = get_tree().create_timer(5, false)
+			while timer_await.time_left > 0:
+				if shotlight.energy > 0: shotlight.energy -= 20 * dtime
+				else: shotlight.energy = 0
+				if arealight.energy > 0: arealight.energy -= 10 * dtime
+				else: arealight.energy = 0
 				await get_tree().physics_frame
 			shotlight.queue_free()
 		

@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c40kbcjfgitww"]
+[gd_scene load_steps=11 format=3 uid="uid://c40kbcjfgitww"]
 
 [ext_resource type="Script" path="res://Script/SpiderEnnemy.gd" id="1_debhl"]
+[ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="2_22hms"]
 [ext_resource type="PackedScene" uid="uid://cyv7damgfuw3b" path="res://Entities/leg_scene.tscn" id="2_guob6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2y2fh"]
@@ -55,22 +56,22 @@ rotation = 3.14159
 scale = Vector2(1.25, 1.25)
 
 [node name="BigEye1" type="MeshInstance2D" parent="BodyPivot/Body/Eyes"]
-modulate = Color(3, 0, 0, 1)
+modulate = Color(100, 0, 0, 1)
 position = Vector2(1.99998, 9)
 mesh = SubResource("SphereMesh_ou7vs")
 
 [node name="BigEye2" type="MeshInstance2D" parent="BodyPivot/Body/Eyes"]
-modulate = Color(3, 0, 0, 1)
+modulate = Color(100, 0, 0, 1)
 position = Vector2(-2.00002, 9)
 mesh = SubResource("SphereMesh_ou7vs")
 
 [node name="LittleEye1" type="MeshInstance2D" parent="BodyPivot/Body/Eyes"]
-modulate = Color(3, 0, 0, 1)
+modulate = Color(100, 0, 0, 1)
 position = Vector2(-4, 5.99999)
 mesh = SubResource("SphereMesh_4nyo6")
 
 [node name="LittleEye2" type="MeshInstance2D" parent="BodyPivot/Body/Eyes"]
-modulate = Color(3, 0, 0, 1)
+modulate = Color(100, 0, 0, 1)
 position = Vector2(4, 6.00001)
 mesh = SubResource("SphereMesh_4nyo6")
 
@@ -97,6 +98,21 @@ mesh = SubResource("BoxMesh_xtdji")
 position = Vector2(0.705, 2.627)
 rotation = -0.523598
 mesh = SubResource("BoxMesh_4icu2")
+
+[node name="EyeLight" type="PointLight2D" parent="BodyPivot/Body"]
+position = Vector2(-1.448e-05, 4)
+rotation = 1.5708
+scale = Vector2(0.04, 0.04)
+color = Color(1.78, 0, 0, 1)
+range_z_min = -4096
+range_layer_min = -512
+range_layer_max = 85
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.5
+shadow_item_cull_mask = 7
+texture = ExtResource("2_22hms")
+offset = Vector2(-700, 0)
 
 [node name="Legs" type="Node2D" parent="."]
 

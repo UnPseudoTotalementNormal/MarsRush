@@ -26,6 +26,7 @@ var dtime
 @onready var Collisionshape: CollisionShape2D = $CollisionShape2D
 @onready var Normalcolmask: CharacterBody2D = $NodesForCollisionMask/NormalCol
 @onready var Grabbedcolmask: CharacterBody2D = $NodesForCollisionMask/GrabbedCol
+@onready var EyeLight: PointLight2D = find_child("EyeLight")
 
 var health_points: float = 300
 
@@ -272,6 +273,7 @@ func _body_movement():
 		$CollisionShape2D.rotation = Body.rotation + deg_to_rad(90)
 		
 		_eyes_blink()
+		_eyes_light()
 
 func _eyes_blink():
 	if not eyes_blink_awaiting:
@@ -301,6 +303,14 @@ func _eyes_blink():
 			await get_tree().physics_frame
 		await get_tree().create_timer(6, false)
 		eyes_blink_awaiting = false
+
+func _eyes_light():
+	if chasing:
+		EyeLight.scale = lerp(EyeLight.scale, Vector2(0.07, 0.05), 3 * dtime)
+		EyeLight.energy = lerp(EyeLight.energy, 1.5, 3 * dtime)
+	else:
+		EyeLight.scale = lerp(EyeLight.scale, Vector2(0.04, 0.04), 3 * dtime)
+		EyeLight.energy = lerp(EyeLight.energy, 1.0, 3 * dtime)
 
 func _prepare_kinematic_leg(attached_to_player: bool = false):
 	var half_legs = Legs.get_child_count() / 2
