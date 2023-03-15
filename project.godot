@@ -101,6 +101,9 @@ pause={
 
 [layer_names]
 
+2d_render/layer_1="world"
+2d_render/layer_2="entitie"
+2d_render/layer_3="player"
 2d_physics/layer_1="world"
 2d_physics/layer_2="player"
 2d_physics/layer_3="ennemi"

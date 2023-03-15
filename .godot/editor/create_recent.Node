@@ -1,7 +1,10 @@
+Node2D
+PointLight2D
+MeshInstance2D
+GPUParticles2D
 SpinBox
 Timer
 Label
-Node2D
 Button
 CanvasLayer
 Marker2D
@@ -14,7 +17,6 @@ LightOccluder2D
 DirectionalLight2D
 RigidBody2D
 CollisionShape2D
-MeshInstance2D
 CharacterBody2D
 NavigationAgent2D
 ColorRect
@@ -28,5 +30,3 @@ Node
 VBoxContainer
 AnimationPlayer
 HSeparator
-MarginContainer
-PanelContainer

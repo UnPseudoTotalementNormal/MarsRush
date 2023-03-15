@@ -50,6 +50,8 @@ var reached: bool = false
 var custom_reached: bool = false
 var chasing: bool = false
 
+var eyes_blink_awaiting: bool = false
+
 var spawn_position: Vector2 = Vector2.ZERO
 
 func _ready():
@@ -182,7 +184,6 @@ func _get_next_random_roam_point():
 	var min_rad: Vector2 = Vector2(spawn_position.x - roam_radius, spawn_position.y - roam_radius)
 	next_roam_point = Vector2(randf_range(min_rad.x, max_rad.x), randf_range(min_rad.y, max_rad.y))
 	$NavigationAgent2D.set_target_position(next_roam_point)
-	print(next_roam_point)
 
 func _set_velocity(velocity: Vector2 = Vector2.ZERO):
 	linear_velocity = velocity
@@ -252,7 +253,9 @@ func _check_and_brake(BrakeForce: float = 1000):
 		linear_velocity.y -= BrakeForce * sign_vel.y * dtime * (max_legs / Legs.get_child_count())
 
 func _damage(entitie):
-	if entitie.get("health_points") != null:
+	if entitie.has_method("get_damaged"):
+		entitie.get_damaged(damage * dtime)
+	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage * dtime)
 
 func _body_movement():
@@ -267,6 +270,37 @@ func _body_movement():
 		
 		Legs.rotation = Body.rotation
 		$CollisionShape2D.rotation = Body.rotation + deg_to_rad(90)
+		
+		_eyes_blink()
+
+func _eyes_blink():
+	if not eyes_blink_awaiting:
+		eyes_blink_awaiting = true
+		var eyes_number = $BodyPivot/Body/Eyes.get_child_count()
+		var eyes_speed = 5
+		while true:
+			var eyes_finished: int = 0
+			for i in $BodyPivot/Body/Eyes.get_children():
+				if i.scale.y <= 0.1:
+					eyes_finished += 1
+				else:
+					i.scale.y = lerpf(i.scale.y, 0, eyes_speed * dtime)
+			if eyes_finished == eyes_number:
+				break
+			await get_tree().physics_frame
+		await get_tree().create_timer(0.1, false)
+		while true:
+			var eyes_finished: int = 0
+			for i in $BodyPivot/Body/Eyes.get_children():
+				if is_equal_approx(i.scale.y, 1):
+					eyes_finished += 1
+				else:
+					i.scale.y = lerpf(i.scale.y, 1, eyes_speed * dtime)
+			if eyes_finished == eyes_number:
+				break
+			await get_tree().physics_frame
+		await get_tree().create_timer(6, false)
+		eyes_blink_awaiting = false
 
 func _prepare_kinematic_leg(attached_to_player: bool = false):
 	var half_legs = Legs.get_child_count() / 2

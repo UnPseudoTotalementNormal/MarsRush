@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7ah5w0dnip71"
-path="res://.godot/imported/lightsource.png-66bc91bc00df1da7ff3480aef5b4bab8.ctex"
+uid="uid://b0bqbjia5d7rd"
+path="res://.godot/imported/light_round.png-195b90fb83009402dbde4ddbb88d645e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/lightsource.png"
-dest_files=["res://.godot/imported/lightsource.png-66bc91bc00df1da7ff3480aef5b4bab8.ctex"]
+source_file="res://Sprites/light/light_round.png"
+dest_files=["res://.godot/imported/light_round.png-195b90fb83009402dbde4ddbb88d645e.ctex"]
 
 [params]
 

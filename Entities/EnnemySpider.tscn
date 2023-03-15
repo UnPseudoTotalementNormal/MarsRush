@@ -50,7 +50,9 @@ self_modulate = Color(0, 0.505882, 0, 1)
 mesh = SubResource("CapsuleMesh_6g8s0")
 
 [node name="Eyes" type="Node2D" parent="BodyPivot/Body"]
+position = Vector2(-1.19209e-05, 2)
 rotation = 3.14159
+scale = Vector2(1.25, 1.25)
 
 [node name="BigEye1" type="MeshInstance2D" parent="BodyPivot/Body/Eyes"]
 modulate = Color(3, 0, 0, 1)

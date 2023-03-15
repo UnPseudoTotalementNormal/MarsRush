@@ -33,6 +33,8 @@ func _physics_process(delta):
 					get_collider(i)._camera_shake(0.1, 5, 0.5)
 
 func _damage(entitie):
-	if entitie.get("health_points") != null:
+	if entitie.has_method("get_damaged"):
+		entitie.get_damaged(damage)
+	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage)
 		

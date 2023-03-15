@@ -5,6 +5,7 @@ var shoot_limit = preload("res://Entities/shoot_limit.tscn")
 var gun_spawn = preload("res://Entities/player_gun.tscn")
 var dpart = preload("res://Entities/death_part.tscn")
 var foampart = preload("res://Particles/cloudparticles.tscn")
+var bloodpart = preload("res://Particles/blood_particles.tscn")
 var dtime: float = 0.0
 
 var camera_follow_player = true
@@ -224,6 +225,15 @@ func _health_regen():
 		else:
 			health_points += 10 * dtime
 
+func get_damaged(damage):
+	health_points -= damage
+	var blood = bloodpart.instantiate()
+	blood.global_position = global_position
+	blood.one_shot = true
+	blood.amount = damage
+#	get_tree().current_scene.add_child(blood)
+	
+
 func _health_hud():
 	$HUD/Health.value = health_points
 	if health_points != max_health:
@@ -247,12 +257,13 @@ func _death():
 
 func _oxygen():
 	if oxygen_points <= 0:
-		_death()
+		health_points -= 20 * dtime
 	if oxygen_points < 100:
 		$HUD/Oxygen.visible = true
 	else:
 		$HUD/Oxygen.visible = false
 	$HUD/Oxygen.value = oxygen_points
+	$HUD/Oxygen.visible = false          #DISABLE OXYGEN HUD
 	
 	if previous_oxygen_point > oxygen_points:
 		$Oxygen_regen.start(oxygen_regen_wait)
@@ -265,6 +276,9 @@ func _oxygen():
 				oxygen_points = max_oxygen
 			else:
 				oxygen_points += 10 * dtime
+	
+	var treshold = (max_oxygen - oxygen_points) / (max_oxygen - 0) * (0.75 - 0.25) + 0.25
+	$Mesh/OxygenBottle/Oxygen.material.set_shader_parameter("threshold", treshold)
 	
 	previous_oxygen_point = oxygen_points
 
@@ -445,13 +459,13 @@ func _shooting_with_gun(number: int):
 		var lightex: PointLight2D = Gun.find_child("Shotlight_template")
 		if lightex != null:
 			var shotlight = PointLight2D.new()
-			shotlight.texture = lightex.texture; shotlight.offset = lightex.offset; shotlight.scale = lightex.scale; shotlight.position = lightex.position
-			shotlight.rotation = lightex.rotation; shotlight.energy = lightex.energy; shotlight.range_z_min = lightex.range_z_min
+			shotlight.texture = lightex.texture; shotlight.offset = lightex.offset; shotlight.scale = lightex.scale; shotlight.global_position = lightex.global_position
+			shotlight.rotation = Gun.rotation - deg_to_rad(90); shotlight.energy = lightex.energy; shotlight.range_z_min = lightex.range_z_min
 			shotlight.color = lightex.color; shotlight.shadow_enabled = true; shotlight.shadow_filter_smooth = lightex.shadow_filter_smooth
 			shotlight.shadow_filter = Light2D.SHADOW_FILTER_PCF13; 
-			gun_canon.add_child(shotlight)
+			get_tree().current_scene.add_child(shotlight)
 			while shotlight.energy > 0:
-				shotlight.energy -= 30 * dtime
+				shotlight.energy -= 20 * dtime
 				await get_tree().physics_frame
 			shotlight.queue_free()
 		
@@ -569,6 +583,8 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 func _camera_shake(duration: float = 1, shake_size: float = 10, force: float = 0.5):
 	var cam = get_viewport().get_camera_2d()
 	var timer = get_tree().create_timer(duration)
+	if cam == null:
+		return
 	while timer.time_left > 0:
 		randomize()
 		var random_x = randf_range(-shake_size, shake_size)

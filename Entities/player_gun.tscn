@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://duuont6y787gu"]
+[gd_scene load_steps=10 format=3 uid="uid://bplgf35cxndk3"]
 
 [ext_resource type="Texture2D" uid="uid://by1ibugk541o7" path="res://Sprites/Shotgun.png" id="1_lepio"]
 [ext_resource type="Texture2D" uid="uid://bhs67afckqsy1" path="res://Sprites/replusegun1.png" id="1_ya8up"]
 [ext_resource type="Texture2D" uid="uid://6cehb4jhupnj" path="res://Sprites/airhorn.png" id="3_2rgqj"]
-[ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/lightsource.png" id="3_wkdq2"]
 [ext_resource type="Texture2D" uid="uid://dtggaynfdfd0c" path="res://Sprites/green.png" id="4_22k1l"]
+[ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="4_u75on"]
 [ext_resource type="Texture2D" uid="uid://vxo5xs8dw86q" path="res://Sprites/Background/Deco_labo_4.png" id="5_01m83"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ofjyv"]
@@ -70,7 +70,7 @@ energy = 2.77
 range_z_min = -4096
 shadow_enabled = true
 shadow_filter = 2
-texture = ExtResource("3_wkdq2")
+texture = ExtResource("4_u75on")
 offset = Vector2(0, 625)
 
 [node name="Green" type="Sprite2D" parent="."]

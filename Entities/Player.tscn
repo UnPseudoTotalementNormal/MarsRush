@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=3 uid="uid://cgio6fe71m6xx"]
+[gd_scene load_steps=35 format=3 uid="uid://cgio6fe71m6xx"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
+[ext_resource type="Shader" path="res://Shaders/ColorBar.gdshader" id="2_3h30r"]
 [ext_resource type="Script" path="res://test.gd" id="2_10bbk"]
 [ext_resource type="Texture2D" uid="uid://c2v2afrhpm4mb" path="res://Sprites/Fire-Extinguisher-Transparent.png" id="3_f00sb"]
 [ext_resource type="Texture2D" uid="uid://dw5guo5np7r80" path="res://Sprites/shotgun_gauge.png" id="3_p2yy7"]
@@ -29,6 +30,12 @@ height = 25.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_663kx"]
 radius = 3.0
 height = 11.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bpmg0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uqw4e"]
+shader = ExtResource("2_3h30r")
+shader_parameter/threshold = 0.75
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rdf2j"]
 polygon = PackedVector2Array(-7.408, -5, -7.426, 5.14, -7.175, 7, -6.238, 9, -4.336, 11, -2, 12.062, -0.005, 12.491, 2, 12.17, 4, 11.282, 6, 9.345, 7.111, 7, 7.437, 5, 7.409, -5, 7, -7.239, 6, -9.317, 4, -11.275, 2, -12.205, 0, -12.507, -2, -12.197, -4, -11.301, -6, -9.377, -7, -7.557)
@@ -126,10 +133,25 @@ position = Vector2(0, -6)
 rotation = 1.57079
 mesh = SubResource("CapsuleMesh_663kx")
 
+[node name="OxygenBottle" type="MeshInstance2D" parent="Mesh"]
+self_modulate = Color(0.678431, 0.262745, 0, 1)
+show_behind_parent = true
+position = Vector2(-8.45346, 0.0175345)
+rotation = 3.14159
+scale = Vector2(5.90691, 9.22739)
+mesh = SubResource("CapsuleMesh_bpmg0")
+
+[node name="Oxygen" type="MeshInstance2D" parent="Mesh/OxygenBottle"]
+self_modulate = Color(0, 0.509804, 1, 1)
+material = SubResource("ShaderMaterial_uqw4e")
+scale = Vector2(1, 1)
+mesh = SubResource("CapsuleMesh_bpmg0")
+
 [node name="bodylight" type="LightOccluder2D" parent="Mesh"]
 self_modulate = Color(1, 1, 1, 0)
 occluder = SubResource("OccluderPolygon2D_rdf2j")
 sdf_collision = false
+occluder_light_mask = 4
 
 [node name="Shoot" type="RayCast2D" parent="."]
 visible = false
@@ -155,6 +177,7 @@ mesh = SubResource("BoxMesh_ymmod")
 
 [node name="leglight" type="LightOccluder2D" parent="RightLeg"]
 occluder = SubResource("OccluderPolygon2D_8mu2s")
+occluder_light_mask = 4
 
 [node name="LeftLeg" type="Node2D" parent="."]
 modulate = Color(0.819608, 0.333333, 0.0196078, 1)
@@ -168,11 +191,12 @@ mesh = SubResource("BoxMesh_ymmod")
 
 [node name="leglight" type="LightOccluder2D" parent="LeftLeg"]
 occluder = SubResource("OccluderPolygon2D_8mu2s")
+occluder_light_mask = 4
 
 [node name="LeftArm" type="Node2D" parent="."]
 self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)
 position = Vector2(-7, -1)
-rotation = 0.383972
+rotation = 0.523598
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="LeftArm"]
 self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)
@@ -181,6 +205,7 @@ mesh = SubResource("BoxMesh_kuhfi")
 
 [node name="armlight" type="LightOccluder2D" parent="LeftArm"]
 occluder = SubResource("OccluderPolygon2D_h83ut")
+occluder_light_mask = 4
 
 [node name="extinguisher" type="Sprite2D" parent="LeftArm"]
 position = Vector2(-0.33728, 9.84308)
@@ -214,6 +239,7 @@ position = Vector2(0, 11)
 position = Vector2(0, -1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
+layer = 89
 
 [node name="PauseMenu" parent="HUD" instance=ExtResource("4_htwqj")]
 z_index = 4096
