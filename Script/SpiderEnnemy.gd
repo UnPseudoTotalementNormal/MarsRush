@@ -4,8 +4,8 @@ var dtime
 @export var enable_ia: bool = true ##false = follow mouse
 @export var disable_ia_and_debug: bool = false
 @export var max_move_speed_lerp: float = 10000
-@export var max_chase_move_speed: float = 200
-@export var max_roam_move_speed: float = 100
+@export var max_chase_move_speed: float = 275
+@export var max_roam_move_speed: float = 75
 @export var legs_length: float = 25
 @export var legs_width: float = 2
 @export var damage: float = 15
