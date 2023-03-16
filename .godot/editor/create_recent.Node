@@ -1,8 +1,8 @@
-DirectionalLight2D
-PointLight2D
 Node2D
-MeshInstance2D
+PointLight2D
 GPUParticles2D
+MeshInstance2D
+DirectionalLight2D
 SpinBox
 Timer
 Label

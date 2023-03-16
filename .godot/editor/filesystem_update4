@@ -17,3 +17,4 @@ res://Particles/blood_particles.tscn
 res://Script/Explosion.gd
 res://Shaders/ColorBar.gdshader
 res://Entities/ennemi.tscn
+res://Entities/decoration/light.tscn

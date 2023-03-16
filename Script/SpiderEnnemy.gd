@@ -255,7 +255,7 @@ func _check_and_brake(BrakeForce: float = 1000):
 
 func _damage(entitie):
 	if entitie.has_method("get_damaged"):
-		entitie.get_damaged(damage * dtime)
+		entitie.get_damaged(damage * dtime, false)
 	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage * dtime)
 
@@ -365,9 +365,8 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 		_leg_going_to_blocked_position(kinematicleg, 20)
 	elif kinematicleg in legsblocked and kinematicleg in legsgoingtoblockedpos:    #if legs are attached but not in place rn
 		_leg_going_to_blocked_position(kinematicleg, 10)
-	else:   #if legs not attached at all
+	else:                                                                        #if legs not attached at all
 		legpivot2.global_position = lerp(legpivot2.global_position, idle_pos.global_position, 5 * dtime)
-		pass
 	
 	$MARKER.global_position = legpivot2.global_position
 	anglediffgeter.global_position = legpivot2.global_position

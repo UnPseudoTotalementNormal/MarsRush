@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://h1x6bbeddqrc"]
+
+[ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="1_4bvp3"]
+[ext_resource type="Texture2D" uid="uid://b0bqbjia5d7rd" path="res://Sprites/light/light_round.png" id="2_383wj"]
+
+[node name="Light" type="Node2D"]
+
+[node name="frontlight" type="PointLight2D" parent="."]
+scale = Vector2(0.065, 0.12)
+energy = 1.13
+range_z_min = -3708
+range_item_cull_mask = 7
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.5
+shadow_item_cull_mask = 7
+texture = ExtResource("1_4bvp3")
+offset = Vector2(0, 650)
+
+[node name="arealight" type="PointLight2D" parent="."]
+energy = 0.48
+range_z_min = -3670
+range_z_max = 0
+range_item_cull_mask = 7
+shadow_enabled = true
+texture = ExtResource("2_383wj")
+texture_scale = 1.21

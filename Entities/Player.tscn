@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cgio6fe71m6xx"]
+[gd_scene load_steps=37 format=3 uid="uid://cgio6fe71m6xx"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
 [ext_resource type="Shader" path="res://Shaders/ColorBar.gdshader" id="2_3h30r"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b0bqbjia5d7rd" path="res://Sprites/light/light_round.png" id="2_ga050"]
 [ext_resource type="Texture2D" uid="uid://c2v2afrhpm4mb" path="res://Sprites/Fire-Extinguisher-Transparent.png" id="3_f00sb"]
 [ext_resource type="Texture2D" uid="uid://dw5guo5np7r80" path="res://Sprites/shotgun_gauge.png" id="3_p2yy7"]
+[ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="3_wyvew"]
 [ext_resource type="PackedScene" uid="uid://ueskkkqk5qvb" path="res://Entities/pause_menu.tscn" id="4_htwqj"]
 [ext_resource type="Texture2D" uid="uid://qf514p11c2ow" path="res://Sprites/reload_circle.png" id="4_y80qc"]
 [ext_resource type="Texture2D" uid="uid://bdoq58p4o0siv" path="res://Sprites/oxygen_bar.png" id="5_ynef4"]
@@ -100,7 +101,10 @@ gravity_scale = 0.0
 can_sleep = false
 script = ExtResource("1_3r82c")
 
-[node name="CostumeLight" type="PointLight2D" parent="."]
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="CostumeLight" type="PointLight2D" parent="Lights"]
+position = Vector2(0, -11)
 energy = 0.15
 range_z_min = -3737
 shadow_enabled = true
@@ -108,6 +112,19 @@ shadow_filter = 2
 shadow_filter_smooth = 0.9
 texture = ExtResource("2_ga050")
 texture_scale = 2.0
+
+[node name="ForeheadLight" type="PointLight2D" parent="Lights"]
+visible = false
+position = Vector2(0, -10)
+rotation = -1.57079
+scale = Vector2(0.048, 0.149)
+energy = 0.34
+range_z_min = -4096
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.1
+texture = ExtResource("3_wyvew")
+offset = Vector2(0, 600)
 
 [node name="MousePivot" type="Node2D" parent="."]
 top_level = true
@@ -207,7 +224,7 @@ occluder_light_mask = 4
 [node name="LeftArm" type="Node2D" parent="."]
 self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)
 position = Vector2(-7, -1)
-rotation = 0.523598
+rotation = -0.523598
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="LeftArm"]
 self_modulate = Color(0.819608, 0.333333, 0.0196078, 1)

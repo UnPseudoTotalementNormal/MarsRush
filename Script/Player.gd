@@ -47,6 +47,9 @@ var oxygen_points: float = 100
 var in_space: bool = false
 var dead = false
 
+var damage_before_blood: float = 1
+var node_bin: Array = []
+
 var Gun: CharacterBody2D
 var gun_lim: CharacterBody2D
 var gun_reload_hud_tween: Tween
@@ -88,7 +91,6 @@ func _mobile():
 	if leftclickshootevent.size() > 0:
 		InputMap.action_erase_event("shoot", leftclickshootevent[0])
 
-		
 func _search_gun():
 	var search_gun = get_tree().current_scene.find_child("Player_Gun", true, false)
 	if search_gun != null:
@@ -211,9 +213,6 @@ func _physics_process(delta):
 	
 	if health_points <= 0 or Input.is_action_just_pressed("restart"):
 		_death()
-	
-	
-	
 
 func _health_regen():
 	if previous_health_point > health_points:
@@ -225,14 +224,29 @@ func _health_regen():
 		else:
 			health_points += 10 * dtime
 
-func get_damaged(damage):
+func get_damaged(damage, once: bool = true):
 	health_points -= damage
-	var blood = bloodpart.instantiate()
-	blood.global_position = global_position
-	blood.one_shot = true
-	blood.amount = damage
-#	get_tree().current_scene.add_child(blood)
-	
+	if not once:
+		damage_before_blood -= damage
+		if damage_before_blood <= 0:
+			damage_before_blood = 1.0
+			var blood = bloodpart.instantiate()
+			blood.global_position = global_position
+			blood.one_shot = true
+			blood.amount = 1
+			get_tree().current_scene.add_child(blood)
+			node_bin.append(blood)
+			await get_tree().create_timer(blood.lifetime, false).timeout
+			blood.queue_free()
+	else:
+		var blood = bloodpart.instantiate()
+		blood.global_position = global_position
+		blood.one_shot = true
+		blood.amount = damage
+		get_tree().current_scene.add_child(blood)
+		node_bin.append(blood)
+		await get_tree().create_timer(blood.lifetime, false).timeout
+		blood.queue_free()
 
 func _health_hud():
 	$HUD/Health.value = health_points
@@ -240,7 +254,6 @@ func _health_hud():
 		$HUD/Health.visible = true
 	else:
 		$HUD/Health.visible = false
-
 
 func _death():
 	dead = true
@@ -252,8 +265,10 @@ func _death():
 	get_tree().current_scene.add_child(deathpart)
 	if get_tree().current_scene.has_method("_respawn"):
 		get_tree().current_scene._respawn(1.5)
+		for i in node_bin:
+			if i != null:
+				i.queue_free()
 		queue_free()
-
 
 func _oxygen():
 	if oxygen_points <= 0:
@@ -282,14 +297,11 @@ func _oxygen():
 	
 	previous_oxygen_point = oxygen_points
 
-
-
 func _gun_shoot_limit():
 	if gun_lim != null:
 		var limrange = gun_shoot_range / 10
 		gun_lim.get_child(0).scale = Vector2(limrange, limrange)
 		gun_lim.global_position = Gun.global_position
-	
 
 func _go_opposite_of_mouse(force):
 	apply_central_impulse((global_position - mousemarker.global_position).normalized() * force)
@@ -307,7 +319,6 @@ func _gun_position():
 		else:
 			$Pivot/Gun_pos.position.x = gun_move_range + 10
 	Gun.look_at(mousemarker.global_position)
-	
 
 func _gun_velocity():
 	var gun_vector = $Pivot/Gun_pos.global_position - Gun.global_position
@@ -471,15 +482,16 @@ func _shooting_with_gun(number: int):
 			arealight.scale = Vector2(4, 4)
 			get_tree().current_scene.add_child(arealight)
 			var timer_await = get_tree().create_timer(5, false)
+			node_bin.append(shotlight)
+			node_bin.append(arealight)
 			while timer_await.time_left > 0:
 				if shotlight.energy > 0: shotlight.energy -= 20 * dtime
 				else: shotlight.energy = 0
-				if arealight.energy > 0: arealight.energy -= 10 * dtime
+				if arealight.energy > 0: arealight.energy -= 2 * dtime
 				else: arealight.energy = 0
 				await get_tree().physics_frame
 			shotlight.queue_free()
-		
-
+			arealight.queue_free()
 
 func _gun_sprite():
 	var Gunsprite = Gun.find_child("gunsprite")
@@ -505,8 +517,6 @@ func _gun_sprite():
 		$LeftArm/extinguisher_line.visible = true
 	elif equipped == "airhorn":
 		airhorn.visible = true
-		
-		
 
 func _gun_hud():
 	if equipped == "gun":
@@ -559,9 +569,6 @@ func _on_gun_reload_timeout():
 		SoundSystem.play_sound("res://sound/playeronly/shotgun reload finished.mp3", "shotgun", 0.05, Gun.global_position)
 
 
-
-
-
 func _rotate_camera():
 	var cam = get_viewport().get_camera_2d()
 	cam.rotation_degrees = lerp(cam.rotation_degrees, -linear_velocity.x/7, 0.01 * dtime)
@@ -583,12 +590,14 @@ func _body_movement():
 		$LeftArm/extinguisher_line.mesh.size.x = ($LeftArm/extinguisher_line.global_position - Gun.global_position).length()*2
 		$LeftArm/extinguisher_line.look_at(Gun.global_position)
 	
-
+	if Input.is_action_just_pressed("flashlight"):
+		$Lights/ForeheadLight.enabled = !$Lights/ForeheadLight.enabled
+	$Lights/ForeheadLight.look_at(get_global_mouse_position())
+	$Lights/ForeheadLight.rotation_degrees -= 90
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	get_viewport().get_camera_2d().global_position = global_position
 	camera_follow_player = true
-
 
 func _camera_shake(duration: float = 1, shake_size: float = 10, force: float = 0.5):
 	var cam = get_viewport().get_camera_2d()
@@ -603,9 +612,6 @@ func _camera_shake(duration: float = 1, shake_size: float = 10, force: float = 0
 #		cam.offset = Vector2(random_x, random_y)
 		await get_tree().physics_frame
 	cam.offset = Vector2.ZERO
-		
-		
-
 
 func _camera_follow(follow):
 	if cam_follow_prev_pos == Vector2.ZERO:
@@ -635,7 +641,6 @@ func _draw_text(text):
 	for i in len(text) + 1:
 		$HUD/Text.visible_characters += 1
 		await get_tree().create_timer(0.025, false).timeout
-	
 
 func _erase_text():
 	if $HUD/Text.visible_characters >= len($HUD/Text.text):
@@ -645,24 +650,15 @@ func _erase_text():
 		await get_tree().create_timer(2.5, false).timeout
 		_erase_text()
 
-
 func _on_player_area_detector_area_entered(area):
 	var areaname = area.get_parent().name
 	pass
-	
-
 
 func _on_player_area_detector_area_exited(area):
 	var areaname = area.get_parent().name
 	pass
 
-
-
-
-
-
-
-
+#####MOBILE FUNCTION#####
 func _on_nextweapon_pressed():
 	_equip_w_mouse_wheel()
 
@@ -684,3 +680,4 @@ func _on_shoot_released():
 
 func _on_pause_pressed():
 	$HUD/PauseMenu.pause()
+########################
