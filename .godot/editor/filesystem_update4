@@ -15,3 +15,5 @@ res://Particles/blood_particles.tscn
 res://Entities/ennemi.tscn
 res://Entities/decoration/light.tscn
 res://Script/Player.gd
+res://Script/PauseMenu.gd
+res://Entities/Pause.tscn

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cgio6fe71m6xx"]
+[gd_scene load_steps=36 format=3 uid="uid://cgio6fe71m6xx"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
 [ext_resource type="Shader" path="res://Shaders/ColorBar.gdshader" id="2_3h30r"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://c2v2afrhpm4mb" path="res://Sprites/Fire-Extinguisher-Transparent.png" id="3_f00sb"]
 [ext_resource type="Texture2D" uid="uid://dw5guo5np7r80" path="res://Sprites/shotgun_gauge.png" id="3_p2yy7"]
 [ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="3_wyvew"]
-[ext_resource type="PackedScene" uid="uid://ueskkkqk5qvb" path="res://Entities/pause_menu.tscn" id="4_htwqj"]
 [ext_resource type="Texture2D" uid="uid://qf514p11c2ow" path="res://Sprites/reload_circle.png" id="4_y80qc"]
 [ext_resource type="Texture2D" uid="uid://bdoq58p4o0siv" path="res://Sprites/oxygen_bar.png" id="5_ynef4"]
 [ext_resource type="Texture2D" uid="uid://dl75ko5bk7jav" path="res://Sprites/oxygen_bar_over.png" id="6_3e7vd"]
@@ -268,9 +267,6 @@ position = Vector2(0, -1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 89
-
-[node name="PauseMenu" parent="HUD" instance=ExtResource("4_htwqj")]
-z_index = 4096
 
 [node name="Ammo" type="Control" parent="HUD"]
 layout_mode = 3

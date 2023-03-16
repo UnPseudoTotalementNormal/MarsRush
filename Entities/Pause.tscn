@@ -1,10 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://ueskkkqk5qvb"]
+[gd_scene load_steps=9 format=3 uid="uid://ccvph318rjdyw"]
 
-[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="1_f8v88"]
-[ext_resource type="Script" path="res://Script/PauseMenu.gd" id="2_mtivb"]
+[ext_resource type="Shader" path="res://Shaders/blur.gdshader" id="1_7e16j"]
+[ext_resource type="Script" path="res://Script/PauseMenu.gd" id="2_6gkq5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvoxy"]
-shader = ExtResource("1_f8v88")
+shader = ExtResource("1_7e16j")
 shader_parameter/blur = 1.0
 shader_parameter/brightness = 0.5
 
@@ -149,7 +149,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_mtivb")
+script = ExtResource("2_6gkq5")
 
 [node name="CenterContainer" type="CenterContainer" parent="PauseMenu"]
 layout_mode = 1

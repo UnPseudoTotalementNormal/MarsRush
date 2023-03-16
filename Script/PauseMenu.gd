@@ -20,6 +20,14 @@ extends ColorRect
 
 
 
+func _input(event):
+	if event.is_action_pressed("pause"):
+		if visible:
+			unpause()
+		else:
+			pause()
+
+
 func _ready():
 	visible = false
 	continue_button.pressed.connect(unpause)
@@ -43,6 +51,9 @@ func unpause():
 	visible = false
 
 func pause():
+	var cam = get_viewport().get_camera_2d()
+#	if cam:
+#		global_position = cam.global_position
 	animator.play("Pause")
 	get_tree().paused = true
 	visible = true

@@ -1,3 +1,4 @@
+CanvasLayer
 Node2D
 PointLight2D
 GPUParticles2D
@@ -7,7 +8,6 @@ SpinBox
 Timer
 Label
 Button
-CanvasLayer
 Marker2D
 RayCast2D
 ShapeCast2D

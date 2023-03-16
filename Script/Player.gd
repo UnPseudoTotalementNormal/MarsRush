@@ -109,9 +109,6 @@ func _input(event):
 	if mobile:
 		return
 	
-	if event.is_action_pressed("pause"):
-		$HUD/PauseMenu.pause()
-	
 	if event is InputEventKey:
 		if not event.echo and event.is_pressed():
 			if event.physical_keycode >= 48 and event.physical_keycode <= 57:
@@ -680,5 +677,5 @@ func _on_shoot_released():
 		_ungrab_with_hand()
 
 func _on_pause_pressed():
-	$HUD/PauseMenu.pause()
+	PauseMenu.pause()
 ########################
