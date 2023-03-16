@@ -17,3 +17,5 @@ res://Entities/decoration/light.tscn
 res://Script/Player.gd
 res://Script/PauseMenu.gd
 res://Entities/Pause.tscn
+res://Script/Dialogue_File.gd
+res://Entities/dialogue_file.tscn
