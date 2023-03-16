@@ -113,18 +113,17 @@ texture = ExtResource("2_ga050")
 texture_scale = 2.0
 
 [node name="ForeheadLight" type="PointLight2D" parent="Lights"]
-visible = false
 position = Vector2(0, -10)
 rotation = -1.57079
-scale = Vector2(0.048, 0.149)
+scale = Vector2(0.063, 0.194)
 enabled = false
-energy = 0.34
+energy = 0.4
 range_z_min = -4096
 shadow_enabled = true
 shadow_filter = 2
 shadow_filter_smooth = 1.1
 texture = ExtResource("3_wyvew")
-offset = Vector2(0, 600)
+offset = Vector2(0, 580)
 
 [node name="MousePivot" type="Node2D" parent="."]
 top_level = true
