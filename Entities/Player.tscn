@@ -118,6 +118,7 @@ visible = false
 position = Vector2(0, -10)
 rotation = -1.57079
 scale = Vector2(0.048, 0.149)
+enabled = false
 energy = 0.34
 range_z_min = -4096
 shadow_enabled = true
@@ -172,7 +173,6 @@ mesh = SubResource("CapsuleMesh_bpmg0")
 [node name="Oxygen" type="MeshInstance2D" parent="Mesh/OxygenBottle"]
 self_modulate = Color(0, 0.509804, 1, 1)
 material = SubResource("ShaderMaterial_uqw4e")
-scale = Vector2(1, 1)
 mesh = SubResource("CapsuleMesh_bpmg0")
 
 [node name="bodylight" type="LightOccluder2D" parent="Mesh"]

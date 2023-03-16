@@ -592,6 +592,7 @@ func _body_movement():
 	
 	if Input.is_action_just_pressed("flashlight"):
 		$Lights/ForeheadLight.enabled = !$Lights/ForeheadLight.enabled
+		$Lights/ForeheadLight.visible = $Lights/ForeheadLight.enabled
 	$Lights/ForeheadLight.look_at(get_global_mouse_position())
 	$Lights/ForeheadLight.rotation_degrees -= 90
 

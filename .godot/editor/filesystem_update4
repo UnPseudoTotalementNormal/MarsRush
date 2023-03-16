@@ -10,11 +10,8 @@ res://Levels/testspiderlevel.tscn
 res://Entities/EnnemySpider.tscn
 res://Entities/leg_scene.tscn
 res://Entities/leg_rigid_body.tscn
-res://Script/SpiderEnnemy.gd
-res://Script/Player.gd
 res://Particles/bomb_particles.tscn
 res://Particles/blood_particles.tscn
-res://Script/Explosion.gd
-res://Shaders/ColorBar.gdshader
 res://Entities/ennemi.tscn
 res://Entities/decoration/light.tscn
+res://Script/Player.gd
