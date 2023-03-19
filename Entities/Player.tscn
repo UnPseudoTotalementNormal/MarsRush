@@ -67,7 +67,7 @@ size = Vector3(2, 10, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_08pap"]
 shader = ExtResource("12_6y563")
-shader_parameter/levels = 23
+shader_parameter/levels = 100
 shader_parameter/spread = 0.01
 
 [sub_resource type="Shader" id="Shader_dc2e8"]
@@ -152,8 +152,8 @@ shader_parameter/opacity = 0.089
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ytnw"]
 shader = ExtResource("8_52s6f")
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.5
+shader_parameter/vignette_intensity = 0.12
+shader_parameter/vignette_opacity = 0.468
 shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nleax"]
@@ -557,6 +557,10 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAreaDetector"]
 shape = SubResource("RectangleShape2D_tbqg3")
+
+[node name="WallDetector" type="RayCast2D" parent="."]
+top_level = true
+target_position = Vector2(20, 0)
 
 [connection signal="pressed" from="HUD/TouchScreensButtons/shoot" to="." method="_on_shoot_pressed"]
 [connection signal="released" from="HUD/TouchScreensButtons/shoot" to="." method="_on_shoot_released"]

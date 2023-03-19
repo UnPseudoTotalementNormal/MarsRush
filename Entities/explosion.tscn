@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgqbau2b38dg"]
+[gd_scene load_steps=5 format=3 uid="uid://bgqbau2b38dg"]
 
 [ext_resource type="Script" path="res://Script/Explosion.gd" id="1_lfa3v"]
+[ext_resource type="Texture2D" uid="uid://b0bqbjia5d7rd" path="res://Sprites/light/light_round.png" id="2_pqrm1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ey3cb"]
 radius = 30.0
@@ -25,3 +26,24 @@ collision_mask = 2
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 modulate = Color(0.627451, 0, 0, 0.584314)
 mesh = SubResource("SphereMesh_wq414")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+z_index = -256
+offset_left = -122.0
+offset_top = -113.0
+offset_right = 125.0
+offset_bottom = 134.0
+color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0, 0, 1)
+energy = 2.9
+range_z_min = -4096
+range_layer_min = -33
+range_layer_max = 28
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 0.1
+texture = ExtResource("2_pqrm1")
+texture_scale = 2.96

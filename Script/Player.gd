@@ -48,7 +48,7 @@ var in_space: bool = false
 var dead = false
 
 var damage_before_blood: float = 1
-var node_bin: Array = []
+var node_bin: Array = []   #instantiated nodes that should be deleted when .queue_free()
 
 var Gun: CharacterBody2D
 var gun_lim: CharacterBody2D
@@ -56,6 +56,8 @@ var gun_reload_hud_tween: Tween
 var old_gun_vel: Vector2 = Vector2.ZERO #BEFORE IMPACT
 var test_marker: MeshInstance2D = null
 var grabjoint: PinJoint2D = null
+
+var already_collided_point = [] #for _collision_particles()
 
 @onready var rleg = $RightLeg
 @onready var lleg = $LeftLeg
@@ -168,6 +170,7 @@ func _mouse_system():
 func _physics_process(delta):
 	dtime = delta
 	SoundSystem.space_audio = in_space
+	
 	if dead:
 		return
 	_mouse_system()
@@ -205,6 +208,7 @@ func _physics_process(delta):
 	_health_hud()
 	_health_regen()
 	_body_movement() #visual only
+	_collision_particles()
 	if camera_follow_player and get_viewport().get_camera_2d() != null:
 		_camera_follow(self)
 	
@@ -592,6 +596,42 @@ func _body_movement():
 		$Lights/ForeheadLight.visible = $Lights/ForeheadLight.enabled
 	$Lights/ForeheadLight.look_at(get_global_mouse_position())
 	$Lights/ForeheadLight.rotation_degrees -= 90
+
+func _collision_particles():  #spawn particles when you collide with a wall
+	var get_collision = move_and_collide(linear_velocity/50, true)
+	var speed_min_spawnpart = 60
+	if linear_velocity.length() >= speed_min_spawnpart:
+		if get_collision:
+			var collid_pos = get_collision.get_position()
+			var raycast = find_child("WallDetector")
+			raycast.global_position = global_position
+			raycast.look_at(collid_pos)
+			raycast.force_raycast_update()
+			var collid_norm = raycast.get_collision_normal()
+			
+			if already_collided_point.size() > 0: #verif pour qu'il n'en y ai pas pleins au même endroit
+				for k in already_collided_point:
+					var diff = collid_pos - k
+					var difflen = diff.length()
+					var treshold = 15
+					if difflen < treshold:
+						return
+			already_collided_point.append(collid_pos)
+			
+			for i in range(1, 3):  #pour qu'il y ait 2 particules de sens opposé
+				var collpart = load("res://Particles/wall_dust.tscn").instantiate()
+				collpart.modulate.a *= 0.15
+				collpart.global_position = collid_pos
+				collpart.one_shot = true
+				if i == 1:
+					collpart.process_material.direction = Vector3(collid_norm.y, collid_norm.x, 0)
+				elif i == 2:
+					collpart.process_material.direction = Vector3(-collid_norm.y, -collid_norm.x, 0)
+				print(collpart.process_material.direction)
+				get_tree().current_scene.add_child(collpart)
+				await get_tree().physics_frame
+			await get_tree().create_timer(1, false).timeout
+			already_collided_point.pop_at(0)
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	get_viewport().get_camera_2d().global_position = global_position

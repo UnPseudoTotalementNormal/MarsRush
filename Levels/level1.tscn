@@ -559,6 +559,9 @@ rotation = 5.75958
 position = Vector2(3, 928)
 rotation = 1.57079
 
+[node name="Ennemi31" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+position = Vector2(-125, -207)
+
 [node name="Text" type="Node2D" parent="NavigationRegion2D"]
 visible = false
 

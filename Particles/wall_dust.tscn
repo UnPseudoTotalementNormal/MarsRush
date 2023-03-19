@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://v2ns2xelepyf"]
+
+[ext_resource type="Texture2D" uid="uid://dxbyvwku7xjid" path="res://Sprites/foam part.png" id="1_w7dw2"]
+
+[sub_resource type="Gradient" id="Gradient_wt335"]
+offsets = PackedFloat32Array(0, 0.181818, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_03i78"]
+gradient = SubResource("Gradient_wt335")
+
+[sub_resource type="Curve" id="Curve_42gij"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0742358, 65.4545), -300.707, -300.707, 0, 0, Vector2(0.733624, 11.8182), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_d057y"]
+curve = SubResource("Curve_42gij")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sarsy"]
+particle_flag_disable_z = true
+direction = Vector3(0.102, 1, 0)
+spread = 14.01
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 15.0
+initial_velocity_max = 30.2
+angular_velocity_min = -55.69
+angular_velocity_max = 53.16
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_max = 3.9
+damping_min = 1.17
+damping_max = 1.17
+damping_curve = SubResource("CurveTexture_d057y")
+scale_min = 0.28
+scale_max = 0.43
+color_ramp = SubResource("GradientTexture1D_03i78")
+turbulence_noise_scale = 10.0
+collision_use_scale = true
+
+[node name="WallDust" type="GPUParticles2D"]
+process_material = SubResource("ParticleProcessMaterial_sarsy")
+texture = ExtResource("1_w7dw2")
+explosiveness = 1.0

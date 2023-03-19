@@ -15,9 +15,13 @@ func _ready():
 	$MeshInstance2D.mesh.radius = radius
 	$MeshInstance2D.mesh.height = radius * 2
 	var tween = get_tree().create_tween()
-	tween.tween_property($MeshInstance2D, "modulate:a", 0, timer)
+	tween.tween_property(self, "modulate:a", 0, timer)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
+	var light_tween = get_tree().create_tween()
+	light_tween.tween_property($PointLight2D, "energy", 0, timer)
+	light_tween.set_ease(Tween.EASE_OUT)
+	light_tween.set_trans(Tween.TRANS_CUBIC)
 	SoundSystem.play_sound("res://sound/explosion.mp3", "explosion", 0.4, global_position)
 	await get_tree().create_timer(timer).timeout
 	queue_free()
@@ -37,4 +41,3 @@ func _damage(entitie):
 		entitie.get_damaged(damage)
 	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage)
-		
