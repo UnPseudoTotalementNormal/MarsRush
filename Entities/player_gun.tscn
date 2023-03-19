@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bplgf35cxndk3"]
+[gd_scene load_steps=11 format=3 uid="uid://bplgf35cxndk3"]
 
 [ext_resource type="Texture2D" uid="uid://by1ibugk541o7" path="res://Sprites/Shotgun.png" id="1_lepio"]
 [ext_resource type="Texture2D" uid="uid://bhs67afckqsy1" path="res://Sprites/replusegun1.png" id="1_ya8up"]
@@ -18,8 +18,9 @@ height = 17.34
 [sub_resource type="CircleShape2D" id="CircleShape2D_bw2t4"]
 radius = 1.41421
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_mk7t3"]
+
 [node name="Player_Gun" type="CharacterBody2D"]
-position = Vector2(-117, -1)
 collision_layer = 2
 collision_mask = 5
 
@@ -47,7 +48,33 @@ texture = ExtResource("1_ya8up")
 scale = Vector2(0.008, 0.008)
 texture = ExtResource("1_lepio")
 
+[node name="MuzzleFlash" type="Node2D" parent="gunsprite"]
+visible = false
+position = Vector2(1000, 0)
+scale = Vector2(2.076, 2.076)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="gunsprite/MuzzleFlash"]
+modulate = Color(1, 0.368627, 0, 1)
+position = Vector2(62.25, -5.26605)
+scale = Vector2(125.5, 312.5)
+mesh = SubResource("CapsuleMesh_mk7t3")
+
+[node name="MeshInstance2D3" type="MeshInstance2D" parent="gunsprite/MuzzleFlash"]
+modulate = Color(1, 0.368627, 0, 1)
+position = Vector2(114.091, -5.26587)
+rotation = 1.57079
+scale = Vector2(444.476, 66.6848)
+mesh = SubResource("CapsuleMesh_mk7t3")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="gunsprite/MuzzleFlash"]
+modulate = Color(1, 0.392157, 0.101961, 1)
+position = Vector2(239.091, -5.26587)
+rotation = 1.57079
+scale = Vector2(213.291, 239.341)
+mesh = SubResource("CapsuleMesh_mk7t3")
+
 [node name="airhorn" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(1, -1)
 scale = Vector2(0.0245021, 0.0245021)
 texture = ExtResource("3_2rgqj")
@@ -61,7 +88,8 @@ target_position = Vector2(200, 0)
 collision_mask = 2065
 
 [node name="Shotlight_template" type="PointLight2D" parent="Canon"]
-position = Vector2(2.00002, 0)
+visible = false
+position = Vector2(2, 0)
 rotation = -1.57079
 scale = Vector2(0.0255886, 0.149415)
 editor_only = true

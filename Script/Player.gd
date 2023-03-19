@@ -468,31 +468,41 @@ func _shooting_with_gun(number: int):
 						raycast.get_collider().set("health_points", raycast.get_collider().get("health_points") - gun_shoot_damage)
 			raycast.queue_free()
 			await get_tree().physics_frame
-		var lightex: PointLight2D = Gun.find_child("Shotlight_template")
-		if lightex != null:
-			var shotlight = PointLight2D.new()
-			var arealight = PointLight2D.new()
-			shotlight.texture = lightex.texture; shotlight.offset = lightex.offset; shotlight.scale = lightex.scale; shotlight.global_position = lightex.global_position
-			shotlight.rotation = Gun.rotation - deg_to_rad(90); shotlight.energy = lightex.energy; shotlight.range_z_min = lightex.range_z_min
-			shotlight.color = lightex.color; shotlight.shadow_enabled = true; shotlight.shadow_filter_smooth = lightex.shadow_filter_smooth
-			shotlight.shadow_filter = Light2D.SHADOW_FILTER_PCF13; 
-			get_tree().current_scene.add_child(shotlight)
-			arealight.texture = load("res://Sprites/light/light_round.png")
-			arealight.range_z_min = lightex.range_z_min; arealight.global_position = Gun.global_position; arealight.color = lightex.color
-			arealight.shadow_enabled = true; arealight.shadow_filter_smooth = lightex.shadow_filter_smooth; arealight.energy = 0.75
-			arealight.scale = Vector2(4, 4)
-			get_tree().current_scene.add_child(arealight)
-			var timer_await = get_tree().create_timer(5, false)
-			node_bin.append(shotlight)
-			node_bin.append(arealight)
-			while timer_await.time_left > 0:
-				if shotlight.energy > 0: shotlight.energy -= 20 * dtime
-				else: shotlight.energy = 0
-				if arealight.energy > 0: arealight.energy -= 2 * dtime
-				else: arealight.energy = 0
-				await get_tree().physics_frame
-			shotlight.queue_free()
-			arealight.queue_free()
+		_gun_shoot_light_flash()
+		_muzzleflash_on_gun()
+
+func _gun_shoot_light_flash():
+	var lightex: PointLight2D = Gun.find_child("Shotlight_template")
+	if lightex != null:
+		var shotlight = PointLight2D.new()
+		var arealight = PointLight2D.new()
+		shotlight.texture = lightex.texture; shotlight.offset = lightex.offset; shotlight.scale = lightex.scale; shotlight.global_position = lightex.global_position
+		shotlight.rotation = Gun.rotation - deg_to_rad(90); shotlight.energy = lightex.energy; shotlight.range_z_min = lightex.range_z_min
+		shotlight.color = lightex.color; shotlight.shadow_enabled = true; shotlight.shadow_filter_smooth = lightex.shadow_filter_smooth
+		shotlight.shadow_filter = Light2D.SHADOW_FILTER_PCF13; 
+		get_tree().current_scene.add_child(shotlight)
+		arealight.texture = load("res://Sprites/light/light_round.png")
+		arealight.range_z_min = lightex.range_z_min; arealight.global_position = Gun.global_position; arealight.color = lightex.color
+		arealight.shadow_enabled = true; arealight.shadow_filter_smooth = lightex.shadow_filter_smooth; arealight.energy = 0.75
+		arealight.scale = Vector2(4, 4)
+		get_tree().current_scene.add_child(arealight)
+		var timer_await = get_tree().create_timer(5, false)
+		node_bin.append(shotlight)
+		node_bin.append(arealight)
+		while timer_await.time_left > 0:
+			if shotlight.energy > 0: shotlight.energy -= 20 * dtime
+			else: shotlight.energy = 0
+			if arealight.energy > 0: arealight.energy -= 2 * dtime
+			else: arealight.energy = 0
+			await get_tree().physics_frame
+		shotlight.queue_free()
+		arealight.queue_free()
+
+func _muzzleflash_on_gun():
+	var muzzleflash = Gun.find_child("MuzzleFlash")
+	muzzleflash.visible = true
+	await get_tree().create_timer(0.07, false).timeout
+	muzzleflash.visible = false
 
 func _gun_sprite():
 	var Gunsprite = Gun.find_child("gunsprite")
@@ -599,7 +609,7 @@ func _body_movement():
 
 func _collision_particles():  #spawn particles when you collide with a wall
 	var get_collision = move_and_collide(linear_velocity/50, true)
-	var speed_min_spawnpart = 60
+	var speed_min_spawnpart = 50
 	if linear_velocity.length() >= speed_min_spawnpart:
 		if get_collision:
 			var collid_pos = get_collision.get_position()
@@ -645,7 +655,6 @@ func _collision_sound(): #go check _collision_particles()
 		"res://sound/hitwall/punch-boxing-06-reverb-82202.mp3",
 	]
 	var random_sound = all_soft_hit_sound.pick_random()
-	print(random_sound)
 	SoundSystem.play_sound(random_sound, "hitwall", 0.4, global_position, -15)
 
 func _on_visible_on_screen_notifier_2d_screen_exited():

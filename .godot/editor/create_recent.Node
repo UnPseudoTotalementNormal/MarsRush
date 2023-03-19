@@ -1,3 +1,8 @@
+Label
+Node2D
+MeshInstance2D
+CPUParticles2D
+GPUParticlesAttractorBox3D
 AudioStreamPlayer
 PointLight2D
 ColorRect
@@ -7,17 +12,14 @@ HBoxContainer
 CheckBox
 VBoxContainer
 Sprite2D
-MeshInstance2D
 Control
 SubViewport
 SubViewportContainer
 VisionCone2D
 CanvasLayer
-Node2D
 DirectionalLight2D
 SpinBox
 Timer
-Label
 Button
 Marker2D
 ShapeCast2D
@@ -28,6 +30,3 @@ LightOccluder2D
 RigidBody2D
 CollisionShape2D
 CharacterBody2D
-NavigationAgent2D
-WorldEnvironment
-Camera2D
