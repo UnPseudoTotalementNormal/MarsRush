@@ -62,6 +62,10 @@ func _process(delta):
 	
 	if sun != null:
 		sun.rotate(0.01*delta)
+	
+	var fps = find_child("fps")
+	if fps:
+		fps.text = str(Engine.get_frames_per_second()) + "fps"
 
 func _physics_process(delta):
 	if not chronoawaiting:

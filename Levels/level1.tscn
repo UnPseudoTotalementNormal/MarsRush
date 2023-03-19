@@ -98,23 +98,6 @@ texture = ExtResource("2_mcqw6")
 position = Vector2(14, -264)
 continuous_cd = 1
 sleeping = true
-cam_follow_zoom = Vector2(0.686, 0.686)
-cam_pause_zoom = Vector2(0.5, 0.5)
-gun_move_range = 40
-gun_punch_force = 100
-gun_shoot_force = 10000
-gun_shoot_range = 200
-gun_shoot_spread = 0.2
-gun_shoot_bullet_number = 3
-gun_shoot_damage = 25
-gun_max_ammo = 2
-gun_reload_time = 1.5
-extinguisher_oxygen_cost = 25
-extinguisher_force = 12500
-max_health = 100.0
-max_oxygen = 100.0
-health_regen_wait = 3.0
-oxygen_regen_wait = 2.0
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -675,6 +658,17 @@ offset_right = 64.0
 offset_bottom = 26.0
 text = "0:0
 "
+
+[node name="fps" type="Label" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -42.0
+offset_bottom = 26.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 10
+text = "45fps"
+horizontal_alignment = 2
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
