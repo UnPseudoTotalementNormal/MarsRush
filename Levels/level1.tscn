@@ -1,17 +1,20 @@
-[gd_scene load_steps=29 format=3 uid="uid://cnha06e0jcyf5"]
+[gd_scene load_steps=34 format=3 uid="uid://cnha06e0jcyf5"]
 
 [ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_21f15"]
 [ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_dd573"]
 [ext_resource type="Script" path="res://Script/levelscript.gd" id="1_yvktr"]
 [ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="2_8ojrl"]
+[ext_resource type="Texture2D" uid="uid://rj4whqkusy1x" path="res://Sprites/light/light_square.png" id="2_mcqw6"]
 [ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_ymim4"]
 [ext_resource type="PackedScene" uid="uid://c1bi6s3o3tnxf" path="res://Entities/ennemi.tscn" id="4_ajsjd"]
 [ext_resource type="PackedScene" uid="uid://b8673rfq8hju4" path="res://Entities/door.tscn" id="5_o7t3j"]
 [ext_resource type="Shader" path="res://Shaders/Heat.gdshader" id="6_dmwof"]
 [ext_resource type="PackedScene" uid="uid://duwmxofj2yq3b" path="res://Entities/breakablewall.tscn" id="6_qhh5b"]
+[ext_resource type="Shader" path="res://Shaders/GodotShaders/Starfield.gdshader" id="7_afvsf"]
 [ext_resource type="Script" path="res://Script/TextArea.gd" id="8_30rft"]
 [ext_resource type="Shader" path="res://Shaders/BlackAndWhite.gdshader" id="8_yyp6i"]
 [ext_resource type="PackedScene" uid="uid://h1x6bbeddqrc" path="res://Entities/decoration/light.tscn" id="9_a67d2"]
+[ext_resource type="Shader" path="res://Shaders/GodotShaders/ChromaticAberration.gdshader" id="10_8lj11"]
 [ext_resource type="PackedScene" uid="uid://cnnlacdvnbid6" path="res://Entities/shotguunarea.tscn" id="10_rly3a"]
 [ext_resource type="Texture2D" uid="uid://bop6agenc8yhw" path="res://Sprites/settings_icon.png" id="12_8xmwj"]
 [ext_resource type="Script" path="res://Script/Engine.gd" id="12_wlkuq"]
@@ -23,10 +26,18 @@ shader = ExtResource("6_dmwof")
 shader_parameter/speed = 0.509
 shader_parameter/strength = 0.1
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hlak"]
+shader = ExtResource("7_afvsf")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qj5ws"]
 shader = ExtResource("8_yyp6i")
 shader_parameter/intensity = 0.956
 shader_parameter/activated = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xbck"]
+shader = ExtResource("10_8lj11")
+shader_parameter/levels = 25
+shader_parameter/spread = 0.01
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uaj5y"]
 size = Vector2(162, 10)
@@ -65,6 +76,7 @@ adjustment_enabled = true
 script = ExtResource("1_yvktr")
 
 [node name="Sun" type="DirectionalLight2D" parent="."]
+visible = false
 position = Vector2(-1215, 331)
 rotation = -0.261799
 range_layer_min = -129
@@ -72,8 +84,18 @@ shadow_enabled = true
 shadow_filter = 2
 shadow_filter_smooth = 1.4
 
+[node name="Sun2" type="PointLight2D" parent="."]
+position = Vector2(-552.001, 552.001)
+scale = Vector2(23.034, 23.034)
+energy = 1.68
+range_z_min = 0
+range_z_max = 0
+range_layer_min = -112
+range_layer_max = -99
+texture = ExtResource("2_mcqw6")
+
 [node name="Player" parent="." instance=ExtResource("3_ymim4")]
-position = Vector2(-90, -207)
+position = Vector2(14, -264)
 continuous_cd = 1
 sleeping = true
 
@@ -220,22 +242,23 @@ zoom = Vector2(0.686, 0.686)
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.252, 0.252)
 
-[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
-visible = false
-texture_filter = 3
-offset_left = -7866.0
-offset_top = -3975.0
-offset_right = 10853.0
-offset_bottom = 4162.0
-texture = ExtResource("1_21f15")
-stretch_mode = 1
-
 [node name="Bg45" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 material = SubResource("ShaderMaterial_5bxi3")
 position = Vector2(1, -2)
 texture = ExtResource("1_21f15")
 region_enabled = true
 region_rect = Rect2(1, 1, 100000, 100000)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+visible = false
+texture_filter = 3
+material = SubResource("ShaderMaterial_7hlak")
+offset_left = -4556.0
+offset_top = -1596.0
+offset_right = 1340.0
+offset_bottom = 1548.0
+texture = ExtResource("1_21f15")
+stretch_mode = 1
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 
@@ -248,7 +271,8 @@ layer_0/tile_data = PackedInt32Array(-655370, 131072, 1, -655369, 131072, 1, -72
 [node name="Darkness" type="Node2D" parent="NavigationRegion2D/LightStuff"]
 
 [node name="Darkness" type="PointLight2D" parent="NavigationRegion2D/LightStuff/Darkness"]
-position = Vector2(-205, -215)
+material = SubResource("ShaderMaterial_0xbck")
+position = Vector2(-124, -215)
 scale = Vector2(1000, 1000)
 energy = 0.6
 blend_mode = 1
@@ -280,9 +304,9 @@ range_layer_min = -85
 range_layer_max = 9
 texture = ExtResource("17_xee7p")
 
-[node name="Node2D" type="Node2D" parent="NavigationRegion2D/LightStuff"]
+[node name="Lights" type="Node2D" parent="NavigationRegion2D/LightStuff"]
 
-[node name="Light" parent="NavigationRegion2D/LightStuff/Node2D" instance=ExtResource("9_a67d2")]
+[node name="Light" parent="NavigationRegion2D/LightStuff/Lights" instance=ExtResource("9_a67d2")]
 position = Vector2(-16, -287)
 
 [node name="Walls" type="Node2D" parent="NavigationRegion2D"]
@@ -418,6 +442,14 @@ position = Vector2(-167, 312)
 position = Vector2(-120, 152)
 rotation = 4.71238
 space_airlock = true
+
+[node name="door6" parent="NavigationRegion2D/Doors" instance=ExtResource("5_o7t3j")]
+position = Vector2(-368, 491)
+rotation = 1.57079
+
+[node name="door7" parent="NavigationRegion2D/Doors" instance=ExtResource("5_o7t3j")]
+position = Vector2(-367, 598)
+rotation = 1.57079
 
 [node name="EnnemiNode" type="Node2D" parent="NavigationRegion2D"]
 
@@ -615,7 +647,7 @@ shape = SubResource("CircleShape2D_2otsc")
 autostart = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 99
+layer = 100
 
 [node name="chrono" type="Label" parent="CanvasLayer"]
 texture_filter = 6
@@ -628,14 +660,6 @@ text = "0:0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_impwu")
-
-[node name="door" parent="." instance=ExtResource("5_o7t3j")]
-position = Vector2(-368, 491)
-rotation = 1.57079
-
-[node name="door2" parent="." instance=ExtResource("5_o7t3j")]
-position = Vector2(-367, 598)
-rotation = 1.57079
 
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_entered" flags=18]
 [connection signal="area_exited" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_exited" flags=18]

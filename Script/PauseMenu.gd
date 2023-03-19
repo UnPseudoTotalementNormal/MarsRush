@@ -15,6 +15,8 @@ extends ColorRect
 
 @onready var fps_button: SpinBox = find_child("Fps")
 @onready var fullscreen_button: CheckBox = find_child("FullscreenEnabler")
+@onready var Vignette_button: CheckBox = find_child("Vignette")
+@onready var Chromatic_button: CheckBox = find_child("ChromaticAbberation")
 
 @onready var mobilecontrols: OptionButton = find_child("MobileControls")
 
@@ -41,6 +43,8 @@ func _ready():
 	fps_button.value_changed.connect(_change_fps)
 	mobilecontrols.item_selected.connect(_mobile_control_to)
 	fullscreen_button.pressed.connect(_fullscreen)
+	Vignette_button.pressed.connect(_vignette)
+	Chromatic_button.pressed.connect(_chromatic_abberation)
 	
 	await get_tree().physics_frame
 	_refresh_shown_values()
@@ -84,19 +88,27 @@ func _refresh_shown_values():
 	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
 	fps_button.value = Engine.physics_ticks_per_second
 	
-	if player != null:
+	if player:
 		var mobile_control_mode = player.get("mobile_control_mode")
 		for i in range(0, 30):
 			if mobilecontrols.get_item_text(i) == mobile_control_mode:
 				mobilecontrols.select(i)
+		
+		Vignette_button.button_pressed = player.find_child("Vignette").visible
+		Chromatic_button.button_pressed = player.find_child("ChromaticAbberation").visible
 
+func _apply_values():
+	pass
 
 
 func _fullscreen():
 	if fullscreen_button.button_pressed:
 		get_window().set_mode(Window.MODE_EXCLUSIVE_FULLSCREEN)
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	else:
 		get_window().set_mode(Window.MODE_WINDOWED)
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 func _change_fps(value):
 	Engine.physics_ticks_per_second = value
 	_refresh_shown_values()
@@ -109,3 +121,14 @@ func _mobile_control_to(index: int):
 
 func go_to_main_menu():
 	get_tree().change_scene_to_file("res://Levels/menu.tscn")
+	unpause()
+
+func _vignette():
+	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
+	if player:
+		player.find_child("Vignette").visible = Vignette_button.button_pressed
+
+func _chromatic_abberation():
+	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
+	if player:
+		player.find_child("ChromaticAbberation").visible = Chromatic_button.button_pressed

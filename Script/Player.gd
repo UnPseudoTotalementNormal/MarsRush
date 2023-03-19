@@ -289,8 +289,8 @@ func _oxygen():
 			else:
 				oxygen_points += 10 * dtime
 	
-	var treshold = (max_oxygen - oxygen_points) / (max_oxygen - 0) * (0.75 - 0.25) + 0.25
-	$Mesh/OxygenBottle/Oxygen.material.set_shader_parameter("threshold", treshold)
+	var progress = (max_oxygen - oxygen_points) / (max_oxygen - 0) * (1 - 0)
+	$Mesh/OxygenBottle.material.set_shader_parameter("progress", 1 - progress)
 	
 	previous_oxygen_point = oxygen_points
 

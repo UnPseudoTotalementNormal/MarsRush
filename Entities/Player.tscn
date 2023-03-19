@@ -1,16 +1,18 @@
-[gd_scene load_steps=36 format=3 uid="uid://cgio6fe71m6xx"]
+[gd_scene load_steps=42 format=3 uid="uid://cgio6fe71m6xx"]
 
 [ext_resource type="Script" path="res://Script/Player.gd" id="1_3r82c"]
-[ext_resource type="Shader" path="res://Shaders/ColorBar.gdshader" id="2_3h30r"]
 [ext_resource type="Script" path="res://test.gd" id="2_10bbk"]
 [ext_resource type="Texture2D" uid="uid://b0bqbjia5d7rd" path="res://Sprites/light/light_round.png" id="2_ga050"]
 [ext_resource type="Texture2D" uid="uid://c2v2afrhpm4mb" path="res://Sprites/Fire-Extinguisher-Transparent.png" id="3_f00sb"]
 [ext_resource type="Texture2D" uid="uid://dw5guo5np7r80" path="res://Sprites/shotgun_gauge.png" id="3_p2yy7"]
 [ext_resource type="Texture2D" uid="uid://c7ah5w0dnip71" path="res://Sprites/light/lightsource.png" id="3_wyvew"]
+[ext_resource type="Shader" path="res://Shaders/GodotShaders/SpriteProgress.gdshader" id="4_jb355"]
 [ext_resource type="Texture2D" uid="uid://qf514p11c2ow" path="res://Sprites/reload_circle.png" id="4_y80qc"]
 [ext_resource type="Texture2D" uid="uid://bdoq58p4o0siv" path="res://Sprites/oxygen_bar.png" id="5_ynef4"]
 [ext_resource type="Texture2D" uid="uid://dl75ko5bk7jav" path="res://Sprites/oxygen_bar_over.png" id="6_3e7vd"]
 [ext_resource type="Texture2D" uid="uid://2skfm8fpymmt" path="res://Sprites/oxygen_bar_progress.png" id="7_3slbf"]
+[ext_resource type="Shader" path="res://Shaders/GodotShaders/Vignette.gdshader" id="8_52s6f"]
+[ext_resource type="Shader" path="res://Shaders/GodotShaders/ChromaticAberration.gdshader" id="12_6y563"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6etpi"]
 radius = 1.0
@@ -32,11 +34,13 @@ height = 25.0
 radius = 3.0
 height = 11.0
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_bpmg0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3f2fd"]
+shader = ExtResource("4_jb355")
+shader_parameter/overlay_color = Color(0, 0.643137, 1, 1)
+shader_parameter/progress = 0.573
+shader_parameter/strength = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uqw4e"]
-shader = ExtResource("2_3h30r")
-shader_parameter/threshold = 0.75
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bpmg0"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_rdf2j"]
 polygon = PackedVector2Array(-7.408, -5, -7.426, 5.14, -7.175, 7, -6.238, 9, -4.336, 11, -2, 12.062, -0.005, 12.491, 2, 12.17, 4, 11.282, 6, 9.345, 7.111, 7, 7.437, 5, 7.409, -5, 7, -7.239, 6, -9.317, 4, -11.275, 2, -12.205, 0, -12.507, -2, -12.197, -4, -11.301, -6, -9.377, -7, -7.557)
@@ -60,6 +64,97 @@ size = Vector3(10, 1.5, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_m5qi6"]
 size = Vector3(2, 10, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_08pap"]
+shader = ExtResource("12_6y563")
+shader_parameter/levels = 23
+shader_parameter/spread = 0.01
+
+[sub_resource type="Shader" id="Shader_dc2e8"]
+code = "shader_type canvas_item;
+
+// MODES
+// 0 - DEBUG
+// 1 - MULTIPLY
+// 2 - SCREEN
+// 3 - SOFTLIGHT
+// 4 - HARDLIGHT
+// 5 - OVERLAY
+uniform int mode :hint_range(0,5) = 5;
+uniform bool linearColorSpace = false;
+uniform vec4 color1 : source_color = vec4(1, 0.5, 0.8, 1);
+uniform vec4 color2 : source_color = vec4(0.4, 0.8, 1, 1);
+uniform vec2 direction = vec2(1.0, 1.0);
+uniform float opacity :hint_range(0, 1) = 0.5;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+ vec3 srgb_to_linear(vec3 c){
+	return c * (c * (c * 0.305306011 + 0.682171111) + 0.012522878);
+}
+
+vec3 linear_to_srgb(vec3 c){
+	return max(1.055 * pow(c, vec3(0.416666667)) - 0.055, 0.0);
+}
+
+void fragment(){
+	vec2 uv = FRAGCOORD.xy / (1.0 / SCREEN_PIXEL_SIZE).xy;
+	vec4 src = texture(SCREEN_TEXTURE, uv);
+	
+	vec3 c_a = src.rgb;
+	vec3 grad1 = color1.rgb;
+	vec3 grad2 = color2.rgb;
+	vec3 c_f;
+	
+	if (linearColorSpace){ 
+		c_a = linear_to_srgb(c_a);
+		grad1 = linear_to_srgb(grad1);
+		grad2 = linear_to_srgb(grad2);
+	}
+
+	float param = dot(uv - 0.5, direction);
+	vec3 c_b = mix(grad1, grad2, param + 0.5);
+	
+	if (mode == 0){       // DEBUG
+		c_f = c_b;
+	}else if (mode == 1){ // MULTIPLY
+		c_f = c_a * c_b;
+	}else if (mode == 2){ // SCREEN
+		c_f = 1.0 - (1.0 - c_a) * (1.0 - c_b);
+	}else if (mode == 3){ // SOFTLIGHT
+		vec3 c_u = c_a * c_b * 2.0 + (1.0 - c_b * 2.0) * c_a * c_a;
+		vec3 c_d = (1.0 - c_b) * c_a * 2.0 + (c_b * 2.0 - 1.0) * sqrt(c_a);
+		c_f = mix(c_u, c_d, c_b + 0.5);
+	}else if (mode == 4){ // HARDLIGHT
+		vec3 c_u = c_a * c_b * 2.0;
+		vec3 c_d = 1.0 - (1.0 - c_a) * (1.0 - c_b) * 2.0;
+		c_f = mix(c_u, c_d, c_b + 0.5);
+	}else if (mode == 5){ // OVERLAY
+		vec3 c_u = c_a * c_b * 2.0;
+		vec3 c_d = 1.0 - (1.0 - c_a) * (1.0 - c_b) * 2.0;
+		c_f = mix (c_u, c_d, c_a + 0.5);
+	}
+	
+	if (linearColorSpace){
+		c_f = srgb_to_linear(c_f);
+	}
+
+	COLOR = vec4(c_f, opacity);
+    }"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w8qvw"]
+shader = SubResource("Shader_dc2e8")
+shader_parameter/mode = 4
+shader_parameter/linearColorSpace = false
+shader_parameter/color1 = Color(1, 0.65098, 0.423529, 1)
+shader_parameter/color2 = Color(1, 0.588235, 1, 1)
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/opacity = 0.089
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ytnw"]
+shader = ExtResource("8_52s6f")
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+shader_parameter/vignette_rgb = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nleax"]
 radius = 20.0
@@ -123,7 +218,7 @@ shadow_enabled = true
 shadow_filter = 2
 shadow_filter_smooth = 1.1
 texture = ExtResource("3_wyvew")
-offset = Vector2(0, 580)
+offset = Vector2(0, 550)
 
 [node name="MousePivot" type="Node2D" parent="."]
 top_level = true
@@ -163,14 +258,10 @@ mesh = SubResource("CapsuleMesh_663kx")
 [node name="OxygenBottle" type="MeshInstance2D" parent="Mesh"]
 self_modulate = Color(0.678431, 0.262745, 0, 1)
 show_behind_parent = true
+material = SubResource("ShaderMaterial_3f2fd")
 position = Vector2(-8.45346, 0.0175345)
 rotation = 3.14159
 scale = Vector2(5.90691, 9.22739)
-mesh = SubResource("CapsuleMesh_bpmg0")
-
-[node name="Oxygen" type="MeshInstance2D" parent="Mesh/OxygenBottle"]
-self_modulate = Color(0, 0.509804, 1, 1)
-material = SubResource("ShaderMaterial_uqw4e")
 mesh = SubResource("CapsuleMesh_bpmg0")
 
 [node name="bodylight" type="LightOccluder2D" parent="Mesh"]
@@ -266,6 +357,42 @@ position = Vector2(0, -1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 89
+
+[node name="Graphics" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChromaticAbberation" type="ColorRect" parent="HUD/Graphics"]
+material = SubResource("ShaderMaterial_08pap")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GradiantOverlay" type="ColorRect" parent="HUD/Graphics"]
+visible = false
+material = SubResource("ShaderMaterial_w8qvw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="ColorRect" parent="HUD/Graphics"]
+material = SubResource("ShaderMaterial_0ytnw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Ammo" type="Control" parent="HUD"]
 layout_mode = 3

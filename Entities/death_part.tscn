@@ -21,7 +21,6 @@ color = Color(1, 0, 0, 1)
 color_ramp = SubResource("GradientTexture1D_hxbev")
 
 [node name="death_part" type="GPUParticles2D"]
-emitting = false
 amount = 32
 process_material = SubResource("ParticleProcessMaterial_aeus2")
 lifetime = 2.28

@@ -143,6 +143,7 @@ layer = 128
 [node name="PauseMenu" type="ColorRect" parent="."]
 process_mode = 3
 modulate = Color(1, 1, 1, 0)
+z_index = 4096
 material = SubResource("ShaderMaterial_wvoxy")
 anchors_preset = 15
 anchor_right = 1.0
@@ -220,22 +221,39 @@ popup/item_3/id = 3
 layout_mode = 2
 
 [node name="cat_Graphics" type="HBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
-visible = false
 layout_mode = 2
 
-[node name="Fps" type="SpinBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Fps" type="SpinBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 min_value = 30.0
 max_value = 300.0
 value = 30.0
 suffix = "FPS"
 
-[node name="VSeparator" type="VSeparator" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
+[node name="VSeparator" type="VSeparator" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="FullscreenEnabler" type="CheckBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics"]
+[node name="FullscreenEnabler" type="CheckBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Fullscreen"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="Vignette" type="CheckBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Vignette"
+
+[node name="ChromaticAbberation" type="CheckBox" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings/cat_Graphics/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Chroma. Abberation"
 
 [node name="cat_Controls" type="VBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
 visible = false
@@ -258,6 +276,7 @@ popup/item_2/text = "Joystick"
 popup/item_2/id = 2
 
 [node name="cat_Languages" type="VBoxContainer" parent="PauseMenu/CenterContainer/PanelContainer/MarginContainer/Pause/Settings"]
+visible = false
 layout_mode = 2
 theme = SubResource("Theme_evhjj")
 
