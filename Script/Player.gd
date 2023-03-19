@@ -627,11 +627,26 @@ func _collision_particles():  #spawn particles when you collide with a wall
 					collpart.process_material.direction = Vector3(collid_norm.y, collid_norm.x, 0)
 				elif i == 2:
 					collpart.process_material.direction = Vector3(-collid_norm.y, -collid_norm.x, 0)
-				print(collpart.process_material.direction)
 				get_tree().current_scene.add_child(collpart)
 				await get_tree().physics_frame
+			_collision_sound()
 			await get_tree().create_timer(1, false).timeout
 			already_collided_point.pop_at(0)
+
+func _collision_sound(): #go check _collision_particles()
+	var speed = linear_velocity
+	var all_soft_hit_sound = [
+#		"res://sound/hitwall/hitwall1.mp3",
+		"res://sound/hitwall/hitwall2.mp3",
+		"res://sound/hitwall/hitwall3.mp3",
+		"res://sound/hitwall/hitwall4.mp3",
+		"res://sound/hitwall/punch-boxing-02wav-14897.mp3",
+		"res://sound/hitwall/punch-boxing-05-reverb-102915.mp3",
+		"res://sound/hitwall/punch-boxing-06-reverb-82202.mp3",
+	]
+	var random_sound = all_soft_hit_sound.pick_random()
+	print(random_sound)
+	SoundSystem.play_sound(random_sound, "hitwall", 0.4, global_position, -15)
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	get_viewport().get_camera_2d().global_position = global_position

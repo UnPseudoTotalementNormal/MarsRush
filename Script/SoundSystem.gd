@@ -9,7 +9,7 @@ func _process(delta):
 		player = get_tree().current_scene.find_child("Player")
 	_space_audio()
 
-func play_sound(sound: String, category: String = "effect", random_range: float = 0.0, soundposition: Vector2 = Vector2.ZERO):
+func play_sound(sound: String, category: String = "effect", random_range: float = 0.0, soundposition: Vector2 = Vector2.ZERO, db_added: float = 0.0):
 	var audioplayer = AudioStreamPlayer.new()
 	var soundID: String = sound + "_" + str(randf())
 	if soundposition != Vector2.ZERO:
@@ -21,6 +21,7 @@ func play_sound(sound: String, category: String = "effect", random_range: float 
 	randomize()
 	audioplayer.pitch_scale = randf_range(1-random_range, 1+random_range)
 	audioplayer.autoplay = true
+	audioplayer.volume_db += db_added
 	get_tree().current_scene.add_child.call_deferred(audioplayer)
 	all_audio[soundID] = {"category": category, "soundposition": soundposition, "audioplayer": audioplayer}
 	await audioplayer.finished

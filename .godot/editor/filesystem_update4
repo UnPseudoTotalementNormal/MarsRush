@@ -13,3 +13,5 @@ res://Entities/leg_rigid_body.tscn
 res://Particles/bomb_particles.tscn
 res://Entities/Pause.tscn
 res://Particles/wall_dust.tscn
+res://Script/Player.gd
+res://Script/SoundSystem.gd
