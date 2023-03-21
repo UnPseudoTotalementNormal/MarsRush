@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cnha06e0jcyf5"]
+[gd_scene load_steps=35 format=3 uid="uid://dnqkg04l0i203"]
 
 [ext_resource type="Texture2D" uid="uid://cja45k2m2q4l" path="res://Sprites/Background/bg45.png" id="1_21f15"]
 [ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_dd573"]
@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="2_8ojrl"]
 [ext_resource type="Texture2D" uid="uid://rj4whqkusy1x" path="res://Sprites/light/light_square.png" id="2_mcqw6"]
 [ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_ymim4"]
-[ext_resource type="PackedScene" uid="uid://c1bi6s3o3tnxf" path="res://Entities/ennemi.tscn" id="4_ajsjd"]
+[ext_resource type="PackedScene" uid="uid://cfk1m5acno8bm" path="res://Entities/BasicRebel.tscn" id="4_ajsjd"]
+[ext_resource type="Script" path="res://Script/CameraScript.gd" id="5_m8mev"]
 [ext_resource type="PackedScene" uid="uid://b8673rfq8hju4" path="res://Entities/door.tscn" id="5_o7t3j"]
 [ext_resource type="Shader" path="res://Shaders/Heat.gdshader" id="6_dmwof"]
 [ext_resource type="PackedScene" uid="uid://duwmxofj2yq3b" path="res://Entities/breakablewall.tscn" id="6_qhh5b"]
@@ -236,6 +237,7 @@ stretch_mode = 1
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(173, 86)
 zoom = Vector2(0.686, 0.686)
+script = ExtResource("5_m8mev")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -453,95 +455,98 @@ rotation = 1.57079
 
 [node name="EnnemiNode" type="Node2D" parent="NavigationRegion2D"]
 
-[node name="Ennemi" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-631, -560)
 
-[node name="Ennemi2" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel2" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-1743, -419)
 
-[node name="Ennemi4" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel4" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-2320, -354)
 
-[node name="Ennemi5" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel5" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-2163, -470)
 
-[node name="Ennemi6" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel6" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-2153, -227)
 
-[node name="Ennemi3" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel3" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3177, -410)
 
-[node name="Ennemi7" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel7" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3144, -412)
 
-[node name="Ennemi8" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel8" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3108, -411)
 
-[node name="Ennemi9" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel9" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3182, -442)
 
-[node name="Ennemi10" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel10" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3144, -444)
 
-[node name="Ennemi11" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel11" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3107, -441)
 
-[node name="Ennemi12" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel12" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3180, -477)
 
-[node name="Ennemi13" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel13" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3146, -475)
 
-[node name="Ennemi14" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel14" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3106, -479)
 
-[node name="Ennemi15" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel15" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-2961, -272)
 
-[node name="Ennemi16" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel16" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3309, -231)
 
-[node name="Ennemi17" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel17" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3259, -462)
 
-[node name="Ennemi18" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel18" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3413, -614)
 
-[node name="Ennemi19" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel19" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3358, -617)
 
-[node name="Ennemi20" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel20" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3350, -464)
 
-[node name="Ennemi21" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel21" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3574, -619)
 
-[node name="Ennemi22" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel22" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3488, -618)
 
-[node name="Ennemi23" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel23" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3876, -400)
 
-[node name="Ennemi24" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel24" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3612, -402)
 
-[node name="Ennemi25" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel25" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3955, -219)
 
-[node name="Ennemi26" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel26" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3537, -220)
 
-[node name="Ennemi27" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel27" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3848, -99)
 
-[node name="Ennemi28" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel28" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3744, -116)
 
-[node name="Ennemi29" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel29" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3624, -157)
 
-[node name="Ennemi30" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+[node name="BasicRebel30" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
 position = Vector2(-3663, -525)
+
+[node name="BasicRebel31" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
+position = Vector2(-125, -207)
 
 [node name="Spider" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("16_skna8")]
 position = Vector2(-376, 446)
@@ -558,9 +563,6 @@ rotation = 5.75958
 [node name="Spider4" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("16_skna8")]
 position = Vector2(3, 928)
 rotation = 1.57079
-
-[node name="Ennemi31" parent="NavigationRegion2D/EnnemiNode" instance=ExtResource("4_ajsjd")]
-position = Vector2(-125, -207)
 
 [node name="Text" type="Node2D" parent="NavigationRegion2D"]
 visible = false

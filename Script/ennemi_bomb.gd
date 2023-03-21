@@ -1,4 +1,5 @@
 extends RigidBody2D
+var from = null
 var explosion = preload("res://Entities/explosion.tscn")
 var health_points = 40
 
@@ -17,6 +18,7 @@ func _physics_process(delta):
 
 func _explode():
 	var exp = explosion.instantiate()
+	exp.set("from", from)
 	exp.set("frend", false)
 	exp.set("damage", 40)
 	exp.global_position = global_position

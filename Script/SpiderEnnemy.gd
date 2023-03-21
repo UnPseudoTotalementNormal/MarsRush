@@ -43,6 +43,7 @@ var legsgoingtoblockedpos = []
 var legblockedto = Vector2.ZERO
 
 var Player: RigidBody2D = null
+var camera: Camera2D
 
 var was_reached_before: bool = false
 
@@ -56,6 +57,7 @@ var eyes_blink_awaiting: bool = false
 var spawn_position: Vector2 = Vector2.ZERO
 
 func _ready():
+	camera = get_viewport().get_camera_2d()
 	spawn_position = global_position
 	
 	move_speed_lerp = max_move_speed_lerp
@@ -254,8 +256,9 @@ func _check_and_brake(BrakeForce: float = 1000):
 		linear_velocity.y -= BrakeForce * sign_vel.y * dtime * (max_legs / Legs.get_child_count())
 
 func _damage(entitie):
+	camera.camera_shake(0.01, 5, 0.3)
 	if entitie.has_method("get_damaged"):
-		entitie.get_damaged(damage * dtime, false)
+		entitie.get_damaged(damage * dtime, false, self)
 	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage * dtime)
 

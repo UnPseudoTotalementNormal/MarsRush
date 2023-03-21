@@ -14,6 +14,7 @@ resource_name = "Compressor"
 threshold = -7.8
 
 [resource]
+bus/0/volume_db = -0.130497
 bus/0/effect/0/effect = SubResource("AudioEffectLowPassFilter_ip5yg")
 bus/0/effect/0/enabled = false
 bus/0/effect/1/effect = SubResource("AudioEffectAmplify_fvpcm")

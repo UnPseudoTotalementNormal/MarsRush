@@ -7,7 +7,7 @@ var shottrail = preload("res://Particles/shot_trails.tscn")
 @onready var all_part = [bombpart, cloudpart, shotpart]
 ###############
 
-var ennemi = preload("res://Entities/ennemi.tscn")
+var basicrebel = preload("res://Entities/BasicRebel.tscn")
 var spider = preload("res://Entities/EnnemySpider.tscn")
 var player_inst = preload("res://Entities/Player.tscn")
 var store_ennemi = {}
@@ -85,10 +85,12 @@ func _respawn(wait_time):
 		i.queue_free()
 	for k in store_ennemi:
 		var mob = null
-		if "Ennemi" in k:
-			mob = ennemi.instantiate()
+		if "BasicRebel" in k:
+			mob = basicrebel.instantiate()
 		elif "Spider" in k:
 			mob = spider.instantiate()
+		if not mob:
+			continue
 		mob.global_position = store_ennemi.get(k)
 		enneminode.add_child(mob)
 	var splayer = player_inst.instantiate()

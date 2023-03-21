@@ -59,16 +59,24 @@ var grabjoint: PinJoint2D = null
 
 var already_collided_point = [] #for _collision_particles()
 
-@onready var rleg = $RightLeg
-@onready var lleg = $LeftLeg
-@onready var legpos = $Legspos
-@onready var armpos = $Armpos
-@onready var larm = $LeftArm
-@onready var rarm = $RightArm
-@onready var ramesh = $RightArm/MeshInstance2D
-@onready var mousemarker = $MousePivot/MouseMarker
+@onready var rleg: Node2D = $RightLeg
+@onready var lleg: Node2D = $LeftLeg
+@onready var legpos: Marker2D = $Legspos
+@onready var armpos: Marker2D = $Armpos
+@onready var larm: Node2D = $LeftArm
+@onready var rarm: Node2D = $RightArm
+@onready var ramesh: MeshInstance2D = $RightArm/MeshInstance2D
+@onready var mousemarker: Marker2D = $MousePivot/MouseMarker
+
+var camera: Camera2D
 
 var cursor_position: Vector2 = Vector2.ZERO
+
+var chromaticabb_timer: SceneTreeTimer
+var chroma_ennemi_list: Dictionary = {
+	"BasicRebel": {"lerp": false, "value": 0.05, "force": 0, "timer": 0},
+	"Spider": {"lerp": true, "value": 0.1, "force": 1.5, "timer": 1},
+}
 
 ####mobile only vars####
 var mobile: bool = false
@@ -87,6 +95,8 @@ func _ready():
 		$HUD/TouchScreensButtons.hide()
 	$Pivot/Gun_pos.position.x = gun_move_range
 	_search_gun()
+	
+	camera = get_viewport().get_camera_2d()
 
 func _mobile():
 	var leftclickshootevent = InputMap.action_get_events("shoot")
@@ -171,6 +181,9 @@ func _physics_process(delta):
 	dtime = delta
 	SoundSystem.space_audio = in_space
 	
+	if camera == null:
+		camera = get_viewport().get_camera_2d()
+	
 	if dead:
 		return
 	_mouse_system()
@@ -208,9 +221,10 @@ func _physics_process(delta):
 	_health_hud()
 	_health_regen()
 	_body_movement() #visual only
+	_shaders()
 	_collision_particles()
 	if camera_follow_player and get_viewport().get_camera_2d() != null:
-		_camera_follow(self)
+		camera.follow(self)
 	
 	if health_points <= 0 or Input.is_action_just_pressed("restart"):
 		_death()
@@ -225,8 +239,16 @@ func _health_regen():
 		else:
 			health_points += 10 * dtime
 
-func get_damaged(damage, once: bool = true):
+func get_damaged(damage: float, once: bool = true, from = null):
 	health_points -= damage
+	
+	if from != null:
+		for i in chroma_ennemi_list:
+			if i in from.name:
+				var dic = chroma_ennemi_list[i]
+				_chromatic_abberation(dic.lerp, dic.value, dic.force, dic.timer)
+	
+	
 	if not once:
 		damage_before_blood -= damage
 		if damage_before_blood <= 0:
@@ -237,7 +259,7 @@ func get_damaged(damage, once: bool = true):
 			blood.amount = 1
 			get_tree().current_scene.add_child(blood)
 			node_bin.append(blood)
-			await get_tree().create_timer(blood.lifetime, false).timeout
+			await get_tree().create_timer(blood.lifetime + 1, false).timeout
 			blood.queue_free()
 	else:
 		var blood = bloodpart.instantiate()
@@ -246,7 +268,7 @@ func get_damaged(damage, once: bool = true):
 		blood.amount = damage
 		get_tree().current_scene.add_child(blood)
 		node_bin.append(blood)
-		await get_tree().create_timer(blood.lifetime, false).timeout
+		await get_tree().create_timer(blood.lifetime + 1, false).timeout
 		blood.queue_free()
 
 func _health_hud():
@@ -292,9 +314,6 @@ func _oxygen():
 				oxygen_points = max_oxygen
 			else:
 				oxygen_points += 10 * dtime
-	
-	var progress = (max_oxygen - oxygen_points) / (max_oxygen - 0) * (1 - 0)
-	$Mesh/OxygenBottle.material.set_shader_parameter("progress", 1 - progress)
 	
 	previous_oxygen_point = oxygen_points
 
@@ -427,7 +446,8 @@ func _shooting_with_gun(number: int):
 		$Gun_reload.stop()
 	gun_current_ammo -= 1
 	_go_opposite_of_mouse(gun_shoot_force)
-	_camera_shake(0.05, 2.5, 0.5)
+	if camera:
+		camera.camera_shake(0.2, 2.5, 0.5)
 	SoundSystem.play_sound("res://sound/playeronly/shotgun shoot.mp3", "shotgun", 0.15, Gun.global_position)
 	SoundSystem.stop_sound("", "shotgun reload finished")
 	var gun_canon = Gun.find_child("Canon")
@@ -609,7 +629,7 @@ func _body_movement():
 
 func _collision_particles():  #spawn particles when you collide with a wall
 	var get_collision = move_and_collide(linear_velocity/50, true)
-	var speed_min_spawnpart = 50
+	var speed_min_spawnpart = 25
 	if linear_velocity.length() >= speed_min_spawnpart:
 		if get_collision:
 			var collid_pos = get_collision.get_position()
@@ -628,6 +648,7 @@ func _collision_particles():  #spawn particles when you collide with a wall
 						return
 			already_collided_point.append(collid_pos)
 			
+			var collparts_spawned = []
 			for i in range(1, 3):  #pour qu'il y ait 2 particules de sens opposé
 				var collpart = load("res://Particles/wall_dust.tscn").instantiate()
 				collpart.modulate.a *= 0.15
@@ -638,64 +659,73 @@ func _collision_particles():  #spawn particles when you collide with a wall
 				elif i == 2:
 					collpart.process_material.direction = Vector3(-collid_norm.y, -collid_norm.x, 0)
 				get_tree().current_scene.add_child(collpart)
+				collparts_spawned.append(collpart)
+				node_bin.append(collpart)
 				await get_tree().physics_frame
 			_collision_sound()
 			await get_tree().create_timer(1, false).timeout
 			already_collided_point.pop_at(0)
+			
+			await get_tree().create_timer(3, false).timeout
+			for i in collparts_spawned:
+				i.queue_free()
 
 func _collision_sound(): #go check _collision_particles()
-	var speed = linear_velocity
+	var speed = linear_velocity.length()
+	var soft_sound_speed = 100
+	var medium_sound_speed = 150 #after that is hard sound speed :) 
 	var all_soft_hit_sound = [
 #		"res://sound/hitwall/hitwall1.mp3",
 		"res://sound/hitwall/hitwall2.mp3",
 		"res://sound/hitwall/hitwall3.mp3",
 		"res://sound/hitwall/hitwall4.mp3",
+	]
+	var all_medium_hit_sound = [
 		"res://sound/hitwall/punch-boxing-02wav-14897.mp3",
 		"res://sound/hitwall/punch-boxing-05-reverb-102915.mp3",
 		"res://sound/hitwall/punch-boxing-06-reverb-82202.mp3",
 	]
-	var random_sound = all_soft_hit_sound.pick_random()
-	SoundSystem.play_sound(random_sound, "hitwall", 0.4, global_position, -15)
+	var random_sound: String
+	var added_db: float
+	if speed < soft_sound_speed:
+		random_sound = all_soft_hit_sound.pick_random()
+		added_db = -15
+	elif speed < medium_sound_speed:
+		random_sound = all_medium_hit_sound.pick_random()
+		added_db = -10
+	else:
+		random_sound = all_medium_hit_sound.pick_random()
+		added_db = -2
+	SoundSystem.play_sound(random_sound, "hitwall", 0.4, global_position, added_db)
+
+func _chromatic_abberation(lerp: bool = true, value: float = 0.01, force: float = 1, timer: float = 0):
+	var chromaticabb_value = find_child("ChromaticAbberation").material.get_shader_parameter("spread")
+	if lerp:
+		chromaticabb_value = lerp(chromaticabb_value, value, force * dtime)
+	else:
+		chromaticabb_value = value
+	find_child("ChromaticAbberation").material.set_shader_parameter("spread", chromaticabb_value)
+	
+	if not chromaticabb_timer:
+		chromaticabb_timer = get_tree().create_timer(timer)
+	
+	if timer >= chromaticabb_timer.time_left:
+		chromaticabb_timer = get_tree().create_timer(timer)
+
+func _oxygen_tank():
+	var progress = (max_oxygen - oxygen_points) / (max_oxygen - 0) * (1 - 0)
+	$Mesh/OxygenBottle.material.set_shader_parameter("progress", 1 - progress)
+
+func _shaders():
+	if chromaticabb_timer == null or chromaticabb_timer.time_left <= 0:
+		_chromatic_abberation(true, 0.01, 2, 0)
+	_oxygen_tank()
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	get_viewport().get_camera_2d().global_position = global_position
 	camera_follow_player = true
 
-func _camera_shake(duration: float = 1, shake_size: float = 10, force: float = 0.5):
-	var cam = get_viewport().get_camera_2d()
-	var timer = get_tree().create_timer(duration)
-	if cam == null:
-		return
-	while timer.time_left > 0:
-		randomize()
-		var random_x = randf_range(-shake_size, shake_size)
-		var random_y = randf_range(-shake_size, shake_size)
-		cam.offset = lerp(cam.offset, Vector2(random_x, random_y), force)
-#		cam.offset = Vector2(random_x, random_y)
-		await get_tree().physics_frame
-	cam.offset = Vector2.ZERO
 
-func _camera_follow(follow):
-	if cam_follow_prev_pos == Vector2.ZERO:
-		cam_follow_prev_pos = follow.global_position
-	
-	var cam = get_viewport().get_camera_2d()
-	if not cam_follow_pause:
-		cam.global_position = follow.global_position
-		cam.zoom = lerp(cam.zoom, cam_follow_zoom, 1 * dtime)
-#		if not cam_follow_timer_await:
-#			cam_follow_timer_await = true
-#			await get_tree().create_timer(8).timeout
-#			cam_follow_timer_await = false
-#			if (follow.global_position - cam_follow_prev_pos).length() < 75:
-#				cam_follow_pause = true
-#				cam_follow_prev_pos = Vector2.ZERO
-#				return
-#			cam_follow_prev_pos = follow.global_position
-#	else:
-#		cam.zoom = lerp(cam.zoom, cam_follow_zoom / 1.5, 1 * dtime)
-#		if (cam.global_position - follow.global_position).length() >= 150 or abs(cam.global_position.y - follow.global_position.y) >= 100:
-#			cam_follow_pause = false
 
 func _draw_text(text):
 	$HUD/Text.visible_characters = 0

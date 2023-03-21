@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://p6liyxci1obn"]
 
 [sub_resource type="Gradient" id="Gradient_3vtl8"]
-offsets = PackedFloat32Array(0, 0.712121, 1)
+offsets = PackedFloat32Array(0, 0.60101, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_l4iqd"]
@@ -31,5 +31,5 @@ collision_use_scale = true
 
 [node name="BloodParticles" type="GPUParticles2D"]
 process_material = SubResource("ParticleProcessMaterial_sult3")
-lifetime = 1.5
-explosiveness = 0.7
+lifetime = 3.0
+explosiveness = 0.9

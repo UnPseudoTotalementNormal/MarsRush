@@ -76,6 +76,7 @@ func _on_shootbombtimer_timeout():
 	var s_part = bomb_part.instantiate()
 	s_part.set("bomb", s_bomb)
 	s_bomb.global_position = global_position
+	s_bomb.set("from", self)
 	get_tree().current_scene.add_child(s_bomb)
 	get_tree().current_scene.add_child(s_part)
 	await get_tree().physics_frame

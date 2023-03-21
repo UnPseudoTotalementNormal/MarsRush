@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://batpq00fls2ae"]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Texture2D" uid="uid://bxg4a7srh8mym" path="res://Sprites/Background/space6_4-frames.png" id="1_ctvqe"]
 [ext_resource type="Texture2D" uid="uid://btlbmscsohrtq" path="res://Sprites/Background/Deco_labo_6flickfix.png" id="1_gqf64"]
 [ext_resource type="PackedScene" uid="uid://cgio6fe71m6xx" path="res://Entities/Player.tscn" id="3_8nvle"]
-[ext_resource type="PackedScene" uid="uid://c1bi6s3o3tnxf" path="res://Entities/ennemi.tscn" id="3_d8ta5"]
+[ext_resource type="PackedScene" path="res://Entities/BasicRebel.tscn" id="3_d8ta5"]
 [ext_resource type="PackedScene" uid="uid://dtoaebyrht41r" path="res://Entities/level_tiles.tscn" id="5_6haal"]
 [ext_resource type="TileSet" uid="uid://cqqyodt3yj8s6" path="res://Tilemap/Tiles.tres" id="8_xrbrd"]
 

@@ -1,4 +1,6 @@
 extends ShapeCast2D
+var from = null
+
 var frend = false
 var damage = 45
 var timer = 0.5
@@ -6,7 +8,10 @@ var radius = 30
 
 var already_damaged = []
 
+var camera: Camera2D
+
 func _ready():
+	camera = get_viewport().get_camera_2d()
 	shape.radius = radius
 	if frend:
 		collision_mask = $mask_frend.collision_mask
@@ -33,11 +38,11 @@ func _physics_process(delta):
 			if get_collider(i) not in already_damaged:
 				_damage(get_collider(i))
 				already_damaged.append(get_collider(i))
-				if get_collider(i).has_method("_camera_shake"):
-					get_collider(i)._camera_shake(0.1, 5, 0.5)
+				if get_collider(i).global_position == camera.global_position:
+					camera.camera_shake(0.3, 8, 0.7)
 
 func _damage(entitie):
 	if entitie.has_method("get_damaged"):
-		entitie.get_damaged(damage)
+		entitie.get_damaged(damage, true, from)
 	elif entitie.get("health_points") != null:
 		entitie.set("health_points", entitie.get("health_points") - damage)
