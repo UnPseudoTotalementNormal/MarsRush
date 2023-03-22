@@ -218,6 +218,7 @@ func _physics_process(delta):
 		_search_gun()
 	
 	_oxygen()
+	_space_sound()
 	_health_hud()
 	_health_regen()
 	_body_movement() #visual only
@@ -488,6 +489,7 @@ func _shooting_with_gun(number: int):
 						raycast.get_collider().set("health_points", raycast.get_collider().get("health_points") - gun_shoot_damage)
 			raycast.queue_free()
 			await get_tree().physics_frame
+			await get_tree().physics_frame
 		_gun_shoot_light_flash()
 		_muzzleflash_on_gun()
 
@@ -654,6 +656,14 @@ func _collision_particles():  #spawn particles when you collide with a wall
 				collpart.modulate.a *= 0.15
 				collpart.global_position = collid_pos
 				collpart.one_shot = true
+				
+				var medium_speed = 150
+				var speed = linear_velocity.length()
+				var normal_max_velocity = collpart.process_material.initial_velocity_max
+				if speed > medium_speed:
+					collpart.process_material.initial_velocity_min *= 1
+					collpart.process_material.initial_velocity_max *= 1.25
+				
 				if i == 1:
 					collpart.process_material.direction = Vector3(collid_norm.y, collid_norm.x, 0)
 				elif i == 2:
@@ -662,6 +672,9 @@ func _collision_particles():  #spawn particles when you collide with a wall
 				collparts_spawned.append(collpart)
 				node_bin.append(collpart)
 				await get_tree().physics_frame
+				
+				collpart.process_material.initial_velocity_max = normal_max_velocity
+			
 			_collision_sound()
 			await get_tree().create_timer(1, false).timeout
 			already_collided_point.pop_at(0)
@@ -720,6 +733,21 @@ func _shaders():
 	if chromaticabb_timer == null or chromaticabb_timer.time_left <= 0:
 		_chromatic_abberation(true, 0.01, 2, 0)
 	_oxygen_tank()
+
+func _space_sound():
+	if in_space:
+		if oxygen_points < 0:
+			SoundSystem.stop_sound("playerbreathing")
+		elif oxygen_points < 30:
+			if not SoundSystem.is_playing("res://sound/playeronly/breathing faster in helmet.mp3"):
+				SoundSystem.stop_sound("playerbreathing")
+				SoundSystem.play_sound("res://sound/playeronly/breathing faster in helmet.mp3", "playerbreathing", 0, Vector2.ZERO, 3)
+		else:
+			if not SoundSystem.is_playing("res://sound/playeronly/breathing in helmet.mp3"):
+				SoundSystem.stop_sound("playerbreathing")
+				SoundSystem.play_sound("res://sound/playeronly/breathing in helmet.mp3", "playerbreathing", 0, Vector2.ZERO, 10)
+	else:
+		SoundSystem.stop_sound("playerbreathing")
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	get_viewport().get_camera_2d().global_position = global_position

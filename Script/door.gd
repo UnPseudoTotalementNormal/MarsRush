@@ -50,10 +50,7 @@ func _open_door(is_player):
 	$CollisionShape2D.set_deferred("disabled", true)
 	visible = false
 	open = true
-	if is_player:
-		SoundSystem.play_sound("res://sound/doors/dooropening.mp3", "door", 0.0)
-	else:
-		SoundSystem.play_sound("res://sound/doors/dooropening.mp3", "door", 0.0, global_position)
+	SoundSystem.play_sound("res://sound/doors/dooropening.mp3", "door", 0.0, global_position, 4)
 
 func _close_door(is_player):
 	if not open:
@@ -61,10 +58,7 @@ func _close_door(is_player):
 	$CollisionShape2D.set_deferred("disabled", false)
 	visible = true
 	open = false
-	if is_player:
-		SoundSystem.play_sound("res://sound/doors/doorclosing.mp3", "door", 0.0)
-	else:
-		SoundSystem.play_sound("res://sound/doors/doorclosing.mp3", "door", 0.0, global_position)
+	SoundSystem.play_sound("res://sound/doors/doorclosing.mp3", "door", 0.0, global_position, 4)
 
 func _check_player(area):
 	if "Player" in area.get_parent().name:

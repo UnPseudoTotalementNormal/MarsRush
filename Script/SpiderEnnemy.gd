@@ -364,6 +364,7 @@ func _kinematic_leg(kinematicleg: Marker2D, first_half: bool = false, attached_t
 		legsblocked[kinematicleg] = legraycast.get_collision_point()
 		leg1.mesh.size.x = legs_length
 		leg2.mesh.size.x = legs_length
+		SoundSystem.play_sound("res://sound/footstep.mp3", "spider", 0.5, legraycast.get_collision_point(), -10)
 	elif kinematicleg in legsblocked and not kinematicleg in legsgoingtoblockedpos:    #if legs are completely attached
 		_leg_going_to_blocked_position(kinematicleg, 20)
 	elif kinematicleg in legsblocked and kinematicleg in legsgoingtoblockedpos:    #if legs are attached but not in place rn
@@ -400,6 +401,7 @@ func _reset_kinematic(kinematicleg: Marker2D, legraycast: RayCast2D):
 	else:
 		legsblocked[kinematicleg] = legraycast.get_collision_point()
 		legsgoingtoblockedpos.append(kinematicleg)
+		SoundSystem.play_sound("res://sound/footstep.mp3", "spider", 0.5, legraycast.get_collision_point(), -10)
 
 func _leg_going_to_blocked_position(kinematicleg: Marker2D, lerp: float):
 	var legpivot2: Node2D = kinematicleg.find_child("LegPivot2")

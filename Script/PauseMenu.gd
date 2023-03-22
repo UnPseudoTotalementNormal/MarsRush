@@ -20,7 +20,7 @@ extends ColorRect
 
 @onready var mobilecontrols: OptionButton = find_child("MobileControls")
 
-
+var Player: RigidBody2D
 
 func _input(event):
 	if event.is_action_pressed("pause"):
@@ -32,6 +32,7 @@ func _input(event):
 
 func _ready():
 	visible = false
+	
 	continue_button.pressed.connect(unpause)
 	menu_button.pressed.connect(go_to_main_menu)
 	settings_button.pressed.connect(_settings)
@@ -48,6 +49,10 @@ func _ready():
 	
 	await get_tree().physics_frame
 	_refresh_shown_values()
+
+func _process(delta):
+	if not Player:
+		Player = get_tree().current_scene.find_child("Player", true, false)
 
 func unpause():
 	animator.play("Unpause")
@@ -85,17 +90,16 @@ func _go_to_category(container_name: String):
 			i.visible = false
 
 func _refresh_shown_values():
-	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
 	fps_button.value = Engine.physics_ticks_per_second
 	
-	if player:
-		var mobile_control_mode = player.get("mobile_control_mode")
+	if Player:
+		var mobile_control_mode = Player.get("mobile_control_mode")
 		for i in range(0, 30):
 			if mobilecontrols.get_item_text(i) == mobile_control_mode:
 				mobilecontrols.select(i)
 		
-		Vignette_button.button_pressed = player.find_child("Vignette").visible
-		Chromatic_button.button_pressed = player.find_child("ChromaticAbberation").visible
+		Vignette_button.button_pressed = Player.find_child("Vignette").visible
+		Chromatic_button.button_pressed = Player.find_child("ChromaticAbberation").visible
 
 func _apply_values():
 	pass
@@ -114,9 +118,8 @@ func _change_fps(value):
 	_refresh_shown_values()
 
 func _mobile_control_to(index: int):
-	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
-	if player != null:
-		player.set("mobile_control_mode", mobilecontrols.get_item_text(index))
+	if Player:
+		Player.set("mobile_control_mode", mobilecontrols.get_item_text(index))
 	_refresh_shown_values()
 
 func go_to_main_menu():
@@ -124,11 +127,9 @@ func go_to_main_menu():
 	unpause()
 
 func _vignette():
-	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
-	if player:
-		player.find_child("Vignette").visible = Vignette_button.button_pressed
+	if Player:
+		Player.find_child("Vignette").visible = Vignette_button.button_pressed
 
 func _chromatic_abberation():
-	var player: RigidBody2D = get_tree().current_scene.find_child("Player")
-	if player:
-		player.find_child("ChromaticAbberation").visible = Chromatic_button.button_pressed
+	if Player:
+		Player.find_child("ChromaticAbberation").visible = Chromatic_button.button_pressed
