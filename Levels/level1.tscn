@@ -674,6 +674,16 @@ horizontal_alignment = 2
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_impwu")
 
+[node name="Label" type="Label" parent="."]
+offset_left = -110.0
+offset_top = -239.0
+offset_right = 110.0
+offset_bottom = -161.0
+theme_override_font_sizes/font_size = 10
+text = "Scroll to switch weapon
+Left click to shoot
+Right click to reload shotgun"
+
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_entered" flags=18]
 [connection signal="area_exited" from="NavigationRegion2D/Text/TextArea" to="NavigationRegion2D/Text/TextArea" method="_on_area_exited" flags=18]
 [connection signal="area_entered" from="NavigationRegion2D/Text/TextArea2" to="NavigationRegion2D/Text/TextArea2" method="_on_area_entered" flags=18]

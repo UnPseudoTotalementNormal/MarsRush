@@ -1,6 +1,7 @@
+Label
+GPUParticles2D
 AudioStreamPlayer2D
 Timer
-Label
 Node2D
 MeshInstance2D
 CPUParticles2D
@@ -8,7 +9,6 @@ GPUParticlesAttractorBox3D
 AudioStreamPlayer
 PointLight2D
 ColorRect
-GPUParticles2D
 RayCast2D
 HBoxContainer
 CheckBox
@@ -30,4 +30,3 @@ Skeleton2D
 LightOccluder2D
 RigidBody2D
 CollisionShape2D
-CharacterBody2D
